@@ -32,7 +32,10 @@
       "dealerdirect/phpcodesniffer-composer-installer": true
     },
     "optimize-autoloader": true,
-    "platform-check": false
+    "platform-check": false,
+    "platform": {
+      "php": "7.4.33"
+    }
   },
   "scripts": {
     "lint": "phpcs",
