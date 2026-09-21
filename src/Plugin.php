@@ -174,6 +174,16 @@ final class Plugin {
 
 		$is_rest = defined( 'REST_REQUEST' ) && REST_REQUEST;
 
+		// The REST routes are hooked in every context: rest_do_request() can be called internally from
+		// admin screens, WP-CLI, tests or other plugins, and rest_api_init never fires on an ordinary page
+		// load, so the only cost on the front end is this one add_action(). The module itself is built lazily.
+		add_action(
+			'rest_api_init',
+			function () {
+				( new Rest( $this->options, $this->repository, $this->queue, $this->drop_in, $this->cron ) )->routes();
+			}
+		);
+
 		if ( is_admin() && ! wp_doing_ajax() ) {
 			$this->register_admin_modules();
 			$this->register_background_modules();
@@ -220,7 +230,6 @@ final class Plugin {
 		$this->cron->register();
 		( new LlmsTxt( $this->options ) )->register(); // Hook-only; any context that can flush rewrite rules must know ours.
 		( new Privacy( $this->options ) )->register();
-		( new Rest( $this->options, $this->repository, $this->queue, $this->drop_in, $this->cron ) )->register();
 	}
 
 	/**

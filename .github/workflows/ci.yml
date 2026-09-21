@@ -51,7 +51,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: [ '7.4', '8.1', '8.3', '8.4' ]
+        # PHP 7.4 is covered by the unit suite and PHPCompatibility: wp-env's 7.4 image is built on
+        # Debian 11, whose apt repositories have been archived, so it no longer builds.
+        php: [ '8.1', '8.3', '8.4' ]
         wp: [ '6.4', 'latest', 'trunk' ]
         exclude:
           - { php: '8.4', wp: '6.4' }
@@ -72,7 +74,7 @@ jobs:
         run: |
           CORE='"core": null'
           if [ "${{ matrix.wp }}" = "6.4" ]; then CORE='"core": "WordPress/WordPress#6.4"'; fi
-          if [ "${{ matrix.wp }}" = "trunk" ]; then CORE='"core": "WordPress/WordPress#trunk"'; fi
+          if [ "${{ matrix.wp }}" = "trunk" ]; then CORE='"core": "WordPress/WordPress#master"'; fi  # the GitHub mirror's branch is master
           node -e "const f=require('./.wp-env.json'); f.phpVersion='${{ matrix.php }}'; ${CORE/\"core\": /f.core=}; require('fs').writeFileSync('.wp-env.json', JSON.stringify(f,null,2));"
       # Each step tees its output and, on failure, surfaces the tail as an annotation on the run page.
       - name: Start wp-env
