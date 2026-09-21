@@ -19,6 +19,14 @@ final class DropInTest extends TestCase {
 		$template = (string) file_get_contents( AI_PARSEABLE_DIR . 'mu/' . DropIn::FILENAME );
 		$this->assertStringContainsString( DropIn::CONFIG_PLACEHOLDER, $template );
 		$this->assertStringContainsString( "define( 'AI_PARSEABLE_DROP_IN', '0.0.0' );", $template );
+		// A "Plugin Name" header here would make WordPress list the template as a second plugin.
+		$this->assertDoesNotMatchRegularExpression( '/^[ \t\/*#@]*Plugin Name:/m', $template );
+	}
+
+	public function test_generated_source_carries_a_plugin_header(): void {
+		$source = DropIn::fill( (string) file_get_contents( AI_PARSEABLE_DIR . 'mu/' . DropIn::FILENAME ), '1.2.3+abc', array() );
+		$this->assertMatchesRegularExpression( '/^ \* Plugin Name: AI ParseAble drop-in$/m', $source );
+		$this->assertStringNotContainsString( 'Drop-in Name:', $source );
 	}
 
 	public function test_hostile_config_round_trips_through_generated_source(): void {

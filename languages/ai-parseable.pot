@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-09-21T11:37:27+00:00\n"
+"POT-Creation-Date: 2026-09-21T11:40:35+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: ai-parseable\n"
@@ -139,15 +139,15 @@ msgstr ""
 msgid "Open dashboard →"
 msgstr ""
 
-#: src/Logger/DropIn.php:252
+#: src/Logger/DropIn.php:253
 msgid "Requests served by a page cache before WordPress plugins load."
 msgstr ""
 
-#: src/Logger/DropIn.php:255
+#: src/Logger/DropIn.php:256
 msgid "Pages served directly by advanced-cache.php (it runs before mu-plugins)."
 msgstr ""
 
-#: src/Logger/DropIn.php:258
+#: src/Logger/DropIn.php:259
 msgid "Pages served by a server-level or CDN cache (LiteSpeed, Nginx FastCGI cache, Cloudflare APO). Those never reach PHP; use server-log ingestion for full coverage."
 msgstr ""
 

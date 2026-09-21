@@ -115,6 +115,7 @@ final class DropIn {
 
 		$source = str_replace( "define( 'AI_PARSEABLE_DROP_IN', '0.0.0' );", "define( 'AI_PARSEABLE_DROP_IN', '" . $version . "' );", $template );
 		$source = str_replace( ' * Version:     0.0.0', ' * Version:     ' . $version, $source );
+		$source = str_replace( ' * Drop-in Name: ', ' * Plugin Name: ', $source );
 		return str_replace( self::CONFIG_PLACEHOLDER, '$ai_parseable_config = ' . $exported . ';', $source );
 	}
 
