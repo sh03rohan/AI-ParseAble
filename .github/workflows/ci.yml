@@ -74,7 +74,17 @@ jobs:
           if [ "${{ matrix.wp }}" = "6.4" ]; then CORE='"core": "WordPress/WordPress#6.4"'; fi
           if [ "${{ matrix.wp }}" = "trunk" ]; then CORE='"core": "WordPress/WordPress#trunk"'; fi
           node -e "const f=require('./.wp-env.json'); f.phpVersion='${{ matrix.php }}'; ${CORE/\"core\": /f.core=}; require('fs').writeFileSync('.wp-env.json', JSON.stringify(f,null,2));"
-      - run: npx wp-env start
-      - run: npx wp-env run tests-cli --env-cwd=wp-content/plugins/ai-parseable vendor/bin/phpunit --testsuite integration
-        env: { WP_TESTS_DIR: /wordpress-phpunit }
-      - run: npx playwright install --with-deps chromium && npm run test:e2e
+      # Each step tees its output and, on failure, surfaces the tail as an annotation on the run page.
+      - name: Start wp-env
+        run: |
+          set -o pipefail
+          npx wp-env start 2>&1 | tee wp-env.log || { echo "::error title=wp-env start::$(tail -c 3000 wp-env.log | tr '\n' ' ')"; exit 1; }
+      - name: Integration tests
+        run: |
+          set -o pipefail
+          npx wp-env run tests-cli --env-cwd=wp-content/plugins/ai-parseable vendor/bin/phpunit --testsuite integration 2>&1 | tee phpunit.log || { echo "::error title=phpunit integration::$(grep -v '^$' phpunit.log | tail -c 3000 | tr '\n' ' ')"; exit 1; }
+      - name: E2E tests
+        run: |
+          set -o pipefail
+          npx playwright install --with-deps chromium
+          npm run test:e2e 2>&1 | tee e2e.log || { echo "::error title=playwright e2e::$(grep -v '^$' e2e.log | tail -c 3000 | tr '\n' ' ')"; exit 1; }
