@@ -1,0 +1,18 @@
+{
+  "name": "ai-parseable",
+  "version": "0.1.0",
+  "description": "First-party log of AI crawler visits for WordPress.",
+  "private": true,
+  "license": "GPL-2.0-or-later",
+  "scripts": {
+    "build": "wp-scripts build",
+    "start": "wp-scripts start",
+    "lint:js": "wp-scripts lint-js ui",
+    "test:e2e": "playwright test -c tests/e2e/playwright.config.js",
+    "version": "php bin/version.php"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.47.0",
+    "@wordpress/scripts": "^30.0.0"
+  }
+}

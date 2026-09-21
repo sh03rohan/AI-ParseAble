@@ -1,0 +1,14 @@
+includes:
+    - vendor/szepeviktor/phpstan-wordpress/extension.neon
+parameters:
+    level: 6
+    paths:
+        - ai-parseable.php
+        - uninstall.php
+        - src
+    bootstrapFiles:
+        - tests/phpstan-bootstrap.php
+    scanFiles:
+        - tests/stubs/woocommerce-stubs.php
+    ignoreErrors:
+        - '#Function as_[a-z_]+ not found#'

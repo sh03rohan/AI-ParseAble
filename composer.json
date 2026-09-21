@@ -1,0 +1,44 @@
+{
+  "name": "aiparseable/ai-parseable",
+  "description": "First-party log of AI crawler visits for WordPress.",
+  "type": "wordpress-plugin",
+  "license": "GPL-2.0-or-later",
+  "require": {
+    "php": ">=7.4"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^9.6",
+    "yoast/phpunit-polyfills": "^2.0",
+    "squizlabs/php_codesniffer": "^3.10",
+    "wp-coding-standards/wpcs": "^3.1",
+    "phpcompatibility/phpcompatibility-wp": "^2.1",
+    "phpstan/phpstan": "^1.12",
+    "szepeviktor/phpstan-wordpress": "^1.3",
+    "dealerdirect/phpcodesniffer-composer-installer": "^1.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "AiParseAble\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "AiParseAble\\Tests\\Unit\\": "tests/unit/",
+      "AiParseAble\\Tests\\Integration\\": "tests/integration/"
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    },
+    "optimize-autoloader": true,
+    "platform-check": false
+  },
+  "scripts": {
+    "lint": "phpcs",
+    "lint:fix": "phpcbf",
+    "analyse": "phpstan analyse",
+    "test:unit": "phpunit --testsuite unit",
+    "test:integration": "phpunit --testsuite integration"
+  }
+}

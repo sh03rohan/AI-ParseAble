@@ -1,0 +1,75 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  static:
+    name: PHPCS + PHPStan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with: { php-version: '8.1', coverage: none, tools: composer }
+      - run: composer install --no-interaction --prefer-dist
+      - run: composer lint
+      - run: composer analyse
+
+  unit:
+    name: Unit PHP ${{ matrix.php }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php: [ '7.4', '8.1', '8.3', '8.4' ]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with: { php-version: '${{ matrix.php }}', coverage: none, tools: composer }
+      - run: composer install --no-interaction --prefer-dist
+      - run: AI_PARSEABLE_SUITE=unit composer test:unit
+
+  js:
+    name: JS build + tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '20', cache: npm }
+      - run: npm ci
+      - run: npm run lint:js
+      - run: npx wp-scripts test-unit-js ui
+      - run: npm run build
+      - name: Bundle budget (60KB gzipped)
+        run: test "$(gzip -c assets/admin.js | wc -c)" -lt 61440
+
+  integration:
+    name: Integration PHP ${{ matrix.php }} / WP ${{ matrix.wp }}
+    runs-on: ubuntu-latest
+    continue-on-error: ${{ matrix.wp == 'trunk' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        php: [ '7.4', '8.1', '8.3', '8.4' ]
+        wp: [ '6.4', 'latest', 'trunk' ]
+        exclude:
+          - { php: '8.4', wp: '6.4' }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '20', cache: npm }
+      - uses: shivammathur/setup-php@v2
+        with: { php-version: '8.1', coverage: none, tools: composer }
+      - run: composer install --no-interaction --prefer-dist
+      - run: npm ci && npm run build
+      - name: Configure wp-env
+        run: |
+          CORE='"core": null'
+          if [ "${{ matrix.wp }}" = "6.4" ]; then CORE='"core": "WordPress/WordPress#6.4"'; fi
+          if [ "${{ matrix.wp }}" = "trunk" ]; then CORE='"core": "WordPress/WordPress#trunk"'; fi
+          node -e "const f=require('./.wp-env.json'); f.phpVersion='${{ matrix.php }}'; ${CORE/\"core\": /f.core=}; require('fs').writeFileSync('.wp-env.json', JSON.stringify(f,null,2));"
+      - run: npx @wordpress/env start
+      - run: npx @wordpress/env run tests-cli --env-cwd=wp-content/plugins/ai-parseable vendor/bin/phpunit --testsuite integration
+        env: { WP_TESTS_DIR: /wordpress-phpunit }
+      - run: npx playwright install --with-deps chromium && npm run test:e2e
