@@ -81,6 +81,8 @@ jobs:
         run: |
           set -o pipefail
           npx wp-env start 2>&1 | tee wp-env.log || { echo "::error title=wp-env start::$(tail -c 3000 wp-env.log | tr '\n' ' ')"; exit 1; }
+      # Virtual robots.txt and llms.txt need pretty permalinks; wp-env's site starts with plain ones.
+      - run: npx wp-env run cli wp rewrite structure '/%postname%/' --hard
       - name: Integration tests
         run: |
           set -o pipefail
