@@ -11,7 +11,7 @@ module.exports = {
 		admin: path.resolve( __dirname, 'ui/admin/index.js' ),
 		editor: path.resolve( __dirname, 'ui/editor/index.js' ),
 		// Shim for WordPress < 6.6, registered by Support\Assets only when core lacks the handle.
-		'react-jsx-runtime': path.resolve( __dirname, 'ui/vendor/react-jsx-runtime.js' ),
+		'react-jsx-runtime': path.resolve( __dirname, 'ui/shims/react-jsx-runtime.js' ),
 	},
 	output: {
 		...defaultConfig.output,
