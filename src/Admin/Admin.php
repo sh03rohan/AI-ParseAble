@@ -9,6 +9,7 @@ namespace AiParseAble\Admin;
 
 use AiParseAble\Activation;
 use AiParseAble\Module;
+use AiParseAble\Support\Assets;
 use AiParseAble\Support\Options;
 
 /**
@@ -121,6 +122,7 @@ final class Admin implements Module {
 			'dependencies' => array( 'wp-element', 'wp-components', 'wp-api-fetch', 'wp-i18n' ),
 			'version'      => AI_PARSEABLE_VERSION,
 		);
+		Assets::ensure_jsx_runtime();
 		wp_enqueue_script( 'ai-parseable-admin', AI_PARSEABLE_URL . 'assets/admin.js', $asset['dependencies'], $asset['version'], true );
 		wp_enqueue_style( 'wp-components' );
 		if ( is_readable( AI_PARSEABLE_DIR . 'assets/admin.css' ) ) {

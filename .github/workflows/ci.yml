@@ -91,4 +91,4 @@ jobs:
         run: |
           set -o pipefail
           npx playwright install --with-deps chromium
-          npm run test:e2e 2>&1 | tee e2e.log || { echo "::error title=playwright e2e::$(grep -v '^$' e2e.log | tail -c 3000 | tr '\n' ' ')"; exit 1; }
+          npm run test:e2e 2>&1 | tee e2e.log || { echo "::error title=playwright e2e::$(awk '/1\) \[chromium\]/{f=1} f' e2e.log | grep -v '^$' | head -c 3500 | tr '\n' ' ')"; exit 1; }

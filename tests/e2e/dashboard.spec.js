@@ -1,12 +1,23 @@
 const { test, expect } = require( '@playwright/test' );
 
 test( 'dashboard loads and the overview renders', async ( { page } ) => {
-	await page.goto( '/wp-admin/admin.php?page=ai-parseable' );
-	await expect( page.locator( '.aip-status' ) ).toBeVisible();
-	// A fresh install shows the empty state; a site with data shows the chart. Either is a successful paint.
-	await expect( page.locator( 'svg.aip-chart, .aip-empty' ).first() ).toBeVisible();
+	// Collect JS errors from the first byte so a failed mount reports its cause, not just a missing element.
 	const errors = [];
 	page.on( 'pageerror', ( e ) => errors.push( e.message ) );
+	page.on( 'console', ( m ) => {
+		if ( m.type() === 'error' ) {
+			errors.push( m.text() );
+		}
+	} );
+	const response = await page.goto( '/wp-admin/admin.php?page=ai-parseable' );
+	expect( response.status(), 'admin page HTTP status' ).toBe( 200 );
+	try {
+		await expect( page.locator( '.aip-status' ) ).toBeVisible( { timeout: 15000 } );
+	} catch ( e ) {
+		throw new Error( `App did not render. JS errors: ${ errors.join( ' | ' ) || 'none' }. Body: ${ ( await page.locator( 'body' ).innerText() ).slice( 0, 800 ) }` );
+	}
+	// A fresh install shows the empty state; a site with data shows the chart. Either is a successful paint.
+	await expect( page.locator( 'svg.aip-chart, .aip-empty' ).first() ).toBeVisible();
 	await page.waitForTimeout( 500 );
 	expect( errors ).toEqual( [] );
 } );

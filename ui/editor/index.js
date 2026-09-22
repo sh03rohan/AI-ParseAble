@@ -1,10 +1,14 @@
 import { registerPlugin } from '@wordpress/plugins';
-import { PluginSidebar, PluginSidebarMoreMenuItem } from '@wordpress/editor';
+import * as editor from '@wordpress/editor';
+import * as editPost from '@wordpress/edit-post';
 import { useSelect } from '@wordpress/data';
 import { PanelBody } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { runChecks } from './checks';
 import './editor.scss';
+
+// PluginSidebar moved from @wordpress/edit-post to @wordpress/editor in WordPress 6.6.
+const { PluginSidebar, PluginSidebarMoreMenuItem } = editor.PluginSidebar ? editor : editPost;
 
 const ICON = (
 	<svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 5c-5 0-9 4.5-10 7 1 2.5 5 7 10 7s9-4.5 10-7c-1-2.5-5-7-10-7zm0 11.5a4.5 4.5 0 1 1 0-9 4.5 4.5 0 0 1 0 9zm0-7a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5z" /></svg>

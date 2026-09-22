@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-09-22T10:35:11+00:00\n"
+"POT-Creation-Date: 2026-09-22T10:45:33+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: ai-parseable\n"
@@ -31,9 +31,9 @@ msgstr ""
 
 #. Author of the plugin
 #: ai-parseable.php
-#: src/Admin/Admin.php:63
 #: src/Admin/Admin.php:64
-#: src/Admin/Admin.php:176
+#: src/Admin/Admin.php:65
+#: src/Admin/Admin.php:178
 #: src/Admin/NetworkAdmin.php:62
 #: src/Admin/NetworkAdmin.php:63
 #: src/Admin/NetworkAdmin.php:156
@@ -56,11 +56,11 @@ msgstr ""
 msgid "AI ParseAble requires PHP %1$s and WordPress %2$s or newer. The plugin is inactive until the server is updated."
 msgstr ""
 
-#: src/Admin/Admin.php:95
+#: src/Admin/Admin.php:96
 msgid "Dashboard"
 msgstr ""
 
-#: src/Admin/Admin.php:178
+#: src/Admin/Admin.php:180
 msgid "Loading AI ParseAble…"
 msgstr ""
 
