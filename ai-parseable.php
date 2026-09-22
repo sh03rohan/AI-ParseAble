@@ -1,13 +1,13 @@
 <?php
 /**
- * Plugin Name:       AI ParseAble – AI Crawler Log, GPTBot & ClaudeBot Control, llms.txt
+ * Plugin Name:       AI ParseAble – AI Crawler Log & Access Control for GPTBot, ClaudeBot and other AI bots
  * Plugin URI:        https://github.com/sh03rohan/AI-ParseAble
  * Description:       AI crawler log and analytics for WordPress: see which AI bots (GPTBot, ClaudeBot, PerplexityBot) visit your site, verify they are real, allow or block them in robots.txt, fill schema gaps and serve llms.txt.
  * Version:           0.1.0
  * Requires at least: 6.4
  * Requires PHP:      7.4
  * Author:            AI ParseAble
- * Author URI:        https://aiparseable.com/
+ * Author URI:        https://github.com/sh03rohan
  * License:           GPLv2 or later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       ai-parseable

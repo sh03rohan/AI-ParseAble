@@ -8,7 +8,7 @@
 namespace AiParseAble\Rest;
 
 use AiParseAble\Activation;
-use AiParseAble\Logger\DropIn;
+use AiParseAble\Logger\Coverage;
 use AiParseAble\Logger\Ingest;
 use AiParseAble\Logger\Queue;
 use AiParseAble\Logger\Ranges;
@@ -23,7 +23,6 @@ use AiParseAble\Schema\Schema;
 use AiParseAble\Support\Cron;
 use AiParseAble\Support\Options;
 use AiParseAble\Support\Rewrite;
-use AiParseAble\Sync\Client;
 use WP_REST_Request;
 use WP_REST_Response;
 use WP_REST_Server;
@@ -58,11 +57,11 @@ final class Rest implements Module {
 	private $queue;
 
 	/**
-	 * Drop-in.
+	 * Coverage report.
 	 *
-	 * @var DropIn
+	 * @var Coverage
 	 */
-	private $drop_in;
+	private $coverage;
 
 	/**
 	 * Cron.
@@ -77,14 +76,14 @@ final class Rest implements Module {
 	 * @param Options    $options    Settings.
 	 * @param Repository $repository Repository.
 	 * @param Queue      $queue      Queue.
-	 * @param DropIn     $drop_in    Drop-in.
+	 * @param Coverage   $coverage   Coverage report.
 	 * @param Cron       $cron       Cron.
 	 */
-	public function __construct( Options $options, Repository $repository, Queue $queue, DropIn $drop_in, Cron $cron ) {
+	public function __construct( Options $options, Repository $repository, Queue $queue, Coverage $coverage, Cron $cron ) {
 		$this->options    = $options;
 		$this->repository = $repository;
 		$this->queue      = $queue;
-		$this->drop_in    = $drop_in;
+		$this->coverage   = $coverage;
 		$this->cron       = $cron;
 	}
 
@@ -300,37 +299,6 @@ final class Rest implements Module {
 			)
 		);
 		$this->route(
-			'/drop-in',
-			array(
-				'methods'             => $write,
-				'callback'            => array( $this, 'drop_in_action' ),
-				'permission_callback' => $perm,
-				'args'                => array(
-					'action' => array(
-						'type'              => 'string',
-						'enum'              => array( 'install', 'remove' ),
-						'required'          => true,
-						'sanitize_callback' => 'sanitize_key',
-					),
-				),
-			)
-		);
-		$this->route(
-			'/sync',
-			array(
-				array(
-					'methods'             => $read,
-					'callback'            => array( $this, 'sync_status' ),
-					'permission_callback' => $perm,
-				),
-				array(
-					'methods'             => $write,
-					'callback'            => array( $this, 'sync_rescan' ),
-					'permission_callback' => $perm,
-				),
-			)
-		);
-		$this->route(
 			'/notice',
 			array(
 				'methods'             => $write,
@@ -387,10 +355,6 @@ final class Rest implements Module {
 				'items' => array( 'type' => 'integer' ),
 			),
 			'llms_include_posts'     => array( 'type' => 'boolean' ),
-			'api_key'                => array(
-				'type'              => 'string',
-				'sanitize_callback' => 'sanitize_text_field',
-			),
 			'keep_data_on_uninstall' => array( 'type' => 'boolean' ),
 		);
 	}
@@ -593,7 +557,7 @@ final class Rest implements Module {
 		}
 		return new WP_REST_Response(
 			array_merge(
-				$this->drop_in->coverage(),
+				$this->coverage->report(),
 				array(
 					'queue'          => $this->queue->pending(),
 					'queue_readable' => $this->queue->is_web_readable(),
@@ -601,7 +565,6 @@ final class Rest implements Module {
 					'ingest_stale'   => $last > 0 ? ( time() - $last ) > HOUR_IN_SECONDS : false,
 					'cron_backend'   => $this->cron->backend(),
 					'ranges'         => $range_status,
-					'mu_writable'    => is_dir( WPMU_PLUGIN_DIR ) ? wp_is_writable( WPMU_PLUGIN_DIR ) : wp_is_writable( WP_CONTENT_DIR ),
 				)
 			)
 		);
@@ -629,8 +592,6 @@ final class Rest implements Module {
 				'llms_pages'             => array_map( 'intval', (array) $all['llms_pages'] ),
 				'llms_include_posts'     => (bool) $all['llms_include_posts'],
 				'llms_url'               => home_url( '/llms.txt' ),
-				'api_key_set'            => '' !== (string) $all['api_key'],
-				'api_key_hint'           => '' !== (string) $all['api_key'] ? '••••' . substr( (string) $all['api_key'], -4 ) : '',
 				'keep_data_on_uninstall' => (bool) $all['keep_data_on_uninstall'],
 				'bots'                   => $this->bot_catalog(),
 				'installed_at'           => (int) $all['installed_at'],
@@ -706,9 +667,6 @@ final class Rest implements Module {
 		}
 		if ( isset( $params['llms_pages'] ) && is_array( $params['llms_pages'] ) ) {
 			$values['llms_pages'] = array_values( array_unique( array_filter( array_map( 'absint', $params['llms_pages'] ) ) ) );
-		}
-		if ( array_key_exists( 'api_key', $params ) ) {
-			$values['api_key'] = sanitize_text_field( (string) $params['api_key'] );
 		}
 
 		$this->options->update( $values );
@@ -831,49 +789,6 @@ final class Rest implements Module {
 		$ingest  = new Ingest( $this->options, $this->repository, $this->queue, new Verifier( new Ranges() ) );
 		$summary = $ingest->run();
 		return new WP_REST_Response( $summary );
-	}
-
-	/**
-	 * POST /drop-in.
-	 *
-	 * @param WP_REST_Request $request Request.
-	 * @return WP_REST_Response
-	 */
-	public function drop_in_action( WP_REST_Request $request ): WP_REST_Response {
-		if ( 'install' === $request['action'] ) {
-			$ok = $this->drop_in->install();
-		} else {
-			$this->drop_in->remove();
-			$ok = true;
-		}
-		return new WP_REST_Response(
-			array_merge(
-				array( 'ok' => $ok ),
-				$this->drop_in->coverage()
-			)
-		);
-	}
-
-	/**
-	 * GET /sync.
-	 *
-	 * @return WP_REST_Response
-	 */
-	public function sync_status(): WP_REST_Response {
-		return new WP_REST_Response( ( new Client( $this->options ) )->status() );
-	}
-
-	/**
-	 * POST /sync.
-	 *
-	 * @return WP_REST_Response|\WP_Error
-	 */
-	public function sync_rescan() {
-		$result = ( new Client( $this->options ) )->rescan();
-		if ( is_wp_error( $result ) ) {
-			return $result;
-		}
-		return new WP_REST_Response( $result );
 	}
 
 	/**

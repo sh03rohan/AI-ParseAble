@@ -8,7 +8,6 @@
 namespace AiParseAble\Admin;
 
 use AiParseAble\Activation;
-use AiParseAble\Logger\DropIn;
 use AiParseAble\Logger\Ingest;
 use AiParseAble\Module;
 use AiParseAble\Support\Options;
@@ -27,21 +26,12 @@ final class Health implements Module {
 	private $options;
 
 	/**
-	 * Drop-in.
-	 *
-	 * @var DropIn
-	 */
-	private $drop_in;
-
-	/**
 	 * Constructor.
 	 *
 	 * @param Options $options Settings.
-	 * @param DropIn  $drop_in Drop-in.
 	 */
-	public function __construct( Options $options, DropIn $drop_in ) {
+	public function __construct( Options $options ) {
 		$this->options = $options;
-		$this->drop_in = $drop_in;
 	}
 
 	/**
@@ -50,23 +40,7 @@ final class Health implements Module {
 	 * @return void
 	 */
 	public function register(): void {
-		add_action( 'admin_init', array( $this, 'check' ) );
 		add_action( 'admin_notices', array( $this, 'notice' ) );
-	}
-
-	/**
-	 * Verify the drop-in; reinstall if a host wiped mu-plugins.
-	 *
-	 * @return void
-	 */
-	public function check(): void {
-		if ( is_multisite() && ! is_main_site() ) {
-			return;
-		}
-		if ( ! current_user_can( Activation::CAPABILITY ) ) {
-			return;
-		}
-		$this->drop_in->verify();
 	}
 
 	/**
@@ -108,22 +82,6 @@ final class Health implements Module {
 	private function first_notice(): ?array {
 		$user = get_current_user_id();
 		$list = array();
-
-		$mode = $this->drop_in->mode();
-		if ( DropIn::MODE_PHP === $mode ) {
-			$why    = (string) $this->options->get( 'drop_in_notice', '' );
-			$list[] = array(
-				'id'    => 'drop-in',
-				'level' => 'warning',
-				'text'  => 'mu-unwritable' === $why
-					? sprintf(
-						/* translators: %s: directory path */
-						__( 'The drop-in could not be installed because <code>%s</code> is not writable. Logging runs at PHP level, so hits served from a page cache are not recorded. Make the directory writable and reload this page to self-heal.', 'ai-parseable' ),
-						esc_html( WPMU_PLUGIN_DIR )
-					)
-					: __( 'The drop-in is not installed. Logging runs at PHP level, so hits served from a page cache are not recorded.', 'ai-parseable' ),
-			);
-		}
 
 		$last = (int) get_option( Ingest::OPTION_LAST, 0 );
 		if ( $last > 0 && ( time() - $last ) > HOUR_IN_SECONDS ) {

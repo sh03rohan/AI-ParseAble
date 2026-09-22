@@ -1,4 +1,4 @@
-=== AI ParseAble – AI Crawler Log, GPTBot & ClaudeBot Control, llms.txt ===
+=== AI ParseAble – AI Crawler Log & Access Control for GPTBot, ClaudeBot and other AI bots ===
 Contributors: shrohan03
 Tags: ai, seo, crawler, robots.txt, llms.txt
 Requires at least: 6.4
@@ -19,7 +19,7 @@ External AI visibility checkers can tell you whether AI crawlers *can* reach you
 = AI crawler log and analytics =
 
 * Records visits from 26 known AI crawlers: GPTBot, ChatGPT-User, OAI-SearchBot, ClaudeBot, Claude-User, Claude-SearchBot, anthropic-ai, PerplexityBot, Perplexity-User, Googlebot, GoogleOther, Google-Extended, Bingbot, Applebot, Applebot-Extended, Amazonbot, Bytespider, CCBot, cohere-ai, DuckAssistBot, Diffbot, MistralAI-User, meta-externalagent, meta-externalfetcher, PetalBot, Timpibot and YouBot.
-* Captures the hit before other plugins load, via a tiny must-use drop-in, so page caches and CDNs do not hide AI bot traffic from you.
+* Captures the hit the moment the plugin loads, before any hook runs, and writes it to a file queue at shutdown — never to the database inline.
 * Writes to a file queue, never to the database inline: zero database queries and a single regular-expression match on ordinary visitor requests.
 * Dashboard with visits per day, error rate, distinct crawlers, most-crawled pages, failing URLs and a live feed of the latest AI bot visits.
 
@@ -57,22 +57,30 @@ Non-bot front-end requests add zero database queries. Bot hits are appended to a
 
 == External services ==
 
-This plugin can optionally connect to the AI ParseAble checker service (https://aiparseable.com) when you enter an API key on the Settings screen. Without a key, no data is sent anywhere and every feature works.
+The plugin does not connect to any service of its own, has no accounts or API keys, and sends no analytics or telemetry. It makes exactly one kind of outbound request:
 
-When you request a scan, the plugin sends your site's home URL and nothing else to `https://aiparseable.com/api/v1/scan`, authenticated with your API key, and receives a score and a list of findings. Terms: https://aiparseable.com/terms — Privacy policy: https://aiparseable.com/privacy
+**Crawler IP-range documents, fetched from the crawler vendors themselves.** To verify that a visit claiming to be a given crawler really came from that vendor, the plugin needs the IP ranges each vendor publishes. Once a week (and once shortly after activation) a background job fetches these public JSON documents:
 
-Separately, once a week the plugin fetches the published crawler IP range documents from the vendors themselves (for example https://openai.com/gptbot.json, https://developers.google.com/static/search/apis/ipranges/googlebot.json, https://www.perplexity.com/perplexitybot.json, https://www.bing.com/toolbox/bingbot.json, https://search.developer.apple.com/applebot.json). These requests carry the plugin's user agent and your site URL as a courtesy identifier and no other data. They are needed to verify crawler identity. A failed fetch keeps the last good copy and never interrupts logging.
+* OpenAI — `https://openai.com/gptbot.json`, `https://openai.com/chatgpt-user.json`, `https://openai.com/searchbot.json` — [Terms of use](https://openai.com/policies/terms-of-use), [Privacy policy](https://openai.com/policies/privacy-policy)
+* Google — `https://developers.google.com/static/search/apis/ipranges/googlebot.json`, `https://developers.google.com/static/search/apis/ipranges/special-crawlers.json` — [Terms of service](https://policies.google.com/terms), [Privacy policy](https://policies.google.com/privacy)
+* Perplexity — `https://www.perplexity.com/perplexitybot.json`, `https://www.perplexity.com/perplexity-user.json` — [Terms of service](https://www.perplexity.ai/hub/legal/terms-of-service), [Privacy policy](https://www.perplexity.ai/hub/legal/privacy-policy)
+* Microsoft Bing — `https://www.bing.com/toolbox/bingbot.json` — [Terms of use](https://www.microsoft.com/en-us/servicesagreement), [Privacy statement](https://privacy.microsoft.com/privacystatement)
+* Apple — `https://search.developer.apple.com/applebot.json` — [Terms of use](https://www.apple.com/legal/internet-services/terms/site.html), [Privacy policy](https://www.apple.com/legal/privacy/)
+
+What is sent: a plain HTTP GET with the plugin's user agent (`AI ParseAble/<version>; <your site URL>`) so vendors can see who is fetching. No visitor data, no log data and nothing about your site's content is sent. The fetch runs in cron, never during a visitor's request. A failed fetch keeps the last good copy and never interrupts logging.
+
+**Reverse DNS lookups.** For crawlers that publish a hostname pattern instead of IP ranges (Googlebot, Bingbot, Applebot, Amazonbot, PetalBot), verification performs a reverse and forward DNS lookup of the crawler's IP address through your server's normal DNS resolver, exactly as a web server log analyser would. Results are cached for 24 hours.
 
 == Privacy ==
 
 The plugin records the IP address of requests that match a known AI crawler user agent. By default the address is truncated to /24 (IPv4) or /48 (IPv6) before storage; you can choose a salted hash or the full address in Settings. Verification always runs on the real address before it is reduced. Individual records are kept for the configured retention window; daily totals per crawler are kept indefinitely and contain no addresses. Log files live under `wp-content/uploads/ai-parseable/` with an `index.php` and a `.htaccess` deny rule. Personal-data exporter and eraser callbacks are registered; suggested privacy-policy text is provided under Settings → Privacy.
 
-Uninstalling keeps your data by default. Turn off "Keep my data" in Settings before deleting the plugin to remove tables, options, the drop-in, cron events and the log directory.
+Uninstalling keeps your data by default. Turn off "Keep my data" in Settings before deleting the plugin to remove tables, options, cron events and the log directory.
 
 == Installation ==
 
 1. Upload the plugin and activate it.
-2. On activation the plugin writes `wp-content/mu-plugins/ai-parseable-drop-in.php`. If that directory is not writable it falls back to PHP-level logging and says so on the dashboard.
+2. Activation creates the tables and a private log directory under `wp-content/uploads/ai-parseable/`. Nothing is written anywhere else.
 3. Open **AI ParseAble** in the admin menu. Administrators receive the `aiparseable_manage` capability; grant it to other roles to delegate access.
 
 == Frequently Asked Questions ==
@@ -95,7 +103,7 @@ llms.txt is a plain-text file at the root of your site that gives AI assistants 
 
 = The dashboard shows zero hits but my server log shows crawlers. =
 
-Check the coverage banner at the top of the Overview. If the drop-in is not installed, or a page cache serves responses before PHP runs (server-level caches such as LiteSpeed, Nginx FastCGI cache or a CDN), those hits never reach the plugin. Server-log ingestion is the only complete answer for those setups.
+Check the coverage banner at the top of the Overview. If a page cache serves responses before PHP runs (advanced-cache.php, server-level caches such as LiteSpeed or Nginx FastCGI cache, or a CDN), those hits never reach WordPress and so never reach the plugin. Server-log ingestion is the only complete answer for those setups.
 
 = Why does a crawler show as unverified? =
 
@@ -125,7 +133,7 @@ IP addresses of AI crawler visits are truncated by default (you can choose hashe
 4. Blocking AI training crawlers in robots.txt in one click; the resulting robots.txt block is shown below the tables.
 5. Schema markup gap filling: a before/after of a real WooCommerce product page with the added structured-data properties listed.
 6. llms.txt editor for AI assistants with a live preview of the served file.
-7. Settings: log retention, IP storage mode for privacy, per-crawler rate ceiling, optional scan sync and uninstall behaviour.
+7. Settings: log retention, IP storage mode for privacy, per-crawler rate ceiling and uninstall behaviour.
 
 == Changelog ==
 

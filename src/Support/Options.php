@@ -45,12 +45,9 @@ final class Options {
 			'llms_summary'           => '',
 			'llms_pages'             => array(),
 			'llms_include_posts'     => false,
-			'api_key'                => '',
 			'keep_data_on_uninstall' => true,
 			'ua_pattern'             => '',
 			'queue_token'            => '',
-			'drop_in_version'        => '',
-			'drop_in_notice'         => '',
 			'physical_robots'        => false,
 			'installed_at'           => 0,
 		);

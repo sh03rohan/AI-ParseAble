@@ -78,7 +78,6 @@ final class Migrations {
 		$plugin->options()->set( 'ua_pattern', Signatures::compile() );
 		Activation::grant_capability();
 		if ( ! is_multisite() || is_main_site() ) {
-			$plugin->drop_in()->install();
 			$plugin->cron()->ensure_scheduled();
 		}
 		update_option( self::OPTION_PLUGIN, AI_PARSEABLE_VERSION, true );
@@ -92,11 +91,18 @@ final class Migrations {
 	 * @return void
 	 */
 	public static function autoload_versions(): void {
-		wp_set_option_autoload_values(
-			array(
-				self::OPTION        => true,
-				self::OPTION_PLUGIN => true,
-			)
+		$options = array(
+			self::OPTION        => true,
+			self::OPTION_PLUGIN => true,
 		);
+		if ( function_exists( 'wp_set_option_autoload_values' ) ) { // WordPress 6.4+.
+			wp_set_option_autoload_values( $options );
+			return;
+		}
+		foreach ( $options as $name => $autoload ) {
+			$value = get_option( $name );
+			delete_option( $name );
+			add_option( $name, $value, '', $autoload );
+		}
 	}
 }

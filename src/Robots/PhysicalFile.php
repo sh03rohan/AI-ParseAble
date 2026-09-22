@@ -63,7 +63,19 @@ final class PhysicalFile {
 			return new \WP_Error( 'not_writable', __( 'robots.txt is not writable by the web server.', 'ai-parseable' ), array( 'status' => 400 ) );
 		}
 		$updated = Block::splice( self::read(), $rules );
-		$ok      = false !== @file_put_contents( self::path(), $updated, LOCK_EX ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged,WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents -- explicit, user-initiated write.
+		$ok      = self::filesystem() && $GLOBALS['wp_filesystem']->put_contents( self::path(), $updated, FS_CHMOD_FILE );
 		return $ok ? true : new \WP_Error( 'write_failed', __( 'Writing robots.txt failed.', 'ai-parseable' ), array( 'status' => 500 ) );
+	}
+
+	/**
+	 * Initialise the direct WP_Filesystem method. Anything needing credentials is reported as not writable.
+	 *
+	 * @return bool
+	 */
+	private static function filesystem(): bool {
+		if ( ! function_exists( 'WP_Filesystem' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/file.php';
+		}
+		return (bool) WP_Filesystem() && isset( $GLOBALS['wp_filesystem'] ) && 'direct' === $GLOBALS['wp_filesystem']->method;
 	}
 }

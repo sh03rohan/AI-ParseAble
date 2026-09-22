@@ -13,7 +13,7 @@ export default function Coverage( { coverage, onChange } ) {
 	if ( ! coverage ) {
 		return null;
 	}
-	const { mode, complete, misses, page_cache: pageCache, queue, last_ingest: lastIngest, ingest_stale: stale, cron_backend: cron, mu_writable: muWritable, queue_readable: queueReadable } = coverage;
+	const { complete, misses, page_cache: pageCache, queue, last_ingest: lastIngest, ingest_stale: stale, cron_backend: cron, queue_readable: queueReadable } = coverage;
 
 	const problems = [];
 	if ( stale ) {
@@ -32,10 +32,7 @@ export default function Coverage( { coverage, onChange } ) {
 	} else if ( complete ) {
 		level = 'ok';
 	}
-	let title = __( 'PHP-level logging only — page-cache hits are missed', 'ai-parseable' );
-	if ( mode === 'drop-in' ) {
-		title = complete ? __( 'Full coverage · drop-in active', 'ai-parseable' ) : __( 'Drop-in active, with gaps', 'ai-parseable' );
-	}
+	const title = complete ? __( 'Full coverage · logging active', 'ai-parseable' ) : __( 'Logging active, with gaps', 'ai-parseable' );
 	const cronLabel = { 'action-scheduler': 'Action Scheduler', 'wp-cron': 'WP-Cron', 'wp-cron-disabled': __( 'cron disabled', 'ai-parseable' ) }[ cron ] || cron;
 
 	const act = async ( fn ) => {
@@ -79,12 +76,8 @@ export default function Coverage( { coverage, onChange } ) {
 							{ pageCache.plugins.length > 0 && <p className="aip-muted">{ sprintf(
 								/* translators: %s: plugin names */
 								__( 'Cache plugins detected: %s', 'ai-parseable' ), pageCache.plugins.join( ', ' ) ) }</p> }
-							<p className="aip-muted">{ sprintf(
-								/* translators: %s: file path */
-								__( 'Drop-in path: %s', 'ai-parseable' ), coverage.drop_in_path ) }</p>
+							<p className="aip-muted">{ __( 'Crawler visits are captured when the plugin loads, before any hook runs, and queued to a file at shutdown. Only responses served before WordPress runs at all are invisible.', 'ai-parseable' ) }</p>
 							<div className="aip-actions">
-								{ mode !== 'drop-in' && muWritable && <Button variant="secondary" isBusy={ busy } onClick={ () => act( () => api.post( '/drop-in', { action: 'install' } ) ) }>{ __( 'Install drop-in', 'ai-parseable' ) }</Button> }
-								{ mode === 'drop-in' && <Button variant="tertiary" isBusy={ busy } onClick={ () => act( () => api.post( '/drop-in', { action: 'remove' } ) ) }>{ __( 'Remove drop-in', 'ai-parseable' ) }</Button> }
 								<Button variant="secondary" isBusy={ busy } onClick={ () => act( () => api.post( '/ingest' ) ) }>{ __( 'Ingest queue now', 'ai-parseable' ) }</Button>
 							</div>
 						</>

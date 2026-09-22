@@ -8,7 +8,7 @@
 namespace AiParseAble\Logger;
 
 /**
- * Shared by the drop-in generator, the PHP collector and the ingest so the format lives in one place.
+ * Shared by the collector and the ingest so the format lives in one place.
  *
  * Hit line:    <utc datetime>\t<token>\t<ip>\t<method>\t<uri>\t<host>\t<status>\t<cached>\t<elapsed_us>
  * Timing line: T\t<elapsed_us>              (sampled non-bot requests, for the performance figure)

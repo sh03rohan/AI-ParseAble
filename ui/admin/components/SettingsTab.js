@@ -1,8 +1,8 @@
 import { __, sprintf } from '@wordpress/i18n';
 import { useEffect, useState } from '@wordpress/element';
-import { Button, Spinner, TextControl, ToggleControl } from '@wordpress/components';
-import { api, timeAgo } from '../api';
-import { Panel, Segmented, Callout, SaveBar } from './ui';
+import { Spinner, TextControl, ToggleControl } from '@wordpress/components';
+import { api } from '../api';
+import { Panel, Segmented, SaveBar } from './ui';
 
 function Choice( { name, value, current, title, desc, onChange } ) {
 	const id = `aip-${ name }-${ value }`;
@@ -18,48 +18,28 @@ function Choice( { name, value, current, title, desc, onChange } ) {
 export default function SettingsTab() {
 	const [ saved, setSaved ] = useState( null );
 	const [ form, setForm ] = useState( null );
-	const [ apiKey, setApiKey ] = useState( '' );
-	const [ sync, setSync ] = useState( null );
 	const [ saving, setSaving ] = useState( false );
 	const [ message, setMessage ] = useState( '' );
 
 	const pick = ( s ) => ( { retention_days: s.retention_days, ip_mode: s.ip_mode, rate_cap_per_minute: s.rate_cap_per_minute, keep_data_on_uninstall: s.keep_data_on_uninstall } );
 	useEffect( () => {
 		api.get( '/settings' ).then( ( s ) => {
-			setSaved( { ...pick( s ), retention_choices: s.retention_choices, api_key_set: s.api_key_set, api_key_hint: s.api_key_hint } ); setForm( pick( s ) );
+			setSaved( { ...pick( s ), retention_choices: s.retention_choices } ); setForm( pick( s ) );
 		} );
-		api.get( '/sync' ).then( setSync ).catch( () => null );
 	}, [] );
 	if ( ! form || ! saved ) {
 		return <div className="aip-loading"><Spinner /></div>;
 	}
-	const dirty = JSON.stringify( form ) !== JSON.stringify( pick( saved ) ) || apiKey !== '';
+	const dirty = JSON.stringify( form ) !== JSON.stringify( pick( saved ) );
 
 	const save = async () => {
 		setSaving( true );
 		setMessage( '' );
 		try {
-			const payload = { ...form };
-			if ( apiKey !== '' ) {
-				payload.api_key = apiKey === '-' ? '' : apiKey;
-			}
-			const s = await api.post( '/settings', payload );
-			setSaved( { ...pick( s ), retention_choices: s.retention_choices, api_key_set: s.api_key_set, api_key_hint: s.api_key_hint } );
+			const s = await api.post( '/settings', form );
+			setSaved( { ...pick( s ), retention_choices: s.retention_choices } );
 			setForm( pick( s ) );
-			setApiKey( '' );
-			setSync( await api.get( '/sync' ) );
 			setMessage( __( 'Settings saved.', 'ai-parseable' ) );
-		} catch ( e ) {
-			setMessage( e.message );
-		} finally {
-			setSaving( false );
-		}
-	};
-	const rescan = async () => {
-		setSaving( true );
-		setMessage( '' );
-		try {
-			setSync( await api.post( '/sync' ) );
 		} catch ( e ) {
 			setMessage( e.message );
 		} finally {
@@ -99,31 +79,12 @@ export default function SettingsTab() {
 				</div>
 			</Panel>
 
-			<Panel title={ __( 'Site scan sync', 'ai-parseable' ) } aside={ saved.api_key_set ? <span className="aip-ok">{ __( '● connected', 'ai-parseable' ) }</span> : <span className="aip-muted">{ __( 'optional', 'ai-parseable' ) }</span> }>
-				<p className="aip-blurb">{ __( 'Connect to the AI ParseAble checker to pull your latest score and findings into this dashboard. Everything else works without a key. A scan request sends your site URL and nothing else.', 'ai-parseable' ) }</p>
-				<div className="aip-field aip-field--inline">
-					<TextControl label={ __( 'API key', 'ai-parseable' ) } value={ apiKey } onChange={ setApiKey } autoComplete="off" placeholder={ saved.api_key_set ? saved.api_key_hint : '' } help={ saved.api_key_set ? __( 'Enter a new key to replace it, or "-" to disconnect.', 'ai-parseable' ) : '' } __nextHasNoMarginBottom />
-				</div>
-				{ sync && sync.connected && (
-					<div className="aip-sync">
-						{ sync.score !== null ? (
-							<span className="aip-score"><strong>{ sync.score }</strong><span className="aip-muted">{ sprintf(
-								/* translators: %s: time ago */
-								__( 'score · scanned %s', 'ai-parseable' ), timeAgo( sync.scanned_at ) ) }</span></span>
-						) : <span className="aip-muted">{ __( 'No scan yet.', 'ai-parseable' ) }</span> }
-						<Button variant="secondary" isBusy={ saving } onClick={ rescan }>{ __( 'Rescan now', 'ai-parseable' ) }</Button>
-					</div>
-				) }
-				{ sync && sync.error && <Callout tone="warn">{ sync.error }</Callout> }
-				{ sync && sync.findings && sync.findings.length > 0 && <ul className="aip-findings">{ sync.findings.map( ( f ) => <li key={ f }>{ f }</li> ) }</ul> }
-			</Panel>
-
 			<Panel title={ __( 'Uninstall', 'ai-parseable' ) }>
-				<ToggleControl label={ __( 'Keep my data when the plugin is deleted', 'ai-parseable' ) } help={ form.keep_data_on_uninstall ? __( 'Tables, settings and the log directory survive deletion; only the drop-in and cron events are removed.', 'ai-parseable' ) : __( 'Deleting the plugin removes its tables, settings, drop-in, cron events and the log directory. This cannot be undone.', 'ai-parseable' ) } checked={ form.keep_data_on_uninstall } onChange={ ( v ) => setForm( { ...form, keep_data_on_uninstall: v } ) } __nextHasNoMarginBottom />
+				<ToggleControl label={ __( 'Keep my data when the plugin is deleted', 'ai-parseable' ) } help={ form.keep_data_on_uninstall ? __( 'Tables, settings and the log directory survive deletion; only the cron events are removed.', 'ai-parseable' ) : __( 'Deleting the plugin removes its tables, settings, cron events and the log directory. This cannot be undone.', 'ai-parseable' ) } checked={ form.keep_data_on_uninstall } onChange={ ( v ) => setForm( { ...form, keep_data_on_uninstall: v } ) } __nextHasNoMarginBottom />
 			</Panel>
 
 			<SaveBar dirty={ dirty } saving={ saving } message={ message } onSave={ save } onDiscard={ () => {
-				setForm( pick( saved ) ); setApiKey( '' );
+				setForm( pick( saved ) );
 			} } />
 		</div>
 	);

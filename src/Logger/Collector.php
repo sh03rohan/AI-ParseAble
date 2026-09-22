@@ -16,8 +16,6 @@ use AiParseAble\Support\Options;
  *
  * Non-bot path: one preg_match against a precompiled pattern from an autoloaded option, zero queries.
  * Bot path: one closure queued for shutdown. Nothing is written inline.
- *
- * When the drop-in is active this class steps aside entirely (the drop-in defines a constant).
  */
 final class Collector implements Module {
 
@@ -54,9 +52,6 @@ final class Collector implements Module {
 	 * @return void
 	 */
 	public function register(): void {
-		if ( defined( 'AI_PARSEABLE_DROP_IN' ) ) {
-			return; // The drop-in already captured this request.
-		}
 		$this->capture();
 	}
 

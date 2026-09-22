@@ -191,7 +191,8 @@ final class Schema implements Module {
 			'@context' => 'https://schema.org',
 			'@graph'   => $result['graph'],
 		);
-		echo "\n<script type=\"application/ld+json\" class=\"ai-parseable-schema\">" . wp_json_encode( $json, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) . "</script>\n";
+		// JSON_HEX_TAG turns < and > into \u003C and \u003E, so a value containing "</script>" cannot close the block.
+		echo "\n<script type=\"application/ld+json\" class=\"ai-parseable-schema\">" . wp_json_encode( $json, JSON_HEX_TAG | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) . "</script>\n";
 	}
 
 	/**

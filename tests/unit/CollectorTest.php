@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * The collector runs while plugin files are still being included, before pluggable.php is loaded.
  * The unit bootstrap deliberately defines no pluggable functions (wp_rand, wp_hash, …) so any use
- * of one here fails the suite instead of returning a 500 to every visitor on sites without the drop-in.
+ * of one here fails the suite instead of returning a 500 to every visitor.
  */
 final class CollectorTest extends TestCase {
 

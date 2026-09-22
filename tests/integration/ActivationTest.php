@@ -1,6 +1,6 @@
 <?php
 /**
- * Activation, capability, drop-in, migrations.
+ * Activation, capability, file locations, migrations.
  *
  * @package AiParseAble
  */
@@ -56,34 +56,19 @@ final class ActivationTest extends WP_UnitTestCase {
 		$this->assertArrayHasKey( Migrations::OPTION, $all );
 	}
 
-	public function test_drop_in_installed_or_notice_recorded(): void {
-		$drop_in = Plugin::instance()->drop_in();
-		if ( wp_is_writable( WPMU_PLUGIN_DIR ) || wp_is_writable( WP_CONTENT_DIR ) ) {
-			$this->assertFileExists( $drop_in->path() );
-			$this->assertTrue( $drop_in->is_current() );
-			$this->assertSame( 0, (int) exec( 'php -l ' . escapeshellarg( $drop_in->path() ) . ' > /dev/null 2>&1; echo $?' ) );
-		} else {
-			$this->assertSame( 'mu-unwritable', Plugin::instance()->options()->get( 'drop_in_notice' ) );
-		}
+	public function test_activation_writes_nothing_outside_uploads(): void {
+		// The reviewable contract: no files in mu-plugins, wp-content root or the plugin folder.
+		$this->assertFileDoesNotExist( WPMU_PLUGIN_DIR . '/ai-parseable-drop-in.php' );
+		$this->assertDirectoryExists( Plugin::instance()->queue()->dir() );
+		$this->assertStringStartsWith( wp_upload_dir()['basedir'], Plugin::instance()->queue()->dir() );
 	}
 
-	/**
-	 * Fixture: mu-plugins directory that is not writable — must fall back, never fatal.
-	 */
-	public function test_unwritable_mu_plugins_falls_back_to_php_logging(): void {
-		$drop_in = Plugin::instance()->drop_in();
-		$drop_in->remove();
-		if ( 0 === posix_geteuid() ) {
-			$this->markTestSkipped( 'Root ignores file permissions.' );
-		}
-		chmod( WPMU_PLUGIN_DIR, 0555 );
-		try {
-			$this->assertFalse( $drop_in->install() );
-			$this->assertSame( 'php', $drop_in->mode() );
-			$this->assertSame( 'mu-unwritable', Plugin::instance()->options()->get( 'drop_in_notice' ) );
-		} finally {
-			chmod( WPMU_PLUGIN_DIR, 0755 );
-		}
+	public function test_coverage_report_names_page_caches_only(): void {
+		$report = Plugin::instance()->coverage()->report();
+		$this->assertArrayHasKey( 'complete', $report );
+		$this->assertArrayHasKey( 'misses', $report );
+		$this->assertTrue( $report['complete'] ); // A bare test install has no page cache.
+		$this->assertSame( array(), $report['misses'] );
 	}
 
 	/**

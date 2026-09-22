@@ -9,7 +9,6 @@
 .wordpress-org
 bin
 composer.lock
-mu/README.md
 node_modules
 package.json
 package-lock.json

@@ -39,7 +39,7 @@ final class Queue {
 	/**
 	 * Base directory (uploads/ai-parseable).
 	 *
-	 * On multisite the drop-in is network-wide, so the queue lives under the main site's uploads.
+	 * On multisite the queue is network-wide, so it lives under the main site's uploads.
 	 *
 	 * @return string
 	 */
@@ -72,7 +72,7 @@ final class Queue {
 	 * @return string
 	 */
 	public function token(): string {
-		// The drop-in is network-wide, so the token it bakes in must be too: read it from the main site.
+		// The queue is network-wide, so the token in its file names must be too: read it from the main site.
 		if ( is_multisite() && ! is_main_site() ) {
 			switch_to_blog( get_main_site_id() );
 			$this->options->reset();

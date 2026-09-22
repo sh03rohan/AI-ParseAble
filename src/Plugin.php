@@ -14,7 +14,7 @@ use AiParseAble\Editor\Editor;
 use AiParseAble\LlmsTxt\LlmsTxt;
 use AiParseAble\Logger\Buffer;
 use AiParseAble\Logger\Collector;
-use AiParseAble\Logger\DropIn;
+use AiParseAble\Logger\Coverage;
 use AiParseAble\Logger\Ingest;
 use AiParseAble\Logger\Queue;
 use AiParseAble\Logger\Ranges;
@@ -27,7 +27,6 @@ use AiParseAble\Schema\Schema;
 use AiParseAble\Support\Cron;
 use AiParseAble\Support\Options;
 use AiParseAble\Support\Privacy;
-use AiParseAble\Sync\Sync;
 
 /**
  * Hand-wired container. Small enough that a DI library would cost more than it saves.
@@ -63,11 +62,11 @@ final class Plugin {
 	private $queue;
 
 	/**
-	 * Drop-in manager.
+	 * Coverage report.
 	 *
-	 * @var DropIn
+	 * @var Coverage
 	 */
-	private $drop_in;
+	private $coverage;
 
 	/**
 	 * Cron scheduler.
@@ -108,7 +107,7 @@ final class Plugin {
 		$this->options    = new Options();
 		$this->repository = new Repository();
 		$this->queue      = new Queue( $this->options );
-		$this->drop_in    = new DropIn( $this->options, $this->queue );
+		$this->coverage   = new Coverage();
 		$this->cron       = new Cron();
 	}
 
@@ -140,12 +139,12 @@ final class Plugin {
 	}
 
 	/**
-	 * Drop-in service.
+	 * Coverage report.
 	 *
-	 * @return DropIn
+	 * @return Coverage
 	 */
-	public function drop_in(): DropIn {
-		return $this->drop_in;
+	public function coverage(): Coverage {
+		return $this->coverage;
 	}
 
 	/**
@@ -180,7 +179,7 @@ final class Plugin {
 		add_action(
 			'rest_api_init',
 			function () {
-				( new Rest( $this->options, $this->repository, $this->queue, $this->drop_in, $this->cron ) )->routes();
+				( new Rest( $this->options, $this->repository, $this->queue, $this->coverage, $this->cron ) )->routes();
 			}
 		);
 
@@ -239,11 +238,10 @@ final class Plugin {
 	 */
 	private function register_admin_modules(): void {
 		( new Admin( $this->options ) )->register();
-		( new Health( $this->options, $this->drop_in ) )->register();
+		( new Health( $this->options ) )->register();
 		( new Editor() )->register();
 		( new Robots( $this->options ) )->register();
 		( new LlmsTxt( $this->options ) )->register();
-		( new Sync( $this->options ) )->register();
 		if ( is_multisite() ) {
 			( new NetworkAdmin( $this->repository ) )->register();
 		}

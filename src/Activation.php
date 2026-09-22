@@ -48,8 +48,9 @@ final class Activation {
 			self::install_site();
 		}
 
-		// Network-wide pieces, once.
-		$plugin->drop_in()->install();
+		// Network-wide pieces, once. The queue directory (under uploads) gets its index.php and
+		// .htaccess before the first crawler hit can be written there.
+		$plugin->queue()->ensure();
 		$plugin->cron()->ensure_scheduled();
 
 		// Fetch ranges soon after activation rather than waiting a week; the cron backend runs it.
@@ -100,15 +101,13 @@ final class Activation {
 	}
 
 	/**
-	 * Deactivation: stop cron and remove the drop-in so nothing keeps writing while the plugin is off.
-	 * Data and settings are kept; uninstall decides their fate.
+	 * Deactivation: stop cron. Data and settings are kept; uninstall decides their fate.
 	 *
 	 * @return void
 	 */
 	public static function deactivate(): void {
 		$plugin = Plugin::instance();
 		$plugin->cron()->unschedule_all();
-		$plugin->drop_in()->remove();
 		wp_clear_scheduled_hook( Support\Cron::RANGES );
 		Support\Rewrite::flush();
 	}

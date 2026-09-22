@@ -51,8 +51,6 @@ function ai_parseable_uninstall_site() {
 	delete_option( AiParseAble\Logger\Ingest::OPTION_TIMING );
 	delete_option( 'ai_parseable_lock_ai_parseable_ingest_lock' );
 	delete_option( 'ai_parseable_lock_ai_parseable_rollup_lock' );
-	delete_option( 'ai_parseable_sync' );
-	delete_transient( 'ai_parseable_drop_in_check' );
 
 	global $wpdb;
 	$wpdb->query( "DELETE FROM {$wpdb->options} WHERE option_name LIKE '\\_transient\\_ai\\_parseable\\_%' OR option_name LIKE '\\_transient\\_timeout\\_ai\\_parseable\\_%'" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
@@ -71,7 +69,6 @@ function ai_parseable_uninstall_site() {
 
 $ai_parseable_plugin = AiParseAble\Plugin::instance();
 $ai_parseable_plugin->cron()->unschedule_all();
-$ai_parseable_plugin->drop_in()->remove(); // Always: a drop-in without its plugin is litter regardless of the data setting.
 
 if ( is_multisite() ) {
 	$ai_parseable_sites = get_sites(

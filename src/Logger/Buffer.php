@@ -8,7 +8,7 @@
 namespace AiParseAble\Logger;
 
 /**
- * Used only when the drop-in is unavailable. Holds records in memory and flushes them at shutdown,
+ * Holds records in memory and flushes them at shutdown,
  * after the response has been handed to the web server where fastcgi_finish_request() exists.
  */
 final class Buffer {

@@ -198,9 +198,6 @@ body.ai-parseable-screen {
 .aip-choice { display: grid; grid-template-columns: auto 1fr; gap: 3px 12px; align-items: start; border: 1px solid $border; border-radius: $radius-s; padding: 12px 14px; cursor: pointer; background: $canvas; font-size: 13px; color: $text; transition: border-color .12s;
 	input { margin: 3px 0 0; grid-row: 1 / span 2; accent-color: $accent; } > .aip-muted { grid-column: 2; }
 	&:hover { border-color: $border-strong; } &.is-selected { border-color: $accent; box-shadow: 0 0 0 1px $accent; } }
-.aip-sync { display: flex; align-items: center; gap: 16px; margin-top: 14px; }
-.aip-score { display: flex; align-items: baseline; gap: 8px; strong { font-size: 28px; font-weight: 650; } }
-.aip-findings { margin: 8px 0 0 18px; list-style: disc; color: $text-2; }
 .aip-diff-url { margin: 12px 0 10px; }
 .aip-diff-summary { display: flex; gap: 24px; flex-wrap: wrap; margin-bottom: 14px; font-size: 13px; color: $muted; strong { color: $text; font-size: 16px; margin-right: 4px; font-variant-numeric: tabular-nums; } }
 .aip-diff-table { margin-bottom: 12px; }

@@ -157,7 +157,7 @@ final class Admin implements Module {
 	 */
 	private function dismissed_notices(): array {
 		$out = array();
-		foreach ( array( 'drop-in', 'ingest', 'coverage', 'robots-physical', 'queue-readable' ) as $id ) {
+		foreach ( array( 'ingest', 'coverage', 'robots-physical', 'queue-readable' ) as $id ) {
 			if ( get_user_meta( get_current_user_id(), 'ai_parseable_dismissed_' . $id, true ) ) {
 				$out[] = $id;
 			}

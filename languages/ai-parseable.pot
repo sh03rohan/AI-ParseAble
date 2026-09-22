@@ -2,21 +2,21 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: AI ParseAble – AI Crawler Log, GPTBot & ClaudeBot Control, llms.txt 0.1.0\n"
+"Project-Id-Version: AI ParseAble – AI Crawler Log & Access Control for GPTBot, ClaudeBot and other AI bots 0.1.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/ai-parseable\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-09-21T11:40:35+00:00\n"
+"POT-Creation-Date: 2026-09-22T10:35:11+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: ai-parseable\n"
 
 #. Plugin Name of the plugin
 #: ai-parseable.php
-msgid "AI ParseAble – AI Crawler Log, GPTBot & ClaudeBot Control, llms.txt"
+msgid "AI ParseAble – AI Crawler Log & Access Control for GPTBot, ClaudeBot and other AI bots"
 msgstr ""
 
 #. Plugin URI of the plugin
@@ -40,15 +40,14 @@ msgstr ""
 #: src/Support/Privacy.php:53
 #: src/Support/Privacy.php:67
 #: src/Support/Privacy.php:123
-#: src/Sync/Sync.php:53
-#: assets/admin.js:24
+#: assets/admin.js:22
 #: assets/editor.js:1
 msgid "AI ParseAble"
 msgstr ""
 
 #. Author URI of the plugin
 #: ai-parseable.php
-msgid "https://aiparseable.com/"
+msgid "https://github.com/sh03rohan"
 msgstr ""
 
 #. translators: 1: required PHP version, 2: required WordPress version
@@ -65,23 +64,13 @@ msgstr ""
 msgid "Loading AI ParseAble…"
 msgstr ""
 
-#. translators: %s: directory path
-#: src/Admin/Health.php:121
-#, php-format
-msgid "The drop-in could not be installed because <code>%s</code> is not writable. Logging runs at PHP level, so hits served from a page cache are not recorded. Make the directory writable and reload this page to self-heal."
-msgstr ""
-
-#: src/Admin/Health.php:124
-msgid "The drop-in is not installed. Logging runs at PHP level, so hits served from a page cache are not recorded."
-msgstr ""
-
 #. translators: %s: human-readable time difference, e.g. "3 hours"
-#: src/Admin/Health.php:135
+#: src/Admin/Health.php:93
 #, php-format
 msgid "The last crawler-log ingest ran %s ago. WP-Cron may not be firing on this site; consider a real cron job or Action Scheduler."
 msgstr ""
 
-#: src/Admin/Health.php:145
+#: src/Admin/Health.php:103
 msgid "A physical robots.txt exists at the web root, so WordPress does not serve the virtual one this plugin writes to. Open the Crawlers tab to manage a block inside the physical file."
 msgstr ""
 
@@ -103,7 +92,7 @@ msgid "in this network"
 msgstr ""
 
 #: src/Admin/NetworkAdmin.php:163
-#: assets/admin.js:8
+#: assets/admin.js:7
 msgid "Crawler visits"
 msgstr ""
 
@@ -113,8 +102,8 @@ msgstr ""
 
 #: src/Admin/NetworkAdmin.php:164
 #: src/Admin/NetworkAdmin.php:169
-#: assets/admin.js:14
-#: assets/admin.js:16
+#: assets/admin.js:13
+#: assets/admin.js:15
 msgid "Verified"
 msgstr ""
 
@@ -131,7 +120,7 @@ msgid "Site"
 msgstr ""
 
 #: src/Admin/NetworkAdmin.php:169
-#: assets/admin.js:14
+#: assets/admin.js:13
 msgid "Visits"
 msgstr ""
 
@@ -139,15 +128,11 @@ msgstr ""
 msgid "Open dashboard →"
 msgstr ""
 
-#: src/Logger/DropIn.php:253
-msgid "Requests served by a page cache before WordPress plugins load."
+#: src/Logger/Coverage.php:27
+msgid "Pages served directly by advanced-cache.php (it runs before any plugin)."
 msgstr ""
 
-#: src/Logger/DropIn.php:256
-msgid "Pages served directly by advanced-cache.php (it runs before mu-plugins)."
-msgstr ""
-
-#: src/Logger/DropIn.php:259
+#: src/Logger/Coverage.php:30
 msgid "Pages served by a server-level or CDN cache (LiteSpeed, Nginx FastCGI cache, Cloudflare APO). Those never reach PHP; use server-log ingestion for full coverage."
 msgstr ""
 
@@ -176,7 +161,7 @@ msgstr ""
 msgid "WordPress core"
 msgstr ""
 
-#: src/Schema/Schema.php:206
+#: src/Schema/Schema.php:207
 msgid "That post does not exist."
 msgstr ""
 
@@ -202,46 +187,6 @@ msgstr ""
 msgid "This site records visits by known AI crawlers (automated software operated by AI companies), including the page requested, the response status, the crawler name and %1$s. Individual records are kept for %2$d days; daily totals per crawler are kept indefinitely. No visitor browsing data is recorded."
 msgstr ""
 
-#: src/Sync/Client.php:79
-msgid "Enter an API key to connect this site to the checker."
-msgstr ""
-
-#: src/Sync/Client.php:94
-msgid "The checker could not be reached."
-msgstr ""
-
-#: src/Sync/Client.php:100
-msgid "The checker rejected the API key."
-msgstr ""
-
-#: src/Sync/Client.php:104
-msgid "The checker returned an unexpected response."
-msgstr ""
-
-#: src/Sync/Sync.php:56
-msgid "Version"
-msgstr ""
-
-#: src/Sync/Sync.php:60
-msgid "Retention (days)"
-msgstr ""
-
-#: src/Sync/Sync.php:64
-msgid "IP storage"
-msgstr ""
-
-#: src/Sync/Sync.php:68
-msgid "Checker API key"
-msgstr ""
-
-#: src/Sync/Sync.php:69
-msgid "Set (redacted)"
-msgstr ""
-
-#: src/Sync/Sync.php:69
-msgid "Not set"
-msgstr ""
-
 #: assets/admin.js:1
 msgid "Last ingest ran over an hour ago — WP-Cron may not be firing. A system cron or Action Scheduler (bundled with WooCommerce) is more reliable."
 msgstr ""
@@ -255,15 +200,11 @@ msgid "The crawler log directory is readable over HTTP — the .htaccess deny ru
 msgstr ""
 
 #: assets/admin.js:1
-msgid "PHP-level logging only — page-cache hits are missed"
+msgid "Full coverage · logging active"
 msgstr ""
 
 #: assets/admin.js:1
-msgid "Full coverage · drop-in active"
-msgstr ""
-
-#: assets/admin.js:1
-msgid "Drop-in active, with gaps"
+msgid "Logging active, with gaps"
 msgstr ""
 
 #: assets/admin.js:1
@@ -277,7 +218,7 @@ msgid "Last ingest %1$s · via %2$s · %3$d file(s) queued"
 msgstr ""
 
 #: assets/admin.js:2
-#: assets/admin.js:15
+#: assets/admin.js:14
 msgid "never"
 msgstr ""
 
@@ -299,789 +240,741 @@ msgstr ""
 msgid "Cache plugins detected: %s"
 msgstr ""
 
-#. translators: %s: file path
-#: assets/admin.js:4
-#, js-format
-msgid "Drop-in path: %s"
+#: assets/admin.js:3
+msgid "Crawler visits are captured when the plugin loads, before any hook runs, and queued to a file at shutdown. Only responses served before WordPress runs at all are invisible."
 msgstr ""
 
-#: assets/admin.js:4
-msgid "Install drop-in"
-msgstr ""
-
-#: assets/admin.js:4
-msgid "Remove drop-in"
-msgstr ""
-
-#: assets/admin.js:4
+#: assets/admin.js:3
 msgid "Ingest queue now"
 msgstr ""
 
+#: assets/admin.js:3
 #: assets/admin.js:4
-#: assets/admin.js:5
 msgid "Answer"
 msgstr ""
 
-#: assets/admin.js:4
+#: assets/admin.js:3
 msgid "Fetches pages to build answers for users in real time."
 msgstr ""
 
+#: assets/admin.js:3
 #: assets/admin.js:4
-#: assets/admin.js:5
 msgid "Search"
 msgstr ""
 
-#: assets/admin.js:4
+#: assets/admin.js:3
 msgid "Indexes for a search product that also feeds AI answers."
 msgstr ""
 
+#: assets/admin.js:3
 #: assets/admin.js:4
-#: assets/admin.js:5
 msgid "Training"
 msgstr ""
 
-#: assets/admin.js:4
+#: assets/admin.js:3
 msgid "Collects content for model training."
 msgstr ""
 
-#: assets/admin.js:4
+#: assets/admin.js:3
 msgid "new"
 msgstr ""
 
-#: assets/admin.js:4
+#: assets/admin.js:3
 msgid "vs. the previous period"
 msgstr ""
 
-#: assets/admin.js:4
+#: assets/admin.js:3
 msgid "No crawler visits recorded yet"
 msgstr ""
 
-#: assets/admin.js:4
+#: assets/admin.js:3
 msgid "Hits are captured as they happen and written to the database every five minutes. Most sites see their first AI crawler within a day."
 msgstr ""
 
 #. translators: %d: number of files
-#: assets/admin.js:5
+#: assets/admin.js:4
 #, js-format
 msgid "%d queue file is waiting for the next ingest."
 msgid_plural "%d queue files are waiting for the next ingest."
 msgstr[0] ""
 msgstr[1] ""
 
-#: assets/admin.js:5
+#: assets/admin.js:4
 msgid "To test the pipeline, request any page with a crawler user agent, e.g. curl -A \"GPTBot\" and then use \"Ingest queue now\" under Details."
 msgstr ""
 
-#: assets/admin.js:5
+#: assets/admin.js:4
 msgid "You have unsaved changes."
 msgstr ""
 
-#: assets/admin.js:5
+#: assets/admin.js:4
 msgid "Discard"
 msgstr ""
 
-#: assets/admin.js:5
+#: assets/admin.js:4
 msgid "Save changes"
 msgstr ""
 
-#: assets/admin.js:5
+#: assets/admin.js:4
 msgid "No rule"
 msgstr ""
 
-#: assets/admin.js:5
+#: assets/admin.js:4
 msgid "Allow"
 msgstr ""
 
-#: assets/admin.js:5
+#: assets/admin.js:4
 msgid "Block"
 msgstr ""
 
-#: assets/admin.js:5
+#: assets/admin.js:4
 msgid "Answer & search crawlers"
 msgstr ""
 
-#: assets/admin.js:5
+#: assets/admin.js:4
 msgid "Fetch pages to build answers or search results in real time. Blocking one removes your site from that product."
 msgstr ""
 
-#: assets/admin.js:5
+#: assets/admin.js:4
 msgid "Training crawlers"
 msgstr ""
 
-#: assets/admin.js:5
+#: assets/admin.js:4
 msgid "Collect content for model training. Blocking one does not change whether AI products cite or link you."
 msgstr ""
 
-#: assets/admin.js:5
+#: assets/admin.js:4
 msgid "Set all:"
 msgstr ""
 
-#: assets/admin.js:5
+#: assets/admin.js:4
 msgid "allow"
 msgstr ""
 
-#: assets/admin.js:5
+#: assets/admin.js:4
 msgid "block"
 msgstr ""
 
-#: assets/admin.js:5
+#: assets/admin.js:4
 msgid "clear"
 msgstr ""
 
-#: assets/admin.js:5
-#: assets/admin.js:14
-#: assets/admin.js:16
+#: assets/admin.js:4
+#: assets/admin.js:13
+#: assets/admin.js:15
 msgid "Crawler"
 msgstr ""
 
-#: assets/admin.js:5
-#: assets/admin.js:14
+#: assets/admin.js:4
+#: assets/admin.js:13
 msgid "Type"
 msgstr ""
 
-#: assets/admin.js:5
+#: assets/admin.js:4
 msgid "robots.txt token"
 msgstr ""
 
-#: assets/admin.js:5
+#: assets/admin.js:4
 msgid "Seen (7 days)"
 msgstr ""
 
-#: assets/admin.js:5
+#: assets/admin.js:4
 msgid "Rule"
 msgstr ""
 
-#: assets/admin.js:5
+#: assets/admin.js:4
 msgid "docs ↗"
 msgstr ""
 
-#: assets/admin.js:5
+#: assets/admin.js:4
 msgid "A robots.txt-only token: this vendor sends no distinct user agent, so visits appear under its main crawler."
 msgstr ""
 
-#: assets/admin.js:5
+#: assets/admin.js:4
 msgid "token only"
 msgstr ""
 
-#: assets/admin.js:5
+#: assets/admin.js:4
 msgid "not seen"
 msgstr ""
 
-#: assets/admin.js:5
+#: assets/admin.js:4
 msgid "Search pages…"
 msgstr ""
 
-#: assets/admin.js:5
+#: assets/admin.js:4
 msgid "None detected"
 msgstr ""
 
-#: assets/admin.js:5
+#: assets/admin.js:4
 msgid "Overview"
 msgstr ""
 
-#: assets/admin.js:5
+#: assets/admin.js:4
 msgid "Show fewer"
 msgstr ""
 
 #. translators: %d: count
-#: assets/admin.js:6
+#: assets/admin.js:5
 #, js-format
 msgid "Show all %d"
 msgstr ""
 
-#: assets/admin.js:6
+#: assets/admin.js:5
 msgid "Range"
 msgstr ""
 
-#: assets/admin.js:6
+#: assets/admin.js:5
 msgid "Longer history is part of the add-on"
 msgstr ""
 
 #. translators: %d: number of days
 #. translators: %d: days
-#: assets/admin.js:7
-#: assets/admin.js:23
+#: assets/admin.js:6
+#: assets/admin.js:22
 #, js-format
 msgid "%d days"
 msgstr ""
 
-#: assets/admin.js:7
+#: assets/admin.js:6
 msgid "Verified crawlers only"
 msgstr ""
 
 #. translators: 1: verified count, 2: unverified count
-#: assets/admin.js:8
+#: assets/admin.js:7
 #, js-format
 msgid "%1$s verified · %2$s unverified"
 msgstr ""
 
-#: assets/admin.js:8
+#: assets/admin.js:7
 msgid "Unverified: the user agent claimed a crawler but the IP is not in the vendor's published ranges and reverse DNS did not confirm it — or the vendor publishes neither."
 msgstr ""
 
-#: assets/admin.js:8
+#: assets/admin.js:7
 msgid "Verified crawler visits"
 msgstr ""
 
 #. translators: %d: number of days
-#: assets/admin.js:9
+#: assets/admin.js:8
 #, js-format
 msgid "last %d days"
 msgstr ""
 
-#: assets/admin.js:9
+#: assets/admin.js:8
 msgid "Distinct crawlers"
 msgstr ""
 
 #. translators: %d: number of crawlers known
-#: assets/admin.js:10
+#: assets/admin.js:9
 #, js-format
 msgid "of %d known"
 msgstr ""
 
-#: assets/admin.js:10
+#: assets/admin.js:9
 msgid "Error rate"
 msgstr ""
 
 #. translators: %s: count
-#: assets/admin.js:11
+#: assets/admin.js:10
 #, js-format
 msgid "%s responses were 4xx/5xx"
 msgstr ""
 
-#: assets/admin.js:11
+#: assets/admin.js:10
 msgid "Cost per visitor request"
 msgstr ""
 
-#: assets/admin.js:11
+#: assets/admin.js:10
 msgid "no samples yet"
 msgstr ""
 
 #. translators: 1: budget in ms, 2: sample count
-#: assets/admin.js:12
+#: assets/admin.js:11
 #, js-format
 msgid "budget %1$s ms · 0 queries · %2$d samples"
 msgstr ""
 
-#: assets/admin.js:12
+#: assets/admin.js:11
 msgid "Visits per day"
 msgstr ""
 
 #. translators: %s: milliseconds
-#: assets/admin.js:13
+#: assets/admin.js:12
 #, js-format
 msgid "from daily aggregates · %s ms"
 msgstr ""
 
-#: assets/admin.js:13
+#: assets/admin.js:12
+#: assets/admin.js:15
 #: assets/admin.js:16
-#: assets/admin.js:17
 msgid "Crawlers"
 msgstr ""
 
 #. translators: 1: active count, 2: quiet count
-#: assets/admin.js:14
+#: assets/admin.js:13
 #, js-format
 msgid "%1$d active · %2$d not seen"
 msgstr ""
 
-#: assets/admin.js:14
+#: assets/admin.js:13
 msgid "Errors"
 msgstr ""
 
-#: assets/admin.js:14
+#: assets/admin.js:13
 msgid "Last seen"
 msgstr ""
 
-#: assets/admin.js:14
+#: assets/admin.js:13
 msgid "Trend"
 msgstr ""
 
-#: assets/admin.js:14
+#: assets/admin.js:13
 msgid "This vendor publishes no IP ranges or reverse-DNS pattern, so its hits cannot be verified."
 msgstr ""
 
-#: assets/admin.js:14
+#: assets/admin.js:13
 msgid "not verifiable"
 msgstr ""
 
 #. translators: 1: verified, 2: unverified
-#: assets/admin.js:15
+#: assets/admin.js:14
 #, js-format
 msgid "%1$s verified, %2$s unverified"
 msgstr ""
 
-#: assets/admin.js:15
+#: assets/admin.js:14
 msgid "Hide crawlers with no visits"
 msgstr ""
 
 #. translators: %d: count
-#: assets/admin.js:16
+#: assets/admin.js:15
 #, js-format
 msgid "Show %d crawler with no visits"
 msgid_plural "Show %d crawlers with no visits"
 msgstr[0] ""
 msgstr[1] ""
 
-#: assets/admin.js:16
+#: assets/admin.js:15
 msgid "Failing for crawlers"
 msgstr ""
 
-#: assets/admin.js:16
+#: assets/admin.js:15
 msgid "7 days"
 msgstr ""
 
-#: assets/admin.js:16
+#: assets/admin.js:15
 msgid "No 4xx or 5xx responses to crawlers. Good."
 msgstr ""
 
-#: assets/admin.js:16
+#: assets/admin.js:15
 msgid "URL"
 msgstr ""
 
-#: assets/admin.js:16
+#: assets/admin.js:15
 msgid "Status"
 msgstr ""
 
-#: assets/admin.js:16
+#: assets/admin.js:15
 msgid "Hits"
 msgstr ""
 
-#: assets/admin.js:16
+#: assets/admin.js:15
 msgid "Failures from an allowed crawler may come from a CDN or server-level bot control above WordPress (e.g. Cloudflare's AI-scraper toggle), which this plugin cannot override."
 msgstr ""
 
-#: assets/admin.js:16
+#: assets/admin.js:15
 msgid "Most crawled"
 msgstr ""
 
-#: assets/admin.js:16
+#: assets/admin.js:15
 msgid "Nothing recorded in the last 7 days."
 msgstr ""
 
-#: assets/admin.js:16
+#: assets/admin.js:15
 msgid "Latest visits"
 msgstr ""
 
-#: assets/admin.js:16
+#: assets/admin.js:15
 msgid "most recent 50 · all crawlers"
 msgstr ""
 
-#: assets/admin.js:16
+#: assets/admin.js:15
 msgid "Nothing in the raw log yet."
 msgstr ""
 
-#: assets/admin.js:16
+#: assets/admin.js:15
 msgid "When"
 msgstr ""
 
-#: assets/admin.js:16
+#: assets/admin.js:15
 msgid "Served from a page cache"
 msgstr ""
 
 #. translators: 1: row count, 2: size, 3: aggregate row count
-#: assets/admin.js:17
+#: assets/admin.js:16
 #, js-format
 msgid "Storage: %1$s raw rows (%2$s), %3$s daily aggregate rows kept indefinitely."
 msgstr ""
 
-#: assets/admin.js:17
+#: assets/admin.js:16
 msgid "robots.txt file updated."
 msgstr ""
 
-#: assets/admin.js:17
+#: assets/admin.js:16
 msgid "Two different decisions."
 msgstr ""
 
-#: assets/admin.js:17
+#: assets/admin.js:16
 msgid "Blocking a training crawler does not reduce your presence in AI answers. Blocking an answer or search crawler removes you from them. Every other tool presents these as one switch; they are not."
 msgstr ""
 
-#: assets/admin.js:17
+#: assets/admin.js:16
 msgid "This site lives in a subdirectory of a network. robots.txt is served per host, so crawlers only ever read the main site's file — rules set here are stored but cannot take effect. Set them on the main site instead:"
 msgstr ""
 
-#: assets/admin.js:17
+#: assets/admin.js:16
 msgid "\"Discourage search engines\" is on under Settings → Reading, so WordPress serves a blanket Disallow and these rules are not emitted."
 msgstr ""
 
-#: assets/admin.js:17
+#: assets/admin.js:16
 msgid "Another plugin rewrites robots.txt after this one."
 msgstr ""
 
-#: assets/admin.js:17
+#: assets/admin.js:16
 msgid "The rules that came out are not the rules that went in. Filters on robots_txt:"
 msgstr ""
 
-#: assets/admin.js:17
+#: assets/admin.js:16
 msgid "unknown"
 msgstr ""
 
-#: assets/admin.js:17
+#: assets/admin.js:16
 msgid "A physical robots.txt exists"
 msgstr ""
 
-#: assets/admin.js:17
+#: assets/admin.js:16
 msgid "managed block present"
 msgstr ""
 
-#: assets/admin.js:17
+#: assets/admin.js:16
 msgid "not yet managed"
 msgstr ""
 
-#: assets/admin.js:17
+#: assets/admin.js:16
 msgid "WordPress only serves its virtual robots.txt when no file exists at the web root. Because one does, the rules below are ignored unless they are written into that file. The plugin only ever rewrites the block between its own markers and never touches a line outside them."
 msgstr ""
 
-#: assets/admin.js:17
+#: assets/admin.js:16
 msgid "Update managed block in file"
 msgstr ""
 
-#: assets/admin.js:17
+#: assets/admin.js:16
 msgid "Write managed block into file"
 msgstr ""
 
-#: assets/admin.js:17
+#: assets/admin.js:16
 msgid "Remove managed block"
 msgstr ""
 
-#: assets/admin.js:17
+#: assets/admin.js:16
 msgid "Save the rules first."
 msgstr ""
 
-#: assets/admin.js:17
+#: assets/admin.js:16
 msgid "The file is not writable by the web server; copy the block below into it by hand."
 msgstr ""
 
-#: assets/admin.js:17
+#: assets/admin.js:16
 msgid "Resulting robots.txt block"
 msgstr ""
 
-#: assets/admin.js:17
+#: assets/admin.js:16
 msgid "View live robots.txt ↗"
 msgstr ""
 
 #. translators: 1: allow count, 2: block count
-#: assets/admin.js:18
+#: assets/admin.js:17
 #, js-format
 msgid "Saved rules: %1$d allowed, %2$d blocked. Crawlers with no rule fall under your site's default (User-agent: *)."
 msgstr ""
 
-#: assets/admin.js:18
+#: assets/admin.js:17
 msgid "(no rules set — nothing is emitted)"
 msgstr ""
 
-#: assets/admin.js:18
+#: assets/admin.js:17
 msgid "CDN and firewall controls (Cloudflare's AI-scraper toggle, for example) act above WordPress and are not affected by robots.txt at all. If the log shows a crawler you have allowed getting blocked, look there."
 msgstr ""
 
-#: assets/admin.js:18
+#: assets/admin.js:17
 msgid "Rules saved and robots.txt updated."
 msgstr ""
 
-#: assets/admin.js:18
+#: assets/admin.js:17
 msgid "Save rules"
 msgstr ""
 
-#: assets/admin.js:18
+#: assets/admin.js:17
 msgid "Schema"
 msgstr ""
 
-#: assets/admin.js:18
+#: assets/admin.js:17
 msgid "Preview failed. The site may block loopback requests."
 msgstr ""
 
-#: assets/admin.js:18
+#: assets/admin.js:17
 msgid "Schema gap filling"
 msgstr ""
 
 #. translators: %s: provider name
-#: assets/admin.js:19
+#: assets/admin.js:18
 #, js-format
 msgid "provider: %s"
 msgstr ""
 
-#: assets/admin.js:19
+#: assets/admin.js:18
 msgid "Merges into the graph your SEO plugin already outputs and fills only properties that are genuinely absent — price, currency, stock, dates, author. Values are read live from the source of truth at render time. It never emits a second Product or Article node."
 msgstr ""
 
-#: assets/admin.js:19
+#: assets/admin.js:18
 msgid "Detected provider"
 msgstr ""
 
-#: assets/admin.js:19
+#: assets/admin.js:18
 msgid "Hook used"
 msgstr ""
 
-#: assets/admin.js:19
+#: assets/admin.js:18
 msgid "Enable schema augmentation"
 msgstr ""
 
-#: assets/admin.js:19
+#: assets/admin.js:18
 msgid "Before / after on a real page"
 msgstr ""
 
-#: assets/admin.js:19
+#: assets/admin.js:18
 msgid "fetched from your site, not a generic example"
 msgstr ""
 
-#: assets/admin.js:19
+#: assets/admin.js:18
 msgid "Search a page, post or product…"
 msgstr ""
 
-#: assets/admin.js:19
+#: assets/admin.js:18
 msgid "JSON-LD block(s) before"
 msgstr ""
 
-#: assets/admin.js:19
+#: assets/admin.js:18
 msgid "after"
 msgstr ""
 
-#: assets/admin.js:19
+#: assets/admin.js:18
 msgid "properties added"
 msgstr ""
 
-#: assets/admin.js:19
+#: assets/admin.js:18
 msgid "Product node"
 msgstr ""
 
-#: assets/admin.js:19
+#: assets/admin.js:18
 msgid "Nothing to add on this page — the existing markup already carries everything the plugin knows how to fill."
 msgstr ""
 
-#: assets/admin.js:19
+#: assets/admin.js:18
 msgid "Added property"
 msgstr ""
 
-#: assets/admin.js:19
+#: assets/admin.js:18
 msgid "Value"
 msgstr ""
 
 #. translators: %s: property list
-#: assets/admin.js:20
+#: assets/admin.js:19
 #, js-format
 msgid "Existing values differ between the two renders (dynamic content?): %s"
 msgstr ""
 
-#: assets/admin.js:20
+#: assets/admin.js:19
 msgid "Raw JSON-LD, before and after"
 msgstr ""
 
-#: assets/admin.js:20
+#: assets/admin.js:19
 msgid "Before"
 msgstr ""
 
-#: assets/admin.js:20
+#: assets/admin.js:19
 msgid "After"
 msgstr ""
 
-#: assets/admin.js:20
+#: assets/admin.js:19
 msgid "llms.txt"
 msgstr ""
 
-#: assets/admin.js:20
+#: assets/admin.js:19
 msgid "Honest position:"
 msgstr ""
 
-#: assets/admin.js:20
+#: assets/admin.js:19
 msgid "answer crawlers rarely request llms.txt, Google has said it does not use it, and coding agents do read it. Low weight, low cost. The file is served only once you have written a summary in your own words — the plugin will not generate boilerplate, because roughly 40% of llms.txt files in the wild are plugin stubs and that helps nobody."
 msgstr ""
 
-#: assets/admin.js:20
+#: assets/admin.js:19
 msgid "Content"
 msgstr ""
 
-#: assets/admin.js:20
+#: assets/admin.js:19
 msgid "● served"
 msgstr ""
 
-#: assets/admin.js:20
+#: assets/admin.js:19
 msgid "○ not served yet"
 msgstr ""
 
-#: assets/admin.js:20
+#: assets/admin.js:19
 msgid "Enable llms.txt"
 msgstr ""
 
-#: assets/admin.js:20
+#: assets/admin.js:19
 msgid "Summary"
 msgstr ""
 
-#: assets/admin.js:20
+#: assets/admin.js:19
 msgid "One or two short paragraphs of facts: who you are, what you sell or publish, where you operate. Write it as you would explain it to a stranger."
 msgstr ""
 
 #. translators: %d: word count
-#: assets/admin.js:21
+#: assets/admin.js:20
 #, js-format
 msgid "%d words"
 msgstr ""
 
-#: assets/admin.js:21
+#: assets/admin.js:20
 msgid "Key pages"
 msgstr ""
 
-#: assets/admin.js:21
+#: assets/admin.js:20
 msgid "The handful of pages an agent should read first. Each is listed with its title and excerpt."
 msgstr ""
 
-#: assets/admin.js:21
+#: assets/admin.js:20
 msgid "Remove"
 msgstr ""
 
-#: assets/admin.js:21
+#: assets/admin.js:20
 msgid "none selected"
 msgstr ""
 
-#: assets/admin.js:21
+#: assets/admin.js:20
 msgid "Add a page…"
 msgstr ""
 
-#: assets/admin.js:21
+#: assets/admin.js:20
 msgid "Also list the 20 most recent posts"
 msgstr ""
 
-#: assets/admin.js:21
+#: assets/admin.js:20
 msgid "Preview"
 msgstr ""
 
-#: assets/admin.js:21
+#: assets/admin.js:20
 msgid "Write a summary to see the file."
 msgstr ""
 
-#: assets/admin.js:21
+#: assets/admin.js:20
 msgid "Preview reflects unsaved changes."
 msgstr ""
 
 #. translators: %s: URL
-#: assets/admin.js:22
+#: assets/admin.js:21
 #, js-format
 msgid "Saved. Serving at %s"
 msgstr ""
 
-#: assets/admin.js:22
+#: assets/admin.js:21
 msgid "Saved. The file is not served until a summary is written."
 msgstr ""
 
-#: assets/admin.js:22
+#: assets/admin.js:21
 msgid "Settings"
 msgstr ""
 
-#: assets/admin.js:23
+#: assets/admin.js:22
 msgid "Longer retention is part of the add-on"
 msgstr ""
 
-#: assets/admin.js:23
+#: assets/admin.js:22
 msgid "Logging"
 msgstr ""
 
-#: assets/admin.js:23
+#: assets/admin.js:22
 msgid "Keep individual visits for"
 msgstr ""
 
-#: assets/admin.js:23
+#: assets/admin.js:22
 msgid "Retention"
 msgstr ""
 
-#: assets/admin.js:23
+#: assets/admin.js:22
 msgid "Daily totals per crawler are kept indefinitely regardless; only the per-request rows expire."
 msgstr ""
 
-#: assets/admin.js:23
+#: assets/admin.js:22
 msgid "IP address storage"
 msgstr ""
 
-#: assets/admin.js:23
+#: assets/admin.js:22
 msgid "Truncated"
 msgstr ""
 
-#: assets/admin.js:23
+#: assets/admin.js:22
 msgid "Keeps /24 (IPv4) or /48 (IPv6). Default; enough to tell networks apart."
 msgstr ""
 
-#: assets/admin.js:23
+#: assets/admin.js:22
 msgid "Salted hash"
 msgstr ""
 
-#: assets/admin.js:23
+#: assets/admin.js:22
 msgid "One-way, per-site salt. Repeat visits still correlate; the address cannot be recovered."
 msgstr ""
 
-#: assets/admin.js:23
+#: assets/admin.js:22
 msgid "Full address"
 msgstr ""
 
-#: assets/admin.js:23
+#: assets/admin.js:22
 msgid "Personal data under GDPR — mention it in your privacy policy."
 msgstr ""
 
-#: assets/admin.js:23
+#: assets/admin.js:22
 msgid "Verification always runs on the real address before it is reduced for storage."
 msgstr ""
 
-#: assets/admin.js:23
+#: assets/admin.js:22
 msgid "Per-crawler ceiling, visits per minute"
 msgstr ""
 
-#: assets/admin.js:23
+#: assets/admin.js:22
 msgid "Above this, visits are still counted in daily totals but per-request rows are not stored, so a flood cannot turn the log into an amplifier."
 msgstr ""
 
-#: assets/admin.js:23
-msgid "Site scan sync"
-msgstr ""
-
-#: assets/admin.js:23
-msgid "● connected"
-msgstr ""
-
-#: assets/admin.js:23
-msgid "optional"
-msgstr ""
-
-#: assets/admin.js:23
-msgid "Connect to the AI ParseAble checker to pull your latest score and findings into this dashboard. Everything else works without a key. A scan request sends your site URL and nothing else."
-msgstr ""
-
-#: assets/admin.js:23
-msgid "API key"
-msgstr ""
-
-#: assets/admin.js:23
-msgid "Enter a new key to replace it, or \"-\" to disconnect."
-msgstr ""
-
-#. translators: %s: time ago
-#: assets/admin.js:24
-#, js-format
-msgid "score · scanned %s"
-msgstr ""
-
-#: assets/admin.js:24
-msgid "No scan yet."
-msgstr ""
-
-#: assets/admin.js:24
-msgid "Rescan now"
-msgstr ""
-
-#: assets/admin.js:24
+#: assets/admin.js:22
 msgid "Uninstall"
 msgstr ""
 
-#: assets/admin.js:24
+#: assets/admin.js:22
 msgid "Keep my data when the plugin is deleted"
 msgstr ""
 
-#: assets/admin.js:24
-msgid "Tables, settings and the log directory survive deletion; only the drop-in and cron events are removed."
+#: assets/admin.js:22
+msgid "Tables, settings and the log directory survive deletion; only the cron events are removed."
 msgstr ""
 
-#: assets/admin.js:24
-msgid "Deleting the plugin removes its tables, settings, drop-in, cron events and the log directory. This cannot be undone."
+#: assets/admin.js:22
+msgid "Deleting the plugin removes its tables, settings, cron events and the log directory. This cannot be undone."
 msgstr ""
 
-#: assets/admin.js:24
+#: assets/admin.js:22
 msgid "Settings saved."
 msgstr ""
 
