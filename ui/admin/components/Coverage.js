@@ -17,13 +17,13 @@ export default function Coverage( { coverage, onChange } ) {
 
 	const problems = [];
 	if ( stale ) {
-		problems.push( __( 'Last ingest ran over an hour ago — WP-Cron may not be firing. A system cron or Action Scheduler (bundled with WooCommerce) is more reliable.', 'ai-parseable' ) );
+		problems.push( __( 'Last ingest ran over an hour ago — WP-Cron may not be firing. A system cron or Action Scheduler (bundled with WooCommerce) is more reliable.', 'crawlledger-ai-crawler-log' ) );
 	}
 	if ( cron === 'wp-cron-disabled' ) {
-		problems.push( __( 'DISABLE_WP_CRON is set and Action Scheduler is not present: point a system cron at wp-cron.php or the ingest will never run.', 'ai-parseable' ) );
+		problems.push( __( 'DISABLE_WP_CRON is set and Action Scheduler is not present: point a system cron at wp-cron.php or the ingest will never run.', 'crawlledger-ai-crawler-log' ) );
 	}
 	if ( queueReadable === true ) {
-		problems.push( __( 'The crawler log directory is readable over HTTP — the .htaccess deny rule is not honoured (Nginx?). Deny access to uploads/ai-parseable/ in the server config.', 'ai-parseable' ) );
+		problems.push( __( 'The crawler log directory is readable over HTTP — the .htaccess deny rule is not honoured (Nginx?). Deny access to uploads/crawlledger/ in the server config.', 'crawlledger-ai-crawler-log' ) );
 	}
 
 	let level = 'warn';
@@ -32,8 +32,8 @@ export default function Coverage( { coverage, onChange } ) {
 	} else if ( complete ) {
 		level = 'ok';
 	}
-	const title = complete ? __( 'Full coverage · logging active', 'ai-parseable' ) : __( 'Logging active, with gaps', 'ai-parseable' );
-	const cronLabel = { 'action-scheduler': 'Action Scheduler', 'wp-cron': 'WP-Cron', 'wp-cron-disabled': __( 'cron disabled', 'ai-parseable' ) }[ cron ] || cron;
+	const title = complete ? __( 'Full coverage · logging active', 'crawlledger-ai-crawler-log' ) : __( 'Logging active, with gaps', 'crawlledger-ai-crawler-log' );
+	const cronLabel = { 'action-scheduler': 'Action Scheduler', 'wp-cron': 'WP-Cron', 'wp-cron-disabled': __( 'cron disabled', 'crawlledger-ai-crawler-log' ) }[ cron ] || cron;
 
 	const act = async ( fn ) => {
 		setBusy( true );
@@ -46,39 +46,39 @@ export default function Coverage( { coverage, onChange } ) {
 	};
 
 	return (
-		<div className={ `aip-status aip-status--${ level }` }>
-			<div className="aip-status-line">
-				<span className="aip-status-dot" aria-hidden="true" />
+		<div className={ `clg-status clg-status--${ level }` }>
+			<div className="clg-status-line">
+				<span className="clg-status-dot" aria-hidden="true" />
 				<strong>{ title }</strong>
-				<span className="aip-status-facts">
+				<span className="clg-status-facts">
 					{ sprintf(
 						/* translators: 1: time ago, 2: cron backend name, 3: pending file count */
-						__( 'Last ingest %1$s · via %2$s · %3$d file(s) queued', 'ai-parseable' ),
-						lastIngest ? timeAgo( lastIngest ) : __( 'never', 'ai-parseable' ),
+						__( 'Last ingest %1$s · via %2$s · %3$d file(s) queued', 'crawlledger-ai-crawler-log' ),
+						lastIngest ? timeAgo( lastIngest ) : __( 'never', 'crawlledger-ai-crawler-log' ),
 						cronLabel,
 						queue.files
 					) }
 					{ queue.bytes > 0 ? ` (${ formatBytes( queue.bytes ) })` : '' }
 				</span>
-				<button type="button" className="aip-link aip-status-toggle" aria-expanded={ open } onClick={ () => setOpen( ! open ) }>{ open ? __( 'Hide details', 'ai-parseable' ) : __( 'Details', 'ai-parseable' ) }</button>
+				<button type="button" className="clg-link clg-status-toggle" aria-expanded={ open } onClick={ () => setOpen( ! open ) }>{ open ? __( 'Hide details', 'crawlledger-ai-crawler-log' ) : __( 'Details', 'crawlledger-ai-crawler-log' ) }</button>
 			</div>
-			{ problems.map( ( p ) => <p key={ p } className="aip-status-problem">{ p }</p> ) }
+			{ problems.map( ( p ) => <p key={ p } className="clg-status-problem">{ p }</p> ) }
 			{ ( open || misses.length > 0 ) && (
-				<div className="aip-status-body">
+				<div className="clg-status-body">
 					{ misses.length > 0 && (
 						<div>
-							<span className="aip-status-label">{ __( 'Not captured by this setup', 'ai-parseable' ) }</span>
+							<span className="clg-status-label">{ __( 'Not captured by this setup', 'crawlledger-ai-crawler-log' ) }</span>
 							<ul>{ misses.map( ( m ) => <li key={ m }>{ m }</li> ) }</ul>
 						</div>
 					) }
 					{ open && (
 						<>
-							{ pageCache.plugins.length > 0 && <p className="aip-muted">{ sprintf(
+							{ pageCache.plugins.length > 0 && <p className="clg-muted">{ sprintf(
 								/* translators: %s: plugin names */
-								__( 'Cache plugins detected: %s', 'ai-parseable' ), pageCache.plugins.join( ', ' ) ) }</p> }
-							<p className="aip-muted">{ __( 'Crawler visits are captured when the plugin loads, before any hook runs, and queued to a file at shutdown. Only responses served before WordPress runs at all are invisible.', 'ai-parseable' ) }</p>
-							<div className="aip-actions">
-								<Button variant="secondary" isBusy={ busy } onClick={ () => act( () => api.post( '/ingest' ) ) }>{ __( 'Ingest queue now', 'ai-parseable' ) }</Button>
+								__( 'Cache plugins detected: %s', 'crawlledger-ai-crawler-log' ), pageCache.plugins.join( ', ' ) ) }</p> }
+							<p className="clg-muted">{ __( 'Crawler visits are captured when the plugin loads, before any hook runs, and queued to a file at shutdown. Only responses served before WordPress runs at all are invisible.', 'crawlledger-ai-crawler-log' ) }</p>
+							<div className="clg-actions">
+								<Button variant="secondary" isBusy={ busy } onClick={ () => act( () => api.post( '/ingest' ) ) }>{ __( 'Ingest queue now', 'crawlledger-ai-crawler-log' ) }</Button>
 							</div>
 						</>
 					) }

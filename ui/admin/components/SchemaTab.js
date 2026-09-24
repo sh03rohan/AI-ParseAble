@@ -9,7 +9,7 @@ const PROVIDER = {
 	yoast: { name: 'Yoast SEO', hook: 'wpseo_schema_graph' },
 	rankmath: { name: 'Rank Math', hook: 'rank_math/json_ld' },
 	woocommerce: { name: 'WooCommerce', hook: 'woocommerce_structured_data_product' },
-	none: { name: __( 'None detected', 'ai-parseable' ), hook: 'wp_head (own minimal graph)' },
+	none: { name: __( 'None detected', 'crawlledger-ai-crawler-log' ), hook: 'wp_head (own minimal graph)' },
 };
 
 /** Flatten JSON-LD into "Type.path" => value so two renders can be compared property by property. */
@@ -66,7 +66,7 @@ export default function SchemaTab() {
 		api.get( '/settings' ).then( setSettings );
 	}, [] );
 	if ( ! settings ) {
-		return <div className="aip-loading"><Spinner /></div>;
+		return <div className="clg-loading"><Spinner /></div>;
 	}
 	const provider = PROVIDER[ settings.schema_provider ] || PROVIDER.none;
 
@@ -85,7 +85,7 @@ export default function SchemaTab() {
 		try {
 			setPreview( await api.get( '/schema/preview', { post: p.id } ) );
 		} catch ( e ) {
-			setError( e.message || __( 'Preview failed. The site may block loopback requests.', 'ai-parseable' ) );
+			setError( e.message || __( 'Preview failed. The site may block loopback requests.', 'crawlledger-ai-crawler-log' ) );
 		} finally {
 			setBusy( false );
 		}
@@ -95,51 +95,51 @@ export default function SchemaTab() {
 
 	return (
 		<div>
-			<Panel title={ __( 'Schema gap filling', 'ai-parseable' ) } aside={ sprintf(
+			<Panel title={ __( 'Schema gap filling', 'crawlledger-ai-crawler-log' ) } aside={ sprintf(
 				/* translators: %s: provider name */
-				__( 'provider: %s', 'ai-parseable' ), provider.name ) }>
-				<div className="aip-split">
+				__( 'provider: %s', 'crawlledger-ai-crawler-log' ), provider.name ) }>
+				<div className="clg-split">
 					<div>
-						<p className="aip-blurb">{ __( 'Merges into the graph your SEO plugin already outputs and fills only properties that are genuinely absent — price, currency, stock, dates, author. Values are read live from the source of truth at render time. It never emits a second Product or Article node.', 'ai-parseable' ) }</p>
-						<dl className="aip-facts">
-							<dt>{ __( 'Detected provider', 'ai-parseable' ) }</dt><dd>{ provider.name }</dd>
-							<dt>{ __( 'Hook used', 'ai-parseable' ) }</dt><dd><code className="aip-token">{ provider.hook }</code></dd>
+						<p className="clg-blurb">{ __( 'Merges into the graph your SEO plugin already outputs and fills only properties that are genuinely absent — price, currency, stock, dates, author. Values are read live from the source of truth at render time. It never emits a second Product or Article node.', 'crawlledger-ai-crawler-log' ) }</p>
+						<dl className="clg-facts">
+							<dt>{ __( 'Detected provider', 'crawlledger-ai-crawler-log' ) }</dt><dd>{ provider.name }</dd>
+							<dt>{ __( 'Hook used', 'crawlledger-ai-crawler-log' ) }</dt><dd><code className="clg-token">{ provider.hook }</code></dd>
 						</dl>
 					</div>
-					<div className="aip-split-side">
-						<ToggleControl label={ __( 'Enable schema augmentation', 'ai-parseable' ) } checked={ settings.schema_enabled } onChange={ toggle } __nextHasNoMarginBottom />
+					<div className="clg-split-side">
+						<ToggleControl label={ __( 'Enable schema augmentation', 'crawlledger-ai-crawler-log' ) } checked={ settings.schema_enabled } onChange={ toggle } __nextHasNoMarginBottom />
 					</div>
 				</div>
 			</Panel>
 
-			<Panel title={ __( 'Before / after on a real page', 'ai-parseable' ) } aside={ __( 'fetched from your site, not a generic example', 'ai-parseable' ) }>
-				<PagePicker onPick={ run } placeholder={ __( 'Search a page, post or product…', 'ai-parseable' ) } />
-				{ busy && <div className="aip-loading"><Spinner /></div> }
+			<Panel title={ __( 'Before / after on a real page', 'crawlledger-ai-crawler-log' ) } aside={ __( 'fetched from your site, not a generic example', 'crawlledger-ai-crawler-log' ) }>
+				<PagePicker onPick={ run } placeholder={ __( 'Search a page, post or product…', 'crawlledger-ai-crawler-log' ) } />
+				{ busy && <div className="clg-loading"><Spinner /></div> }
 				{ error && <Callout tone="error">{ error }</Callout> }
 				{ preview && d && (
-					<div className="aip-diff">
-						<p className="aip-diff-url"><a href={ preview.url } target="_blank" rel="noreferrer">{ preview.url } ↗</a></p>
-						<div className="aip-diff-summary">
-							<span className="aip-diff-stat"><strong>{ preview.before.length }</strong> { __( 'JSON-LD block(s) before', 'ai-parseable' ) }</span>
-							<span className="aip-diff-stat"><strong>{ preview.after.length }</strong> { __( 'after', 'ai-parseable' ) }</span>
-							<span className="aip-diff-stat"><strong>{ d.added.length }</strong> { __( 'properties added', 'ai-parseable' ) }</span>
-							<span className="aip-diff-stat"><strong>{ countType( preview.after, 'Product' ) }</strong> { __( 'Product node', 'ai-parseable' ) }</span>
+					<div className="clg-diff">
+						<p className="clg-diff-url"><a href={ preview.url } target="_blank" rel="noreferrer">{ preview.url } ↗</a></p>
+						<div className="clg-diff-summary">
+							<span className="clg-diff-stat"><strong>{ preview.before.length }</strong> { __( 'JSON-LD block(s) before', 'crawlledger-ai-crawler-log' ) }</span>
+							<span className="clg-diff-stat"><strong>{ preview.after.length }</strong> { __( 'after', 'crawlledger-ai-crawler-log' ) }</span>
+							<span className="clg-diff-stat"><strong>{ d.added.length }</strong> { __( 'properties added', 'crawlledger-ai-crawler-log' ) }</span>
+							<span className="clg-diff-stat"><strong>{ countType( preview.after, 'Product' ) }</strong> { __( 'Product node', 'crawlledger-ai-crawler-log' ) }</span>
 						</div>
-						{ d.added.length === 0 && d.changed.length === 0 && <Callout tone="ok">{ __( 'Nothing to add on this page — the existing markup already carries everything the plugin knows how to fill.', 'ai-parseable' ) }</Callout> }
+						{ d.added.length === 0 && d.changed.length === 0 && <Callout tone="ok">{ __( 'Nothing to add on this page — the existing markup already carries everything the plugin knows how to fill.', 'crawlledger-ai-crawler-log' ) }</Callout> }
 						{ d.added.length > 0 && (
-							<table className="aip-table aip-table--compact aip-diff-table">
-								<thead><tr><th>{ __( 'Added property', 'ai-parseable' ) }</th><th>{ __( 'Value', 'ai-parseable' ) }</th></tr></thead>
-								<tbody>{ d.added.map( ( k ) => <tr key={ k }><td><code className="aip-token">{ k }</code></td><td className="aip-url">{ String( d.b[ k ] ) }</td></tr> ) }</tbody>
+							<table className="clg-table clg-table--compact clg-diff-table">
+								<thead><tr><th>{ __( 'Added property', 'crawlledger-ai-crawler-log' ) }</th><th>{ __( 'Value', 'crawlledger-ai-crawler-log' ) }</th></tr></thead>
+								<tbody>{ d.added.map( ( k ) => <tr key={ k }><td><code className="clg-token">{ k }</code></td><td className="clg-url">{ String( d.b[ k ] ) }</td></tr> ) }</tbody>
 							</table>
 						) }
 						{ d.changed.length > 0 && <Callout tone="warn">{ sprintf(
 							/* translators: %s: property list */
-							__( 'Existing values differ between the two renders (dynamic content?): %s', 'ai-parseable' ), d.changed.join( ', ' ) ) }</Callout> }
-						<details className="aip-details">
-							<summary>{ __( 'Raw JSON-LD, before and after', 'ai-parseable' ) }</summary>
-							<div className="aip-grid-2">
-								<div><h3 className="aip-h3">{ __( 'Before', 'ai-parseable' ) }</h3><Code max={ 420 }>{ JSON.stringify( preview.before, null, 2 ) }</Code></div>
-								<div><h3 className="aip-h3">{ __( 'After', 'ai-parseable' ) }</h3><Code max={ 420 }>{ JSON.stringify( preview.after, null, 2 ) }</Code></div>
+							__( 'Existing values differ between the two renders (dynamic content?): %s', 'crawlledger-ai-crawler-log' ), d.changed.join( ', ' ) ) }</Callout> }
+						<details className="clg-details">
+							<summary>{ __( 'Raw JSON-LD, before and after', 'crawlledger-ai-crawler-log' ) }</summary>
+							<div className="clg-grid-2">
+								<div><h3 className="clg-h3">{ __( 'Before', 'crawlledger-ai-crawler-log' ) }</h3><Code max={ 420 }>{ JSON.stringify( preview.before, null, 2 ) }</Code></div>
+								<div><h3 className="clg-h3">{ __( 'After', 'crawlledger-ai-crawler-log' ) }</h3><Code max={ 420 }>{ JSON.stringify( preview.after, null, 2 ) }</Code></div>
 							</div>
 						</details>
 					</div>

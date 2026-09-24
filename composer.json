@@ -1,5 +1,5 @@
 {
-  "name": "aiparseable/ai-parseable",
+  "name": "crawlledger/crawlledger",
   "description": "First-party log of AI crawler visits for WordPress.",
   "type": "wordpress-plugin",
   "license": "GPL-2.0-or-later",
@@ -18,13 +18,13 @@
   },
   "autoload": {
     "psr-4": {
-      "AiParseAble\\": "src/"
+      "CrawlLedger\\": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "AiParseAble\\Tests\\Unit\\": "tests/unit/",
-      "AiParseAble\\Tests\\Integration\\": "tests/integration/"
+      "CrawlLedger\\Tests\\Unit\\": "tests/unit/",
+      "CrawlLedger\\Tests\\Integration\\": "tests/integration/"
     }
   },
   "config": {

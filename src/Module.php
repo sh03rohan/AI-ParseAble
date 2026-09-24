@@ -2,10 +2,10 @@
 /**
  * Module contract.
  *
- * @package AiParseAble
+ * @package CrawlLedger
  */
 
-namespace AiParseAble;
+namespace CrawlLedger;
 
 /**
  * Every feature is a module. Constructors assign dependencies; register() adds hooks; work happens in callbacks.

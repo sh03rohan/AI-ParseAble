@@ -24,12 +24,12 @@ for ua in "${agents[@]}"; do
   done
 done
 
-echo; echo "Queue files:"; ls -la "${WP_PATH}/wp-content/uploads/ai-parseable/queue/" 2>/dev/null || echo "(none)"
+echo; echo "Queue files:"; ls -la "${WP_PATH}/wp-content/uploads/crawlledger/queue/" 2>/dev/null || echo "(none)"
 
 if command -v wp >/dev/null 2>&1; then
   echo; echo "Ingesting…"
-  wp --path="$WP_PATH" eval 'echo wp_json_encode( ( new AiParseAble\Logger\Ingest( AiParseAble\Plugin::instance()->options(), AiParseAble\Plugin::instance()->repository(), AiParseAble\Plugin::instance()->queue(), new AiParseAble\Logger\Verifier( new AiParseAble\Logger\Ranges() ) ) )->run() ), "\n";'
-  wp --path="$WP_PATH" db query "SELECT hit_at, bot_id, url, status, verified FROM $(wp --path="$WP_PATH" db prefix)aiparseable_hits ORDER BY id DESC LIMIT 20"
+  wp --path="$WP_PATH" eval 'echo wp_json_encode( ( new CrawlLedger\Logger\Ingest( CrawlLedger\Plugin::instance()->options(), CrawlLedger\Plugin::instance()->repository(), CrawlLedger\Plugin::instance()->queue(), new CrawlLedger\Logger\Verifier( new CrawlLedger\Logger\Ranges() ) ) )->run() ), "\n";'
+  wp --path="$WP_PATH" db query "SELECT hit_at, bot_id, url, status, verified FROM $(wp --path="$WP_PATH" db prefix)crawlledger_hits ORDER BY id DESC LIMIT 20"
 else
   echo; echo "wp-cli not found: trigger ingest from the dashboard ('Ingest queue now') or wait for cron."
 fi

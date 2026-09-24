@@ -2,12 +2,12 @@
 /**
  * Versioned upgrades.
  *
- * @package AiParseAble
+ * @package CrawlLedger
  */
 
-namespace AiParseAble;
+namespace CrawlLedger;
 
-use AiParseAble\Logger\Signatures;
+use CrawlLedger\Logger\Signatures;
 
 /**
  * Two ladders: the schema version (tables) and the plugin version (per-release routines).
@@ -19,8 +19,8 @@ final class Migrations {
 
 	// Both are read on every request by maybe_run(), so they must be autoloaded: a non-autoloaded
 	// option costs a query per request on sites without a persistent object cache.
-	const OPTION        = 'ai_parseable_schema_version';
-	const OPTION_PLUGIN = 'ai_parseable_plugin_version';
+	const OPTION        = 'crawlledger_schema_version';
+	const OPTION_PLUGIN = 'crawlledger_plugin_version';
 
 	/**
 	 * Per-release routines, oldest first. Each callable runs once when upgrading past that version.
@@ -43,7 +43,7 @@ final class Migrations {
 	public static function maybe_run(): void {
 		$schema  = (int) get_option( self::OPTION, 0 );
 		$version = (string) get_option( self::OPTION_PLUGIN, '' );
-		if ( $schema >= self::SCHEMA_VERSION && AI_PARSEABLE_VERSION === $version ) {
+		if ( $schema >= self::SCHEMA_VERSION && CRAWLLEDGER_VERSION === $version ) {
 			return;
 		}
 		if ( is_multisite() && is_network_admin() ) {
@@ -80,7 +80,7 @@ final class Migrations {
 		if ( ! is_multisite() || is_main_site() ) {
 			$plugin->cron()->ensure_scheduled();
 		}
-		update_option( self::OPTION_PLUGIN, AI_PARSEABLE_VERSION, true );
+		update_option( self::OPTION_PLUGIN, CRAWLLEDGER_VERSION, true );
 		self::autoload_versions();
 	}
 

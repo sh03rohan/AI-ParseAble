@@ -2,10 +2,10 @@
 /**
  * IP helpers.
  *
- * @package AiParseAble
+ * @package CrawlLedger
  */
 
-namespace AiParseAble\Support;
+namespace CrawlLedger\Support;
 
 /**
  * Binary IP handling. Everything is stored as inet_pton() bytes so IPv6 needs no special casing.

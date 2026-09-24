@@ -2,13 +2,13 @@
 /**
  * Rollup arithmetic.
  *
- * @package AiParseAble
+ * @package CrawlLedger
  */
 
-namespace AiParseAble\Tests\Unit;
+namespace CrawlLedger\Tests\Unit;
 
-use AiParseAble\Logger\Repository;
-use AiParseAble\Logger\Rollup;
+use CrawlLedger\Logger\Repository;
+use CrawlLedger\Logger\Rollup;
 use PHPUnit\Framework\TestCase;
 
 /**

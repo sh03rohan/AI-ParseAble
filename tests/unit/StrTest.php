@@ -2,12 +2,12 @@
 /**
  * Path normalisation.
  *
- * @package AiParseAble
+ * @package CrawlLedger
  */
 
-namespace AiParseAble\Tests\Unit;
+namespace CrawlLedger\Tests\Unit;
 
-use AiParseAble\Support\Str;
+use CrawlLedger\Support\Str;
 use PHPUnit\Framework\TestCase;
 
 /**

@@ -2,14 +2,14 @@
 /**
  * Activation, capability, file locations, migrations.
  *
- * @package AiParseAble
+ * @package CrawlLedger
  */
 
-namespace AiParseAble\Tests\Integration;
+namespace CrawlLedger\Tests\Integration;
 
-use AiParseAble\Activation;
-use AiParseAble\Migrations;
-use AiParseAble\Plugin;
+use CrawlLedger\Activation;
+use CrawlLedger\Migrations;
+use CrawlLedger\Plugin;
 use WP_UnitTestCase;
 
 /**
@@ -43,7 +43,7 @@ final class ActivationTest extends WP_UnitTestCase {
 		$all = wp_load_alloptions();
 		$this->assertArrayHasKey( Migrations::OPTION, $all );
 		$this->assertArrayHasKey( Migrations::OPTION_PLUGIN, $all );
-		$this->assertArrayHasKey( \AiParseAble\Support\Options::OPTION, $all );
+		$this->assertArrayHasKey( \CrawlLedger\Support\Options::OPTION, $all );
 	}
 
 	public function test_upgrade_repairs_non_autoloaded_version_options(): void {
@@ -52,13 +52,13 @@ final class ActivationTest extends WP_UnitTestCase {
 		Migrations::maybe_run();
 		wp_cache_delete( 'alloptions', 'options' );
 		$all = wp_load_alloptions();
-		$this->assertSame( AI_PARSEABLE_VERSION, $all[ Migrations::OPTION_PLUGIN ] ?? null );
+		$this->assertSame( CRAWLLEDGER_VERSION, $all[ Migrations::OPTION_PLUGIN ] ?? null );
 		$this->assertArrayHasKey( Migrations::OPTION, $all );
 	}
 
 	public function test_activation_writes_nothing_outside_uploads(): void {
 		// The reviewable contract: no files in mu-plugins, wp-content root or the plugin folder.
-		$this->assertFileDoesNotExist( WPMU_PLUGIN_DIR . '/ai-parseable-drop-in.php' );
+		$this->assertFileDoesNotExist( WPMU_PLUGIN_DIR . '/crawlledger-drop-in.php' );
 		$this->assertDirectoryExists( Plugin::instance()->queue()->dir() );
 		$this->assertStringStartsWith( wp_upload_dir()['basedir'], Plugin::instance()->queue()->dir() );
 	}
@@ -78,7 +78,7 @@ final class ActivationTest extends WP_UnitTestCase {
 		update_option( Migrations::OPTION_PLUGIN, '0.0.1' );
 		update_option( Migrations::OPTION, 0 );
 		Migrations::maybe_run();
-		$this->assertSame( AI_PARSEABLE_VERSION, get_option( Migrations::OPTION_PLUGIN ) );
+		$this->assertSame( CRAWLLEDGER_VERSION, get_option( Migrations::OPTION_PLUGIN ) );
 		$this->assertSame( Migrations::SCHEMA_VERSION, (int) get_option( Migrations::OPTION ) );
 	}
 }

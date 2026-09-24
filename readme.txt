@@ -1,4 +1,4 @@
-=== AI ParseAble – AI Crawler Log & Access Control for GPTBot, ClaudeBot and other AI bots ===
+=== CrawlLedger – AI Crawler Log & Access Control for GPTBot and ClaudeBot ===
 Contributors: shrohan03
 Tags: ai, seo, crawler, robots.txt, llms.txt
 Requires at least: 6.4
@@ -12,20 +12,19 @@ See which AI crawlers visit your site (GPTBot, ClaudeBot, PerplexityBot), verify
 
 == Description ==
 
-**AI ParseAble is an AI crawler analytics and control plugin for WordPress.** It keeps a first-party log of every visit from AI bots such as OpenAI's GPTBot and ChatGPT-User, Anthropic's ClaudeBot, PerplexityBot, Google-Extended, Bingbot, Applebot, Amazonbot, Bytespider, CCBot and Meta's crawlers — when they came, which URL they fetched and what response they got. It verifies each visit against the vendor's published IP ranges, lets you allow or block each AI bot in robots.txt, fills the gaps in your schema markup and serves an llms.txt file for AI assistants.
+**CrawlLedger is an AI crawler analytics and control plugin for WordPress.** It keeps a first-party log of every visit from AI bots such as OpenAI's GPTBot and ChatGPT-User, Anthropic's ClaudeBot, PerplexityBot, Google-Extended, Bingbot, Applebot, Amazonbot, Bytespider, CCBot and Meta's crawlers — when they came, which URL they fetched and what response they got. It verifies each visit against the vendor's published IP ranges, lets you allow or block each AI bot in robots.txt, fills the gaps in your schema markup and serves an llms.txt file for AI assistants.
 
-External AI visibility checkers can tell you whether AI crawlers *can* reach your site. AI ParseAble tells you whether they *did* — and whether the visitor was genuinely from that vendor or a scraper wearing its name.
+External AI visibility checkers can tell you whether AI crawlers *can* reach your site. CrawlLedger tells you whether they *did* — and whether the visitor was genuinely from that vendor or a scraper wearing its name.
 
 = AI crawler log and analytics =
 
 * Records visits from 26 known AI crawlers: GPTBot, ChatGPT-User, OAI-SearchBot, ClaudeBot, Claude-User, Claude-SearchBot, anthropic-ai, PerplexityBot, Perplexity-User, Googlebot, GoogleOther, Google-Extended, Bingbot, Applebot, Applebot-Extended, Amazonbot, Bytespider, CCBot, cohere-ai, DuckAssistBot, Diffbot, MistralAI-User, meta-externalagent, meta-externalfetcher, PetalBot, Timpibot and YouBot.
-* Captures the hit the moment the plugin loads, before any hook runs, and writes it to a file queue at shutdown — never to the database inline.
-* Writes to a file queue, never to the database inline: zero database queries and a single regular-expression match on ordinary visitor requests.
+* Captures the hit the moment the plugin loads, before any hook runs, and appends it to a file queue at shutdown — never to the database inline. Ordinary visitors cost zero database queries and one regular-expression match.
 * Dashboard with visits per day, error rate, distinct crawlers, most-crawled pages, failing URLs and a live feed of the latest AI bot visits.
 
 = Bot verification: real GPTBot or a fake? =
 
-Many scrapers impersonate GPTBot or Googlebot. AI ParseAble verifies every AI crawler visit with forward-confirmed reverse DNS and each vendor's published IP ranges. Spoofed hits are recorded as unverified and excluded from the default charts, so your AI traffic numbers are real.
+Many scrapers impersonate GPTBot or Googlebot. CrawlLedger verifies every AI crawler visit with forward-confirmed reverse DNS and each vendor's published IP ranges. Spoofed hits are recorded as unverified and excluded from the default charts, so your AI traffic numbers are real.
 
 = Block or allow AI bots in robots.txt =
 
@@ -45,11 +44,11 @@ A block-editor sidebar with deterministic checks that help AI crawlers and answe
 
 = Honest coverage =
 
-The dashboard states which logging mode is active and what it cannot see, so you never mistake silence for "no AI traffic".
+The dashboard names what this install cannot see — a page cache or CDN that answers before WordPress runs — so you never mistake silence for "no AI traffic".
 
 **What it does not do**
 
-AI ParseAble is not a general SEO plugin. It does not write titles, meta descriptions, sitemaps or canonical tags, and it does not rewrite your content.
+CrawlLedger is not a general SEO plugin. It does not write titles, meta descriptions, sitemaps or canonical tags, and it does not rewrite your content.
 
 **Performance and privacy**
 
@@ -67,21 +66,21 @@ The plugin does not connect to any service of its own, has no accounts or API ke
 * Microsoft Bing — `https://www.bing.com/toolbox/bingbot.json` — [Terms of use](https://www.microsoft.com/en-us/servicesagreement), [Privacy statement](https://privacy.microsoft.com/privacystatement)
 * Apple — `https://search.developer.apple.com/applebot.json` — [Terms of use](https://www.apple.com/legal/internet-services/terms/site.html), [Privacy policy](https://www.apple.com/legal/privacy/)
 
-What is sent: a plain HTTP GET with the plugin's user agent (`AI ParseAble/<version>; <your site URL>`) so vendors can see who is fetching. No visitor data, no log data and nothing about your site's content is sent. The fetch runs in cron, never during a visitor's request. A failed fetch keeps the last good copy and never interrupts logging.
+What is sent: a plain HTTP GET with the plugin's user agent (`CrawlLedger/<version>; <your site URL>`) so vendors can see who is fetching. No visitor data, no log data and nothing about your site's content is sent. The fetch runs in cron, never during a visitor's request. A failed fetch keeps the last good copy and never interrupts logging.
 
 **Reverse DNS lookups.** For crawlers that publish a hostname pattern instead of IP ranges (Googlebot, Bingbot, Applebot, Amazonbot, PetalBot), verification performs a reverse and forward DNS lookup of the crawler's IP address through your server's normal DNS resolver, exactly as a web server log analyser would. Results are cached for 24 hours.
 
 == Privacy ==
 
-The plugin records the IP address of requests that match a known AI crawler user agent. By default the address is truncated to /24 (IPv4) or /48 (IPv6) before storage; you can choose a salted hash or the full address in Settings. Verification always runs on the real address before it is reduced. Individual records are kept for the configured retention window; daily totals per crawler are kept indefinitely and contain no addresses. Log files live under `wp-content/uploads/ai-parseable/` with an `index.php` and a `.htaccess` deny rule. Personal-data exporter and eraser callbacks are registered; suggested privacy-policy text is provided under Settings → Privacy.
+The plugin records the IP address of requests that match a known AI crawler user agent. By default the address is truncated to /24 (IPv4) or /48 (IPv6) before storage; you can choose a salted hash or the full address in Settings. Verification always runs on the real address before it is reduced. Individual records are kept for the configured retention window; daily totals per crawler are kept indefinitely and contain no addresses. Log files live under `wp-content/uploads/crawlledger/` with an `index.php` and a `.htaccess` deny rule. Personal-data exporter and eraser callbacks are registered; suggested privacy-policy text is provided under Settings → Privacy.
 
 Uninstalling keeps your data by default. Turn off "Keep my data" in Settings before deleting the plugin to remove tables, options, cron events and the log directory.
 
 == Installation ==
 
 1. Upload the plugin and activate it.
-2. Activation creates the tables and a private log directory under `wp-content/uploads/ai-parseable/`. Nothing is written anywhere else.
-3. Open **AI ParseAble** in the admin menu. Administrators receive the `aiparseable_manage` capability; grant it to other roles to delegate access.
+2. Activation creates the tables and a private log directory under `wp-content/uploads/crawlledger/`. Nothing is written anywhere else.
+3. Open **CrawlLedger** in the admin menu. Administrators receive the `crawlledger_manage` capability; grant it to other roles to delegate access.
 
 == Frequently Asked Questions ==
 

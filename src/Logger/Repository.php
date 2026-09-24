@@ -2,10 +2,10 @@
 /**
  * All SQL lives here, nowhere else.
  *
- * @package AiParseAble
+ * @package CrawlLedger
  */
 
-namespace AiParseAble\Logger;
+namespace CrawlLedger\Logger;
 
 /**
  * Two-tier storage: raw hits (short retention) and daily aggregates (kept forever).
@@ -21,7 +21,7 @@ final class Repository {
 	 */
 	public function hits_table(): string {
 		global $wpdb;
-		return $wpdb->prefix . 'aiparseable_hits';
+		return $wpdb->prefix . 'crawlledger_hits';
 	}
 
 	/**
@@ -31,7 +31,7 @@ final class Repository {
 	 */
 	public function daily_table(): string {
 		global $wpdb;
-		return $wpdb->prefix . 'aiparseable_daily';
+		return $wpdb->prefix . 'crawlledger_daily';
 	}
 
 	/**

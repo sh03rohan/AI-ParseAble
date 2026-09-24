@@ -2,10 +2,10 @@
 /**
  * Settings access.
  *
- * @package AiParseAble
+ * @package CrawlLedger
  */
 
-namespace AiParseAble\Support;
+namespace CrawlLedger\Support;
 
 /**
  * Every setting lives in ONE autoloaded option so a front-end request never adds a query.
@@ -15,7 +15,7 @@ namespace AiParseAble\Support;
  */
 final class Options {
 
-	const OPTION = 'ai_parseable_settings';
+	const OPTION = 'crawlledger_settings';
 
 	const IP_MODE_FULL      = 'full';
 	const IP_MODE_TRUNCATED = 'truncated';
@@ -116,7 +116,7 @@ final class Options {
 	 * @return int
 	 */
 	public function history_days(): int {
-		return max( 1, (int) apply_filters( 'ai_parseable_history_days', 7 ) );
+		return max( 1, (int) apply_filters( 'crawlledger_history_days', 7 ) );
 	}
 
 	/**
@@ -125,7 +125,7 @@ final class Options {
 	 * @return int[]
 	 */
 	public function retention_choices(): array {
-		$choices = (array) apply_filters( 'ai_parseable_retention_choices', array( 7 ) );
+		$choices = (array) apply_filters( 'crawlledger_retention_choices', array( 7 ) );
 		$choices = array_values( array_unique( array_map( 'intval', $choices ) ) );
 		return $choices ? $choices : array( 7 );
 	}

@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
-<ruleset name="AI ParseAble">
+<ruleset name="CrawlLedger">
 	<description>WordPress-Extra + WordPress-Docs, PHP 7.4 compatibility.</description>
-	<file>ai-parseable.php</file>
+	<file>crawlledger-ai-crawler-log.php</file>
 	<file>uninstall.php</file>
 	<file>src</file>
 	<exclude-pattern>*/node_modules/*</exclude-pattern>
@@ -21,16 +21,15 @@
 	<config name="minimum_wp_version" value="6.4"/>
 	<rule ref="WordPress.WP.I18n">
 		<properties>
-			<property name="text_domain" type="array"><element value="ai-parseable"/></property>
+			<property name="text_domain" type="array"><element value="crawlledger-ai-crawler-log"/></property>
 		</properties>
 	</rule>
 	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
 		<properties>
 			<property name="prefixes" type="array">
-				<element value="ai_parseable"/>
-				<element value="AI_PARSEABLE"/>
-				<element value="AiParseAble"/>
-				<element value="aiparseable"/>
+				<element value="crawlledger"/>
+				<element value="CRAWLLEDGER"/>
+				<element value="CrawlLedger"/>
 			</property>
 		</properties>
 	</rule>

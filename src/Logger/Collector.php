@@ -2,14 +2,14 @@
 /**
  * PHP-level request capture.
  *
- * @package AiParseAble
+ * @package CrawlLedger
  */
 
-namespace AiParseAble\Logger;
+namespace CrawlLedger\Logger;
 
-use AiParseAble\Module;
-use AiParseAble\Support\Ip;
-use AiParseAble\Support\Options;
+use CrawlLedger\Module;
+use CrawlLedger\Support\Ip;
+use CrawlLedger\Support\Options;
 
 /**
  * The only thing loaded on a front-end request.

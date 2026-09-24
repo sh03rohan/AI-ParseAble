@@ -2,13 +2,13 @@
 /**
  * Virtual llms.txt.
  *
- * @package AiParseAble
+ * @package CrawlLedger
  */
 
-namespace AiParseAble\LlmsTxt;
+namespace CrawlLedger\LlmsTxt;
 
-use AiParseAble\Module;
-use AiParseAble\Support\Options;
+use CrawlLedger\Module;
+use CrawlLedger\Support\Options;
 
 /**
  * Served through a rewrite rule and template_redirect. No physical file: many roots are not writable
@@ -16,7 +16,7 @@ use AiParseAble\Support\Options;
  */
 final class LlmsTxt implements Module {
 
-	const QUERY_VAR = 'aiparseable_llms';
+	const QUERY_VAR = 'crawlledger_llms';
 
 	/**
 	 * Settings.
@@ -156,7 +156,7 @@ final class LlmsTxt implements Module {
 		 *
 		 * @param string[] $lines Lines.
 		 */
-		$lines = (array) apply_filters( 'ai_parseable_llms_lines', $lines );
+		$lines = (array) apply_filters( 'crawlledger_llms_lines', $lines );
 		return rtrim( implode( "\n", $lines ) ) . "\n";
 	}
 

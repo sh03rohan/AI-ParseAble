@@ -2,13 +2,13 @@
 /**
  * Install, schema, drop-in, capabilities.
  *
- * @package AiParseAble
+ * @package CrawlLedger
  */
 
-namespace AiParseAble;
+namespace CrawlLedger;
 
-use AiParseAble\Logger\Signatures;
-use AiParseAble\Robots\PhysicalFile;
+use CrawlLedger\Logger\Signatures;
+use CrawlLedger\Robots\PhysicalFile;
 
 /**
  * Activation is for first install only. Upgrades go through Migrations on plugins_loaded, because the
@@ -16,7 +16,7 @@ use AiParseAble\Robots\PhysicalFile;
  */
 final class Activation {
 
-	const CAPABILITY = 'aiparseable_manage';
+	const CAPABILITY = 'crawlledger_manage';
 
 	/**
 	 * Activation hook.
@@ -54,7 +54,7 @@ final class Activation {
 		$plugin->cron()->ensure_scheduled();
 
 		// Fetch ranges soon after activation rather than waiting a week; the cron backend runs it.
-		if ( ! wp_next_scheduled( 'ai_parseable_ranges_initial' ) ) {
+		if ( ! wp_next_scheduled( 'crawlledger_ranges_initial' ) ) {
 			wp_schedule_single_event( time() + 30, Support\Cron::RANGES );
 		}
 	}
@@ -70,7 +70,7 @@ final class Activation {
 
 		$plugin->repository()->install();
 		update_option( Migrations::OPTION, Migrations::SCHEMA_VERSION, true );
-		update_option( Migrations::OPTION_PLUGIN, AI_PARSEABLE_VERSION, true );
+		update_option( Migrations::OPTION_PLUGIN, CRAWLLEDGER_VERSION, true );
 		Migrations::autoload_versions();
 
 		$values = array(
@@ -122,7 +122,7 @@ final class Activation {
 		if ( ! function_exists( 'is_plugin_active_for_network' ) ) {
 			require_once ABSPATH . 'wp-admin/includes/plugin.php';
 		}
-		if ( ! $site instanceof \WP_Site || ! is_plugin_active_for_network( plugin_basename( AI_PARSEABLE_FILE ) ) ) {
+		if ( ! $site instanceof \WP_Site || ! is_plugin_active_for_network( plugin_basename( CRAWLLEDGER_FILE ) ) ) {
 			return;
 		}
 		switch_to_blog( (int) $site->blog_id );

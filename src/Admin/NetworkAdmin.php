@@ -2,13 +2,13 @@
 /**
  * Network overview.
  *
- * @package AiParseAble
+ * @package CrawlLedger
  */
 
-namespace AiParseAble\Admin;
+namespace CrawlLedger\Admin;
 
-use AiParseAble\Logger\Repository;
-use AiParseAble\Module;
+use CrawlLedger\Logger\Repository;
+use CrawlLedger\Module;
 
 /**
  * Network admins get a read-only overview across sites. Configuration stays per site.
@@ -16,7 +16,7 @@ use AiParseAble\Module;
  */
 final class NetworkAdmin implements Module {
 
-	const SLUG = 'ai-parseable-network';
+	const SLUG = 'crawlledger-network';
 
 	/**
 	 * Repository.
@@ -59,8 +59,8 @@ final class NetworkAdmin implements Module {
 	 */
 	public function menu(): void {
 		$this->hook = (string) add_menu_page(
-			__( 'AI ParseAble', 'ai-parseable' ),
-			__( 'AI ParseAble', 'ai-parseable' ),
+			__( 'CrawlLedger', 'crawlledger-ai-crawler-log' ),
+			__( 'CrawlLedger', 'crawlledger-ai-crawler-log' ),
 			'manage_network',
 			self::SLUG,
 			array( $this, 'render' ),
@@ -87,10 +87,10 @@ final class NetworkAdmin implements Module {
 	 * @return void
 	 */
 	public function assets( $hook ): void {
-		if ( ! $this->is_ours( (string) $hook ) || ! is_readable( AI_PARSEABLE_DIR . 'assets/admin.css' ) ) {
+		if ( ! $this->is_ours( (string) $hook ) || ! is_readable( CRAWLLEDGER_DIR . 'assets/admin.css' ) ) {
 			return;
 		}
-		wp_enqueue_style( 'ai-parseable-admin', AI_PARSEABLE_URL . 'assets/admin.css', array(), AI_PARSEABLE_VERSION );
+		wp_enqueue_style( 'crawlledger-admin', CRAWLLEDGER_URL . 'assets/admin.css', array(), CRAWLLEDGER_VERSION );
 	}
 
 	/**
@@ -102,7 +102,7 @@ final class NetworkAdmin implements Module {
 	public function body_class( $classes ): string {
 		$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
 		if ( $screen && $this->is_ours( (string) $screen->id ) ) {
-			$classes .= ' ai-parseable-screen';
+			$classes .= ' crawlledger-screen';
 		}
 		return $classes;
 	}
@@ -114,7 +114,7 @@ final class NetworkAdmin implements Module {
 	 */
 	public function render(): void {
 		if ( ! current_user_can( 'manage_network' ) ) {
-			wp_die( esc_html__( 'You do not have permission to view this page.', 'ai-parseable' ) );
+			wp_die( esc_html__( 'You do not have permission to view this page.', 'crawlledger-ai-crawler-log' ) );
 		}
 		$sites = get_sites( array( 'number' => 500 ) );
 		$rows  = array();
@@ -150,30 +150,30 @@ final class NetworkAdmin implements Module {
 		);
 		?>
 		<div class="wrap">
-			<div class="aip-app aip-app--static">
-				<div class="aip-static-head">
-					<img class="aip-brand-mark" src="<?php echo esc_url( AI_PARSEABLE_URL . 'images/logo-64.png' ); ?>" alt="" width="28" height="28" />
-					<h1><?php esc_html_e( 'AI ParseAble', 'ai-parseable' ); ?></h1>
-					<span class="aip-version">v<?php echo esc_html( AI_PARSEABLE_VERSION ); ?></span>
-					<span class="aip-muted"><?php esc_html_e( 'Network overview', 'ai-parseable' ); ?></span>
+			<div class="clg-app clg-app--static">
+				<div class="clg-static-head">
+					<img class="clg-brand-mark" src="<?php echo esc_url( CRAWLLEDGER_URL . 'images/logo-64.png' ); ?>" alt="" width="28" height="28" />
+					<h1><?php esc_html_e( 'CrawlLedger', 'crawlledger-ai-crawler-log' ); ?></h1>
+					<span class="clg-version">v<?php echo esc_html( CRAWLLEDGER_VERSION ); ?></span>
+					<span class="clg-muted"><?php esc_html_e( 'Network overview', 'crawlledger-ai-crawler-log' ); ?></span>
 				</div>
-				<div class="aip-main">
-					<div class="aip-stats aip-stats--3">
-						<div class="aip-stat"><span class="aip-stat-label"><?php esc_html_e( 'Sites', 'ai-parseable' ); ?></span><span class="aip-stat-row"><span class="aip-stat-value"><?php echo esc_html( number_format_i18n( count( $rows ) ) ); ?></span></span><span class="aip-stat-sub"><?php esc_html_e( 'in this network', 'ai-parseable' ); ?></span></div>
-						<div class="aip-stat"><span class="aip-stat-label"><?php esc_html_e( 'Crawler visits', 'ai-parseable' ); ?></span><span class="aip-stat-row"><span class="aip-stat-value"><?php echo esc_html( number_format_i18n( $sum['total'] ) ); ?></span></span><span class="aip-stat-sub"><?php esc_html_e( 'last 7 days, all sites', 'ai-parseable' ); ?></span></div>
-						<div class="aip-stat"><span class="aip-stat-label"><?php esc_html_e( 'Verified', 'ai-parseable' ); ?></span><span class="aip-stat-row"><span class="aip-stat-value"><?php echo esc_html( number_format_i18n( $sum['verified'] ) ); ?></span></span><span class="aip-stat-sub"><?php esc_html_e( 'confirmed by IP range or reverse DNS', 'ai-parseable' ); ?></span></div>
+				<div class="clg-main">
+					<div class="clg-stats clg-stats--3">
+						<div class="clg-stat"><span class="clg-stat-label"><?php esc_html_e( 'Sites', 'crawlledger-ai-crawler-log' ); ?></span><span class="clg-stat-row"><span class="clg-stat-value"><?php echo esc_html( number_format_i18n( count( $rows ) ) ); ?></span></span><span class="clg-stat-sub"><?php esc_html_e( 'in this network', 'crawlledger-ai-crawler-log' ); ?></span></div>
+						<div class="clg-stat"><span class="clg-stat-label"><?php esc_html_e( 'Crawler visits', 'crawlledger-ai-crawler-log' ); ?></span><span class="clg-stat-row"><span class="clg-stat-value"><?php echo esc_html( number_format_i18n( $sum['total'] ) ); ?></span></span><span class="clg-stat-sub"><?php esc_html_e( 'last 7 days, all sites', 'crawlledger-ai-crawler-log' ); ?></span></div>
+						<div class="clg-stat"><span class="clg-stat-label"><?php esc_html_e( 'Verified', 'crawlledger-ai-crawler-log' ); ?></span><span class="clg-stat-row"><span class="clg-stat-value"><?php echo esc_html( number_format_i18n( $sum['verified'] ) ); ?></span></span><span class="clg-stat-sub"><?php esc_html_e( 'confirmed by IP range or reverse DNS', 'crawlledger-ai-crawler-log' ); ?></span></div>
 					</div>
-					<section class="aip-panel">
-						<header class="aip-panel-head"><h2><?php esc_html_e( 'Sites', 'ai-parseable' ); ?></h2><span class="aip-muted"><?php esc_html_e( 'Settings are configured on each site.', 'ai-parseable' ); ?></span></header>
-						<table class="aip-table">
-							<thead><tr><th><?php esc_html_e( 'Site', 'ai-parseable' ); ?></th><th class="aip-num"><?php esc_html_e( 'Visits', 'ai-parseable' ); ?></th><th class="aip-num"><?php esc_html_e( 'Verified', 'ai-parseable' ); ?></th><th></th></tr></thead>
+					<section class="clg-panel">
+						<header class="clg-panel-head"><h2><?php esc_html_e( 'Sites', 'crawlledger-ai-crawler-log' ); ?></h2><span class="clg-muted"><?php esc_html_e( 'Settings are configured on each site.', 'crawlledger-ai-crawler-log' ); ?></span></header>
+						<table class="clg-table">
+							<thead><tr><th><?php esc_html_e( 'Site', 'crawlledger-ai-crawler-log' ); ?></th><th class="clg-num"><?php esc_html_e( 'Visits', 'crawlledger-ai-crawler-log' ); ?></th><th class="clg-num"><?php esc_html_e( 'Verified', 'crawlledger-ai-crawler-log' ); ?></th><th></th></tr></thead>
 							<tbody>
 							<?php foreach ( $rows as $row ) : ?>
 								<tr>
-									<td><strong><?php echo esc_html( $row['name'] ); ?></strong> <span class="aip-muted"><?php echo esc_html( $row['host'] ); ?></span></td>
-									<td class="aip-num"><?php echo esc_html( number_format_i18n( $row['total'] ) ); ?></td>
-									<td class="aip-num"><?php echo esc_html( number_format_i18n( $row['verified'] ) ); ?></td>
-									<td class="aip-num"><a href="<?php echo esc_url( $row['url'] ); ?>"><?php esc_html_e( 'Open dashboard →', 'ai-parseable' ); ?></a></td>
+									<td><strong><?php echo esc_html( $row['name'] ); ?></strong> <span class="clg-muted"><?php echo esc_html( $row['host'] ); ?></span></td>
+									<td class="clg-num"><?php echo esc_html( number_format_i18n( $row['total'] ) ); ?></td>
+									<td class="clg-num"><?php echo esc_html( number_format_i18n( $row['verified'] ) ); ?></td>
+									<td class="clg-num"><a href="<?php echo esc_url( $row['url'] ); ?>"><?php esc_html_e( 'Open dashboard →', 'crawlledger-ai-crawler-log' ); ?></a></td>
 								</tr>
 							<?php endforeach; ?>
 							</tbody>

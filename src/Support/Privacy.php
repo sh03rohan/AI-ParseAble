@@ -2,12 +2,12 @@
 /**
  * Privacy integration.
  *
- * @package AiParseAble
+ * @package CrawlLedger
  */
 
-namespace AiParseAble\Support;
+namespace CrawlLedger\Support;
 
-use AiParseAble\Module;
+use CrawlLedger\Module;
 
 /**
  * Crawler IPs are not user data, but registering exporters and erasers and suggesting policy text shows
@@ -49,8 +49,8 @@ final class Privacy implements Module {
 	 * @return array<mixed>
 	 */
 	public function exporter( $exporters ): array {
-		$exporters['ai-parseable'] = array(
-			'exporter_friendly_name' => __( 'AI ParseAble', 'ai-parseable' ),
+		$exporters['crawlledger'] = array(
+			'exporter_friendly_name' => __( 'CrawlLedger', 'crawlledger-ai-crawler-log' ),
 			'callback'               => array( $this, 'export' ),
 		);
 		return $exporters;
@@ -63,8 +63,8 @@ final class Privacy implements Module {
 	 * @return array<mixed>
 	 */
 	public function eraser( $erasers ): array {
-		$erasers['ai-parseable'] = array(
-			'eraser_friendly_name' => __( 'AI ParseAble', 'ai-parseable' ),
+		$erasers['crawlledger'] = array(
+			'eraser_friendly_name' => __( 'CrawlLedger', 'crawlledger-ai-crawler-log' ),
 			'callback'             => array( $this, 'erase' ),
 		);
 		return $erasers;
@@ -111,15 +111,15 @@ final class Privacy implements Module {
 		}
 		$mode = (string) $this->options->get( 'ip_mode', Options::IP_MODE_TRUNCATED );
 		$how  = Options::IP_MODE_FULL === $mode
-			? __( 'the full IP address of the request', 'ai-parseable' )
-			: ( Options::IP_MODE_HASHED === $mode ? __( 'a salted, one-way hash of the request IP address', 'ai-parseable' ) : __( 'a truncated IP address (the first three octets for IPv4, the first 48 bits for IPv6)', 'ai-parseable' ) );
+			? __( 'the full IP address of the request', 'crawlledger-ai-crawler-log' )
+			: ( Options::IP_MODE_HASHED === $mode ? __( 'a salted, one-way hash of the request IP address', 'crawlledger-ai-crawler-log' ) : __( 'a truncated IP address (the first three octets for IPv4, the first 48 bits for IPv6)', 'crawlledger-ai-crawler-log' ) );
 		$days = (int) $this->options->get( 'retention_days', 7 );
 		$text = sprintf(
 			/* translators: 1: how the address is stored, 2: number of days */
-			__( 'This site records visits by known AI crawlers (automated software operated by AI companies), including the page requested, the response status, the crawler name and %1$s. Individual records are kept for %2$d days; daily totals per crawler are kept indefinitely. No visitor browsing data is recorded.', 'ai-parseable' ),
+			__( 'This site records visits by known AI crawlers (automated software operated by AI companies), including the page requested, the response status, the crawler name and %1$s. Individual records are kept for %2$d days; daily totals per crawler are kept indefinitely. No visitor browsing data is recorded.', 'crawlledger-ai-crawler-log' ),
 			$how,
 			$days
 		);
-		wp_add_privacy_policy_content( __( 'AI ParseAble', 'ai-parseable' ), wp_kses_post( wpautop( $text ) ) );
+		wp_add_privacy_policy_content( __( 'CrawlLedger', 'crawlledger-ai-crawler-log' ), wp_kses_post( wpautop( $text ) ) );
 	}
 }

@@ -1,6 +1,6 @@
 import apiFetch from '@wordpress/api-fetch';
 
-const NS = '/ai-parseable/v1';
+const NS = '/crawlledger/v1';
 
 export const api = {
 	get: ( route, query = {} ) => {

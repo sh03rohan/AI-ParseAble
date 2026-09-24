@@ -2,16 +2,16 @@
 /**
  * Front-end collector.
  *
- * @package AiParseAble
+ * @package CrawlLedger
  */
 
-namespace AiParseAble\Tests\Unit;
+namespace CrawlLedger\Tests\Unit;
 
-use AiParseAble\Logger\Buffer;
-use AiParseAble\Logger\Collector;
-use AiParseAble\Logger\Queue;
-use AiParseAble\Logger\Signatures;
-use AiParseAble\Support\Options;
+use CrawlLedger\Logger\Buffer;
+use CrawlLedger\Logger\Collector;
+use CrawlLedger\Logger\Queue;
+use CrawlLedger\Logger\Signatures;
+use CrawlLedger\Support\Options;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -22,10 +22,10 @@ use PHPUnit\Framework\TestCase;
 final class CollectorTest extends TestCase {
 
 	protected function setUp(): void {
-		$GLOBALS['ai_parseable_options'] = array(
+		$GLOBALS['crawlledger_options'] = array(
 			Options::OPTION => array( 'ua_pattern' => Signatures::compile() ),
 		);
-		$GLOBALS['ai_parseable_filters'] = array();
+		$GLOBALS['crawlledger_filters'] = array();
 	}
 
 	private function collector(): Collector {
@@ -45,13 +45,13 @@ final class CollectorTest extends TestCase {
 	public function test_bot_path_queues_a_shutdown_write(): void {
 		$_SERVER['HTTP_USER_AGENT'] = 'Mozilla/5.0 (compatible; GPTBot/1.2)';
 		$this->collector()->capture();
-		$this->assertArrayHasKey( 'shutdown', $GLOBALS['ai_parseable_filters'] );
+		$this->assertArrayHasKey( 'shutdown', $GLOBALS['crawlledger_filters'] );
 	}
 
 	public function test_nothing_happens_without_a_pattern(): void {
-		$GLOBALS['ai_parseable_options'][ Options::OPTION ]['ua_pattern'] = '';
+		$GLOBALS['crawlledger_options'][ Options::OPTION ]['ua_pattern'] = '';
 		$_SERVER['HTTP_USER_AGENT'] = 'Mozilla/5.0 (compatible; GPTBot/1.2)';
 		$this->collector()->capture();
-		$this->assertArrayNotHasKey( 'shutdown', $GLOBALS['ai_parseable_filters'] );
+		$this->assertArrayNotHasKey( 'shutdown', $GLOBALS['crawlledger_filters'] );
 	}
 }

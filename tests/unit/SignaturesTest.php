@@ -2,12 +2,12 @@
 /**
  * UA matching.
  *
- * @package AiParseAble
+ * @package CrawlLedger
  */
 
-namespace AiParseAble\Tests\Unit;
+namespace CrawlLedger\Tests\Unit;
 
-use AiParseAble\Logger\Signatures;
+use CrawlLedger\Logger\Signatures;
 use PHPUnit\Framework\TestCase;
 
 /**

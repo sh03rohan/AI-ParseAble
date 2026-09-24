@@ -2,10 +2,10 @@
 /**
  * Coverage report: what this install can and cannot see.
  *
- * @package AiParseAble
+ * @package CrawlLedger
  */
 
-namespace AiParseAble\Logger;
+namespace CrawlLedger\Logger;
 
 /**
  * The collector runs when the plugin file is included, before any hook fires. What it can never see are
@@ -24,10 +24,10 @@ final class Coverage {
 
 		$misses = array();
 		if ( $page_cache['advanced_cache'] ) {
-			$misses[] = __( 'Pages served directly by advanced-cache.php (it runs before any plugin).', 'ai-parseable' );
+			$misses[] = __( 'Pages served directly by advanced-cache.php (it runs before any plugin).', 'crawlledger-ai-crawler-log' );
 		}
 		if ( $page_cache['server_level'] ) {
-			$misses[] = __( 'Pages served by a server-level or CDN cache (LiteSpeed, Nginx FastCGI cache, Cloudflare APO). Those never reach PHP; use server-log ingestion for full coverage.', 'ai-parseable' );
+			$misses[] = __( 'Pages served by a server-level or CDN cache (LiteSpeed, Nginx FastCGI cache, Cloudflare APO). Those never reach PHP; use server-log ingestion for full coverage.', 'crawlledger-ai-crawler-log' );
 		}
 
 		return array(

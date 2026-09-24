@@ -2,16 +2,16 @@
 /**
  * Physical robots.txt fixture.
  *
- * @package AiParseAble
+ * @package CrawlLedger
  */
 
-namespace AiParseAble\Tests\Integration;
+namespace CrawlLedger\Tests\Integration;
 
-use AiParseAble\Activation;
-use AiParseAble\Plugin;
-use AiParseAble\Robots\Block;
-use AiParseAble\Robots\PhysicalFile;
-use AiParseAble\Robots\Robots;
+use CrawlLedger\Activation;
+use CrawlLedger\Plugin;
+use CrawlLedger\Robots\Block;
+use CrawlLedger\Robots\PhysicalFile;
+use CrawlLedger\Robots\Robots;
 use WP_UnitTestCase;
 
 /**
@@ -36,7 +36,7 @@ final class RobotsTest extends WP_UnitTestCase {
 		$robots = new Robots( Plugin::instance()->options() );
 		$robots->register();
 		$out = apply_filters( 'robots_txt', "User-agent: *\n", true );
-		$this->assertStringContainsString( "# BEGIN AI ParseAble\nUser-agent: GPTBot\nDisallow: /\n# END AI ParseAble", $out );
+		$this->assertStringContainsString( "# BEGIN CrawlLedger\nUser-agent: GPTBot\nDisallow: /\n# END CrawlLedger", $out );
 	}
 
 	public function test_physical_file_detected_and_managed(): void {
@@ -53,7 +53,7 @@ final class RobotsTest extends WP_UnitTestCase {
 		$this->assertStringContainsString( Block::wrap( "User-agent: PerplexityBot\nAllow: /\n" ), $contents );
 
 		$this->assertTrue( PhysicalFile::write_block( '' ) );
-		$this->assertStringNotContainsString( 'AI ParseAble', PhysicalFile::read() );
+		$this->assertStringNotContainsString( 'CrawlLedger', PhysicalFile::read() );
 		$this->assertStringContainsString( 'Disallow: /secret/', PhysicalFile::read() );
 	}
 

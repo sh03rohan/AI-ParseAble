@@ -2,15 +2,15 @@
 /**
  * Nightly retention job.
  *
- * @package AiParseAble
+ * @package CrawlLedger
  */
 
-namespace AiParseAble\Logger;
+namespace CrawlLedger\Logger;
 
-use AiParseAble\Module;
-use AiParseAble\Support\Cron;
-use AiParseAble\Support\Lock;
-use AiParseAble\Support\Options;
+use CrawlLedger\Module;
+use CrawlLedger\Support\Cron;
+use CrawlLedger\Support\Lock;
+use CrawlLedger\Support\Options;
 
 /**
  * Daily counts are maintained at ingest time, so the nightly job only has to delete raw rows past
@@ -18,7 +18,7 @@ use AiParseAble\Support\Options;
  */
 final class Rollup implements Module {
 
-	const LOCK = 'ai_parseable_rollup_lock';
+	const LOCK = 'crawlledger_rollup_lock';
 
 	/**
 	 * Settings.

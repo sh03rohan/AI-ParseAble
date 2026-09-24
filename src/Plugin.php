@@ -2,31 +2,31 @@
 /**
  * Container and module registration.
  *
- * @package AiParseAble
+ * @package CrawlLedger
  */
 
-namespace AiParseAble;
+namespace CrawlLedger;
 
-use AiParseAble\Admin\Admin;
-use AiParseAble\Admin\Health;
-use AiParseAble\Admin\NetworkAdmin;
-use AiParseAble\Editor\Editor;
-use AiParseAble\LlmsTxt\LlmsTxt;
-use AiParseAble\Logger\Buffer;
-use AiParseAble\Logger\Collector;
-use AiParseAble\Logger\Coverage;
-use AiParseAble\Logger\Ingest;
-use AiParseAble\Logger\Queue;
-use AiParseAble\Logger\Ranges;
-use AiParseAble\Logger\Repository;
-use AiParseAble\Logger\Rollup;
-use AiParseAble\Logger\Verifier;
-use AiParseAble\Rest\Rest;
-use AiParseAble\Robots\Robots;
-use AiParseAble\Schema\Schema;
-use AiParseAble\Support\Cron;
-use AiParseAble\Support\Options;
-use AiParseAble\Support\Privacy;
+use CrawlLedger\Admin\Admin;
+use CrawlLedger\Admin\Health;
+use CrawlLedger\Admin\NetworkAdmin;
+use CrawlLedger\Editor\Editor;
+use CrawlLedger\LlmsTxt\LlmsTxt;
+use CrawlLedger\Logger\Buffer;
+use CrawlLedger\Logger\Collector;
+use CrawlLedger\Logger\Coverage;
+use CrawlLedger\Logger\Ingest;
+use CrawlLedger\Logger\Queue;
+use CrawlLedger\Logger\Ranges;
+use CrawlLedger\Logger\Repository;
+use CrawlLedger\Logger\Rollup;
+use CrawlLedger\Logger\Verifier;
+use CrawlLedger\Rest\Rest;
+use CrawlLedger\Robots\Robots;
+use CrawlLedger\Schema\Schema;
+use CrawlLedger\Support\Cron;
+use CrawlLedger\Support\Options;
+use CrawlLedger\Support\Privacy;
 
 /**
  * Hand-wired container. Small enough that a DI library would cost more than it saves.

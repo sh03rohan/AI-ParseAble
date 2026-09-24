@@ -9,15 +9,15 @@ test( 'dashboard loads and the overview renders', async ( { page } ) => {
 			errors.push( m.text() );
 		}
 	} );
-	const response = await page.goto( '/wp-admin/admin.php?page=ai-parseable' );
+	const response = await page.goto( '/wp-admin/admin.php?page=crawlledger' );
 	expect( response.status(), 'admin page HTTP status' ).toBe( 200 );
 	try {
-		await expect( page.locator( '.aip-status' ) ).toBeVisible( { timeout: 15000 } );
+		await expect( page.locator( '.clg-status' ) ).toBeVisible( { timeout: 15000 } );
 	} catch ( e ) {
 		throw new Error( `App did not render. JS errors: ${ errors.join( ' | ' ) || 'none' }. Body: ${ ( await page.locator( 'body' ).innerText() ).slice( 0, 800 ) }` );
 	}
 	// A fresh install shows the empty state; a site with data shows the chart. Either is a successful paint.
-	await expect( page.locator( 'svg.aip-chart, .aip-empty' ).first() ).toBeVisible();
+	await expect( page.locator( 'svg.clg-chart, .clg-empty' ).first() ).toBeVisible();
 	await page.waitForTimeout( 500 );
 	expect( errors ).toEqual( [] );
 } );
@@ -25,16 +25,16 @@ test( 'dashboard loads and the overview renders', async ( { page } ) => {
 // Set a crawler's rule through the UI and wait for the save to be confirmed.
 async function setRule( page, bot, rule ) {
 	const row = page.locator( `tr:has-text("${ bot }")` ).first();
-	await row.locator( `.aip-segmented button:has-text("${ rule }")` ).click();
-	await expect( page.locator( '.aip-savebar.is-dirty' ) ).toBeVisible();
-	await page.click( '.aip-savebar button:has-text("Save rules")' );
-	await expect( page.locator( '.aip-savebar' ) ).toContainText( 'Rules saved' );
+	await row.locator( `.clg-segmented button:has-text("${ rule }")` ).click();
+	await expect( page.locator( '.clg-savebar.is-dirty' ) ).toBeVisible();
+	await page.click( '.clg-savebar button:has-text("Save rules")' );
+	await expect( page.locator( '.clg-savebar' ) ).toContainText( 'Rules saved' );
 }
 
 test( 'a crawler rule persists and reaches robots.txt', async ( { page } ) => {
-	await page.goto( '/wp-admin/admin.php?page=ai-parseable#crawlers' );
-	await page.waitForSelector( '.aip-rules' );
-	const active = page.locator( 'tr:has-text("GPTBot")' ).first().locator( '.aip-segmented button.is-active' );
+	await page.goto( '/wp-admin/admin.php?page=crawlledger#crawlers' );
+	await page.waitForSelector( '.clg-rules' );
+	const active = page.locator( 'tr:has-text("GPTBot")' ).first().locator( '.clg-segmented button.is-active' );
 
 	// The site may already block GPTBot; start from Allow so the change below is a real one.
 	if ( ( await active.textContent() ) === 'Block' ) {
@@ -43,7 +43,7 @@ test( 'a crawler rule persists and reaches robots.txt', async ( { page } ) => {
 	await setRule( page, 'GPTBot', 'Block' );
 
 	await page.reload();
-	await page.waitForSelector( '.aip-rules' );
+	await page.waitForSelector( '.clg-rules' );
 	await expect( active ).toHaveText( 'Block' );
 
 	const robots = await page.request.get( '/robots.txt' );
@@ -53,12 +53,12 @@ test( 'a crawler rule persists and reaches robots.txt', async ( { page } ) => {
 test( 'llms.txt preview follows the summary and is served once saved', async ( { page } ) => {
 	// A unique summary so the editor is dirty even when a previous run saved this test's text.
 	const summary = `Example Co sells widgets to 40 countries from its factory in Leeds (${ Date.now() }).`;
-	await page.goto( '/wp-admin/admin.php?page=ai-parseable#llms' );
+	await page.goto( '/wp-admin/admin.php?page=crawlledger#llms' );
 	await page.waitForSelector( 'textarea' );
 	await page.fill( 'textarea', summary );
-	await expect( page.locator( '.aip-pre' ) ).toContainText( summary );
-	await page.click( '.aip-savebar button:has-text("Save")' );
-	await expect( page.locator( '.aip-savebar' ) ).toContainText( 'Saved' );
+	await expect( page.locator( '.clg-pre' ) ).toContainText( summary );
+	await page.click( '.clg-savebar button:has-text("Save")' );
+	await expect( page.locator( '.clg-savebar' ) ).toContainText( 'Saved' );
 	const llms = await page.request.get( '/llms.txt' );
 	expect( llms.status() ).toBe( 200 );
 	expect( await llms.text() ).toContain( `> ${ summary }` );

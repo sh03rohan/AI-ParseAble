@@ -2,22 +2,27 @@
 /**
  * Admin screen.
  *
- * @package AiParseAble
+ * @package CrawlLedger
  */
 
-namespace AiParseAble\Admin;
+namespace CrawlLedger\Admin;
 
-use AiParseAble\Activation;
-use AiParseAble\Module;
-use AiParseAble\Support\Assets;
-use AiParseAble\Support\Options;
+use CrawlLedger\Activation;
+use CrawlLedger\Module;
+use CrawlLedger\Support\Assets;
+use CrawlLedger\Support\Options;
 
 /**
  * One admin page, one React app. Assets load on that page only.
  */
 final class Admin implements Module {
 
-	const SLUG = 'ai-parseable';
+	const SLUG = 'crawlledger';
+
+	/**
+	 * Monochrome menu mark, base64 SVG so WordPress recolours it for the active admin scheme.
+	 */
+	const MENU_ICON = 'PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+PHBhdGggZD0iTTQuNCAyLjVoMTEuMmMuNSAwIC45LjQuOS45djEzLjJjMCAuNS0uNC45LS45LjlINC40Yy0uNSAwLS45LS40LS45LS45VjMuNGMwLS41LjQtLjkuOS0uOXptMS45IDB2MTUiIGZpbGw9Im5vbmUiIHN0cm9rZT0iYmxhY2siIHN0cm9rZS13aWR0aD0iMS4yIi8+PHBhdGggZD0iTTguNCA1LjhoNS42TTguNCA5aDUuNk04LjQgMTIuMmg1LjZNOC40IDE1LjRoMy40IiBzdHJva2U9ImJsYWNrIiBzdHJva2Utd2lkdGg9IjEuMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHBhdGggZD0iTTUuMiAxNC42YzItLjIgMi40LTMgNC4yLTMuMiAxLjktLjIgMi40LTMuNCA1LjQtNC42IiBmaWxsPSJub25lIiBzdHJva2U9ImJsYWNrIiBzdHJva2Utd2lkdGg9IjIuMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PC9zdmc+';
 
 	/**
 	 * Settings.
@@ -50,7 +55,7 @@ final class Admin implements Module {
 	public function register(): void {
 		add_action( 'admin_menu', array( $this, 'menu' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'assets' ) );
-		add_filter( 'plugin_action_links_' . plugin_basename( AI_PARSEABLE_FILE ), array( $this, 'action_links' ) );
+		add_filter( 'plugin_action_links_' . plugin_basename( CRAWLLEDGER_FILE ), array( $this, 'action_links' ) );
 		add_filter( 'admin_body_class', array( $this, 'body_class' ) );
 	}
 
@@ -61,12 +66,12 @@ final class Admin implements Module {
 	 */
 	public function menu(): void {
 		$this->hook = (string) add_menu_page(
-			__( 'AI ParseAble', 'ai-parseable' ),
-			__( 'AI ParseAble', 'ai-parseable' ),
+			__( 'CrawlLedger', 'crawlledger-ai-crawler-log' ),
+			__( 'CrawlLedger', 'crawlledger-ai-crawler-log' ),
 			Activation::CAPABILITY,
 			self::SLUG,
 			array( $this, 'render' ),
-			AI_PARSEABLE_URL . 'images/menu-icon.png',
+			'data:image/svg+xml;base64,' . self::MENU_ICON,
 			81
 		);
 	}
@@ -80,7 +85,7 @@ final class Admin implements Module {
 	public function body_class( $classes ): string {
 		$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
 		if ( $screen && $this->is_our_screen( (string) $screen->id ) ) {
-			$classes .= ' ai-parseable-screen';
+			$classes .= ' crawlledger-screen';
 		}
 		return $classes;
 	}
@@ -93,7 +98,7 @@ final class Admin implements Module {
 	 */
 	public function action_links( $links ): array {
 		$url = admin_url( 'admin.php?page=' . self::SLUG );
-		array_unshift( $links, '<a href="' . esc_url( $url ) . '">' . esc_html__( 'Dashboard', 'ai-parseable' ) . '</a>' );
+		array_unshift( $links, '<a href="' . esc_url( $url ) . '">' . esc_html__( 'Dashboard', 'crawlledger-ai-crawler-log' ) . '</a>' );
 		return $links;
 	}
 
@@ -117,35 +122,35 @@ final class Admin implements Module {
 		if ( ! $this->is_our_screen( (string) $hook ) ) {
 			return;
 		}
-		$asset_file = AI_PARSEABLE_DIR . 'assets/admin.asset.php';
+		$asset_file = CRAWLLEDGER_DIR . 'assets/admin.asset.php';
 		$asset      = is_readable( $asset_file ) ? require $asset_file : array(
 			'dependencies' => array( 'wp-element', 'wp-components', 'wp-api-fetch', 'wp-i18n' ),
-			'version'      => AI_PARSEABLE_VERSION,
+			'version'      => CRAWLLEDGER_VERSION,
 		);
 		Assets::ensure_jsx_runtime();
-		wp_enqueue_script( 'ai-parseable-admin', AI_PARSEABLE_URL . 'assets/admin.js', $asset['dependencies'], $asset['version'], true );
+		wp_enqueue_script( 'crawlledger-admin', CRAWLLEDGER_URL . 'assets/admin.js', $asset['dependencies'], $asset['version'], true );
 		wp_enqueue_style( 'wp-components' );
-		if ( is_readable( AI_PARSEABLE_DIR . 'assets/admin.css' ) ) {
-			wp_enqueue_style( 'ai-parseable-admin', AI_PARSEABLE_URL . 'assets/admin.css', array( 'wp-components' ), $asset['version'] );
+		if ( is_readable( CRAWLLEDGER_DIR . 'assets/admin.css' ) ) {
+			wp_enqueue_style( 'crawlledger-admin', CRAWLLEDGER_URL . 'assets/admin.css', array( 'wp-components' ), $asset['version'] );
 		}
-		wp_set_script_translations( 'ai-parseable-admin', 'ai-parseable', AI_PARSEABLE_DIR . 'languages' );
+		wp_set_script_translations( 'crawlledger-admin', 'crawlledger-ai-crawler-log', CRAWLLEDGER_DIR . 'languages' );
 
 		$config = array(
-			'restNamespace' => 'ai-parseable/v1',
-			'version'       => AI_PARSEABLE_VERSION,
+			'restNamespace' => 'crawlledger/v1',
+			'version'       => CRAWLLEDGER_VERSION,
 			'siteUrl'       => home_url( '/' ),
 			'adminUrl'      => admin_url(),
 			'isMultisite'   => is_multisite(),
 			'dismissed'     => $this->dismissed_notices(),
 			'historyDays'   => $this->options->history_days(),
 			'installedAt'   => (int) $this->options->get( 'installed_at', 0 ),
-			'logo'          => AI_PARSEABLE_URL . 'images/logo-64.png',
+			'logo'          => CRAWLLEDGER_URL . 'images/logo-64.png',
 		);
-		wp_add_inline_script( 'ai-parseable-admin', 'window.aiParseAble = ' . wp_json_encode( $config ) . ';', 'before' );
+		wp_add_inline_script( 'crawlledger-admin', 'window.crawlLedger = ' . wp_json_encode( $config ) . ';', 'before' );
 
 		// Preload what the first paint needs so it renders without a single REST round trip.
 		$preload = array_reduce(
-			array( '/ai-parseable/v1/stats?range=7d&verified=1', '/ai-parseable/v1/urls?verified=1', '/ai-parseable/v1/coverage', '/ai-parseable/v1/settings' ),
+			array( '/crawlledger/v1/stats?range=7d&verified=1', '/crawlledger/v1/urls?verified=1', '/crawlledger/v1/coverage', '/crawlledger/v1/settings' ),
 			'rest_preload_api_request',
 			array()
 		);
@@ -160,7 +165,7 @@ final class Admin implements Module {
 	private function dismissed_notices(): array {
 		$out = array();
 		foreach ( array( 'ingest', 'coverage', 'robots-physical', 'queue-readable' ) as $id ) {
-			if ( get_user_meta( get_current_user_id(), 'ai_parseable_dismissed_' . $id, true ) ) {
+			if ( get_user_meta( get_current_user_id(), 'crawlledger_dismissed_' . $id, true ) ) {
 				$out[] = $id;
 			}
 		}
@@ -174,10 +179,10 @@ final class Admin implements Module {
 	 */
 	public function render(): void {
 		// The heading and wp-header-end marker keep WordPress's notice relocation above the app, not inside it.
-		echo '<div class="wrap ai-parseable-wrap">';
-		echo '<h1 class="screen-reader-text">' . esc_html__( 'AI ParseAble', 'ai-parseable' ) . '</h1>';
+		echo '<div class="wrap crawlledger-wrap">';
+		echo '<h1 class="screen-reader-text">' . esc_html__( 'CrawlLedger', 'crawlledger-ai-crawler-log' ) . '</h1>';
 		echo '<hr class="wp-header-end">';
-		echo '<div id="ai-parseable-app"><p class="aip-boot">' . esc_html__( 'Loading AI ParseAble…', 'ai-parseable' ) . '</p></div>';
+		echo '<div id="crawlledger-app"><p class="clg-boot">' . esc_html__( 'Loading CrawlLedger…', 'crawlledger-ai-crawler-log' ) . '</p></div>';
 		echo '</div>';
 	}
 }

@@ -7,7 +7,7 @@
  */
 
 $root   = dirname( __DIR__ );
-$header = file_get_contents( $root . '/ai-parseable.php' );
+$header = file_get_contents( $root . '/crawlledger-ai-crawler-log.php' );
 if ( ! preg_match( '/^ \* Version:\s+(\S+)$/m', $header, $m ) ) {
 	fwrite( STDERR, "Could not read the Version header.\n" );
 	exit( 1 );
@@ -15,8 +15,8 @@ if ( ! preg_match( '/^ \* Version:\s+(\S+)$/m', $header, $m ) ) {
 $version = $m[1];
 $check   = in_array( '--check', $argv, true );
 $targets = array(
-	'ai-parseable.php' => array( "/define\( 'AI_PARSEABLE_VERSION', '[^']+' \);/", "define( 'AI_PARSEABLE_VERSION', '{$version}' );" ),
-	'uninstall.php'    => array( "/define\( 'AI_PARSEABLE_VERSION', '[^']+' \);/", "define( 'AI_PARSEABLE_VERSION', '{$version}' );" ),
+	'crawlledger-ai-crawler-log.php' => array( "/define\( 'CRAWLLEDGER_VERSION', '[^']+' \);/", "define( 'CRAWLLEDGER_VERSION', '{$version}' );" ),
+	'uninstall.php'    => array( "/define\( 'CRAWLLEDGER_VERSION', '[^']+' \);/", "define( 'CRAWLLEDGER_VERSION', '{$version}' );" ),
 	'readme.txt'       => array( '/^Stable tag: .+$/m', "Stable tag: {$version}" ),
 	'package.json'     => array( '/"version": "[^"]+"/', "\"version\": \"{$version}\"" ),
 );

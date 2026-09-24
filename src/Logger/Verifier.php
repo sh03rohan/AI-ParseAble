@@ -2,13 +2,13 @@
 /**
  * Crawler identity verification.
  *
- * @package AiParseAble
+ * @package CrawlLedger
  */
 
-namespace AiParseAble\Logger;
+namespace CrawlLedger\Logger;
 
-use AiParseAble\Support\Ip;
-use AiParseAble\Support\Str;
+use CrawlLedger\Support\Ip;
+use CrawlLedger\Support\Str;
 
 /**
  * Published IP ranges first; forward-confirmed reverse DNS second. Results are cached per /24 or /48
@@ -16,7 +16,7 @@ use AiParseAble\Support\Str;
  */
 final class Verifier {
 
-	const CACHE_GROUP = 'ai-parseable-verify';
+	const CACHE_GROUP = 'crawlledger-verify';
 
 	/**
 	 * Range store.
@@ -171,7 +171,7 @@ final class Verifier {
 			$v = wp_cache_get( $key, self::CACHE_GROUP, false, $found );
 			return $found ? (bool) $v : null;
 		}
-		$v = get_transient( 'ai_parseable_v_' . md5( $key ) );
+		$v = get_transient( 'crawlledger_v_' . md5( $key ) );
 		return false === $v ? null : ( '1' === $v );
 	}
 
@@ -187,6 +187,6 @@ final class Verifier {
 			wp_cache_set( $key, $value ? 1 : 0, self::CACHE_GROUP, DAY_IN_SECONDS );
 			return;
 		}
-		set_transient( 'ai_parseable_v_' . md5( $key ), $value ? '1' : '0', DAY_IN_SECONDS );
+		set_transient( 'crawlledger_v_' . md5( $key ), $value ? '1' : '0', DAY_IN_SECONDS );
 	}
 }

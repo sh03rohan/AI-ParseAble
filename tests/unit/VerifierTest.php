@@ -2,13 +2,13 @@
 /**
  * Identity verification.
  *
- * @package AiParseAble
+ * @package CrawlLedger
  */
 
-namespace AiParseAble\Tests\Unit;
+namespace CrawlLedger\Tests\Unit;
 
-use AiParseAble\Logger\Ranges;
-use AiParseAble\Logger\Verifier;
+use CrawlLedger\Logger\Ranges;
+use CrawlLedger\Logger\Verifier;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -17,8 +17,8 @@ use PHPUnit\Framework\TestCase;
 final class VerifierTest extends TestCase {
 
 	protected function setUp(): void {
-		$GLOBALS['ai_parseable_transients'] = array();
-		$GLOBALS['ai_parseable_options']    = array(
+		$GLOBALS['crawlledger_transients'] = array();
+		$GLOBALS['crawlledger_options']    = array(
 			Ranges::OPTION => array(
 				1 => array( 'cidrs' => array( '20.171.207.0/24', '2a01:111:f403:c000::/62' ), 'fetched' => time(), 'error' => '' ),
 			),
@@ -45,7 +45,7 @@ final class VerifierTest extends TestCase {
 		);
 		$this->assertFalse( $v->verify( 9, '66.249.66.1' ) );
 
-		$GLOBALS['ai_parseable_transients'] = array(); // Verification results are cached per /24; clear between cases.
+		$GLOBALS['crawlledger_transients'] = array(); // Verification results are cached per /24; clear between cases.
 		$v2 = new Verifier(
 			new Ranges(),
 			static function () { return 'crawl-66-249-66-1.googlebot.com'; },

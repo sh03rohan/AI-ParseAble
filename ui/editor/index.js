@@ -18,24 +18,24 @@ function Panel() {
 	const blocks = useSelect( ( select ) => select( 'core/block-editor' ).getBlocks(), [] );
 	const { results, score } = runChecks( blocks );
 	return (
-		<PanelBody title={ __( 'AI clarity checks', 'ai-parseable' ) } initialOpen>
-			<p className="aip-ed-score"><strong>{ score }%</strong> { __( 'of checks pass', 'ai-parseable' ) }</p>
-			<ul className="aip-ed-list">
+		<PanelBody title={ __( 'AI clarity checks', 'crawlledger-ai-crawler-log' ) } initialOpen>
+			<p className="clg-ed-score"><strong>{ score }%</strong> { __( 'of checks pass', 'crawlledger-ai-crawler-log' ) }</p>
+			<ul className="clg-ed-list">
 				{ results.map( ( r ) => (
-					<li key={ r.id } className={ `aip-ed-${ r.level }` }>{ r.label }</li>
+					<li key={ r.id } className={ `clg-ed-${ r.level }` }>{ r.label }</li>
 				) ) }
 			</ul>
-			<p className="aip-ed-note">{ __( 'Checks run in the editor as you type; nothing is sent anywhere.', 'ai-parseable' ) }</p>
+			<p className="clg-ed-note">{ __( 'Checks run in the editor as you type; nothing is sent anywhere.', 'crawlledger-ai-crawler-log' ) }</p>
 		</PanelBody>
 	);
 }
 
-registerPlugin( 'ai-parseable', {
+registerPlugin( 'crawlledger', {
 	icon: ICON,
 	render: () => (
 		<>
-			<PluginSidebarMoreMenuItem target="ai-parseable">{ __( 'AI ParseAble', 'ai-parseable' ) }</PluginSidebarMoreMenuItem>
-			<PluginSidebar name="ai-parseable" title={ __( 'AI ParseAble', 'ai-parseable' ) }>
+			<PluginSidebarMoreMenuItem target="crawlledger">{ __( 'CrawlLedger', 'crawlledger-ai-crawler-log' ) }</PluginSidebarMoreMenuItem>
+			<PluginSidebar name="crawlledger" title={ __( 'CrawlLedger', 'crawlledger-ai-crawler-log' ) }>
 				<Panel />
 			</PluginSidebar>
 		</>

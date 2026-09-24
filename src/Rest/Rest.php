@@ -2,38 +2,38 @@
 /**
  * REST API.
  *
- * @package AiParseAble
+ * @package CrawlLedger
  */
 
-namespace AiParseAble\Rest;
+namespace CrawlLedger\Rest;
 
-use AiParseAble\Activation;
-use AiParseAble\Logger\Coverage;
-use AiParseAble\Logger\Ingest;
-use AiParseAble\Logger\Queue;
-use AiParseAble\Logger\Ranges;
-use AiParseAble\Logger\Repository;
-use AiParseAble\Logger\Signatures;
-use AiParseAble\Logger\Verifier;
-use AiParseAble\LlmsTxt\LlmsTxt;
-use AiParseAble\Module;
-use AiParseAble\Robots\PhysicalFile;
-use AiParseAble\Robots\Robots;
-use AiParseAble\Schema\Schema;
-use AiParseAble\Support\Cron;
-use AiParseAble\Support\Options;
-use AiParseAble\Support\Rewrite;
+use CrawlLedger\Activation;
+use CrawlLedger\Logger\Coverage;
+use CrawlLedger\Logger\Ingest;
+use CrawlLedger\Logger\Queue;
+use CrawlLedger\Logger\Ranges;
+use CrawlLedger\Logger\Repository;
+use CrawlLedger\Logger\Signatures;
+use CrawlLedger\Logger\Verifier;
+use CrawlLedger\LlmsTxt\LlmsTxt;
+use CrawlLedger\Module;
+use CrawlLedger\Robots\PhysicalFile;
+use CrawlLedger\Robots\Robots;
+use CrawlLedger\Schema\Schema;
+use CrawlLedger\Support\Cron;
+use CrawlLedger\Support\Options;
+use CrawlLedger\Support\Rewrite;
 use WP_REST_Request;
 use WP_REST_Response;
 use WP_REST_Server;
 
 /**
- * Namespace ai-parseable/v1. Every route declares a permission_callback; args carry types and enums so
+ * Namespace crawlledger/v1. Every route declares a permission_callback; args carry types and enums so
  * WordPress validates before the callback runs. Dashboard ranges over 7 days never touch the raw table.
  */
 final class Rest implements Module {
 
-	const NS = 'ai-parseable/v1';
+	const NS = 'crawlledger/v1';
 
 	/**
 	 * Settings.
@@ -798,7 +798,7 @@ final class Rest implements Module {
 	 * @return WP_REST_Response
 	 */
 	public function dismiss_notice( WP_REST_Request $request ): WP_REST_Response {
-		update_user_meta( get_current_user_id(), 'ai_parseable_dismissed_' . $request['id'], time() );
+		update_user_meta( get_current_user_id(), 'crawlledger_dismissed_' . $request['id'], time() );
 		return new WP_REST_Response( array( 'ok' => true ) );
 	}
 }

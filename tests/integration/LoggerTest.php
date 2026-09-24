@@ -2,18 +2,18 @@
 /**
  * End-to-end logger: queue -> ingest -> tables, plus the spoof fixture and DISABLE_WP_CRON.
  *
- * @package AiParseAble
+ * @package CrawlLedger
  */
 
-namespace AiParseAble\Tests\Integration;
+namespace CrawlLedger\Tests\Integration;
 
-use AiParseAble\Activation;
-use AiParseAble\Logger\Ingest;
-use AiParseAble\Logger\Ranges;
-use AiParseAble\Logger\Record;
-use AiParseAble\Logger\Verifier;
-use AiParseAble\Plugin;
-use AiParseAble\Support\Cron;
+use CrawlLedger\Activation;
+use CrawlLedger\Logger\Ingest;
+use CrawlLedger\Logger\Ranges;
+use CrawlLedger\Logger\Record;
+use CrawlLedger\Logger\Verifier;
+use CrawlLedger\Plugin;
+use CrawlLedger\Support\Cron;
 use WP_UnitTestCase;
 
 /**

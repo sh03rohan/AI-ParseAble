@@ -2,10 +2,10 @@
 /**
  * In-memory hit buffer for the PHP-level path.
  *
- * @package AiParseAble
+ * @package CrawlLedger
  */
 
-namespace AiParseAble\Logger;
+namespace CrawlLedger\Logger;
 
 /**
  * Holds records in memory and flushes them at shutdown,
@@ -71,7 +71,7 @@ final class Buffer {
 		 *
 		 * @param bool $finish Release the connection first.
 		 */
-		if ( apply_filters( 'ai_parseable_finish_request', true ) && function_exists( 'fastcgi_finish_request' ) && ! wp_doing_cron() && PHP_SAPI !== 'cli' ) {
+		if ( apply_filters( 'crawlledger_finish_request', true ) && function_exists( 'fastcgi_finish_request' ) && ! wp_doing_cron() && PHP_SAPI !== 'cli' ) {
 			fastcgi_finish_request();
 		}
 		foreach ( $this->pending as $producer ) {

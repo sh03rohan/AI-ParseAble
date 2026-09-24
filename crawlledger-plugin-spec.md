@@ -1,4 +1,4 @@
-# AI ParseAble — WordPress plugin build spec
+# CrawlLedger — WordPress plugin build spec
 
 Scope: the WordPress plugin only. The checker website is specified separately.
 
@@ -41,8 +41,8 @@ if ( version_compare( PHP_VERSION, '7.4', '<' ) ) {
 ## 3. Repository layout
 
 ```
-ai-parseable/
-├── ai-parseable.php            bootstrap only — header, guards, autoload, boot
+crawlledger/
+├── crawlledger.php            bootstrap only — header, guards, autoload, boot
 ├── uninstall.php
 ├── composer.json               dev deps only; no runtime vendor shipped
 ├── package.json
@@ -66,20 +66,20 @@ ai-parseable/
 │   ├── Admin/
 │   └── Support/                Str, Ip, Cron, Options
 ├── mu/
-│   └── ai-parseable-drop-in.php
+│   └── crawlledger-drop-in.php
 ├── assets/                     built JS/CSS output
 ├── ui/                         JS/CSS source
 ├── languages/
 └── tests/
 ```
 
-`ai-parseable.php` contains no business logic. It declares the header, runs the guards, registers the autoloader, and calls `Plugin::boot()`. That file should be under 80 lines forever.
+`crawlledger.php` contains no business logic. It declares the header, runs the guards, registers the autoloader, and calls `Plugin::boot()`. That file should be under 80 lines forever.
 
 ### Autoloading
 
-PSR-4 under the namespace `AiParseAble\`. Generate a classmap at build time with `composer dump-autoload --classmap-authoritative --no-dev` and ship that — do not ship `vendor/` with runtime dependencies.
+PSR-4 under the namespace `CrawlLedger\`. Generate a classmap at build time with `composer dump-autoload --classmap-authoritative --no-dev` and ship that — do not ship `vendor/` with runtime dependencies.
 
-**If a runtime dependency ever becomes unavoidable, scope it.** Two plugins shipping different versions of the same unprefixed library is the classic fatal-error-on-someone-else's-site scenario. Use `php-scoper` in the build pipeline and prefix everything into `AiParseAble\Vendor\`.
+**If a runtime dependency ever becomes unavoidable, scope it.** Two plugins shipping different versions of the same unprefixed library is the classic fatal-error-on-someone-else's-site scenario. Use `php-scoper` in the build pipeline and prefix everything into `CrawlLedger\Vendor\`.
 
 ---
 
@@ -131,13 +131,13 @@ With WP Rocket, LiteSpeed, W3 Total Cache, WP Super Cache, or a CDN in front, a 
 **Solution: an mu-plugin drop-in that loads before `advanced-cache.php`.**
 
 ```
-wp-content/mu-plugins/ai-parseable-drop-in.php
+wp-content/mu-plugins/crawlledger-drop-in.php
 ```
 
 The drop-in is deliberately tiny — under 100 lines, zero dependencies, no WordPress functions beyond what exists at that point in the load. It matches the user-agent, and if it matches, appends a single line to a daily append-only file:
 
 ```
-wp-content/uploads/ai-parseable/queue/2026-09-14.log
+wp-content/uploads/crawlledger/queue/2026-09-14.log
 ```
 
 A newline-delimited record per hit: timestamp, UA hash, IP, method, request URI, status is filled later. Appending to a file with `LOCK_EX` costs far less than a database round trip and is safe under concurrency. A cron job ingests these files into the table in batches and deletes them.
@@ -176,7 +176,7 @@ Write path, in order of preference:
 Guard the ingest with a lock so two overlapping cron runs cannot double-insert:
 
 ```php
-if ( ! wp_cache_add( 'ai_parseable_ingest_lock', 1, 'ai-parseable', 300 ) ) {
+if ( ! wp_cache_add( 'crawlledger_ingest_lock', 1, 'crawlledger', 300 ) ) {
     return; // another run holds the lock
 }
 ```
@@ -205,7 +205,7 @@ Show the current table size in the dashboard. Owners who can see it stop worryin
 ```php
 $charset = $wpdb->get_charset_collate();
 
-// {$wpdb->prefix}aiparseable_hits
+// {$wpdb->prefix}crawlledger_hits
 "CREATE TABLE {$table} (
   id           BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   hit_at       DATETIME NOT NULL,
@@ -243,10 +243,10 @@ Writes rules through the `robots_txt` filter.
 Detect this on activation and on every settings save. When a physical file is found, show its contents in the UI, explain the situation, and offer to append the managed block to it with clear delimiters:
 
 ```
-# BEGIN AI ParseAble
+# BEGIN CrawlLedger
 User-agent: PerplexityBot
 Allow: /
-# END AI ParseAble
+# END CrawlLedger
 ```
 
 Only ever rewrite between those markers. Never touch a line outside them. Same discipline as core's `.htaccess` handling, and for the same reason.
@@ -283,7 +283,7 @@ The settings screen shows a before/after diff of a real page from the site, not 
 Serve virtually through a rewrite rule and a `template_redirect` handler. **Do not write a physical file.** Many hosts have a non-writable root, and a physical file survives uninstall as litter.
 
 ```php
-add_rewrite_rule( '^llms\.txt$', 'index.php?aiparseable_llms=1', 'top' );
+add_rewrite_rule( '^llms\.txt$', 'index.php?crawlledger_llms=1', 'top' );
 ```
 
 Flush rewrite rules on activation and on settings save only. Never on `init` — that is a full option rewrite on every request.
@@ -324,13 +324,13 @@ Target: under 60KB gzipped for the main bundle.
 
 ### REST
 
-Namespace `ai-parseable/v1`. Every route declares a `permission_callback` — never `__return_true`, which is the most common review rejection.
+Namespace `crawlledger/v1`. Every route declares a `permission_callback` — never `__return_true`, which is the most common review rejection.
 
 ```php
-register_rest_route( 'ai-parseable/v1', '/stats', [
+register_rest_route( 'crawlledger/v1', '/stats', [
     'methods'             => WP_REST_Server::READABLE,
     'callback'            => [ $this, 'stats' ],
-    'permission_callback' => fn() => current_user_can( 'aiparseable_manage' ),
+    'permission_callback' => fn() => current_user_can( 'crawlledger_manage' ),
     'args'                => [
         'range' => [
             'type'              => 'string',
@@ -348,7 +348,7 @@ Declare `args` with types and enums so WordPress validates before the callback r
 
 ### Capability
 
-Register a custom capability `aiparseable_manage`, granted to Administrator on activation. Do not gate on `manage_options` — agencies need to delegate this to an editor without handing over the whole site.
+Register a custom capability `crawlledger_manage`, granted to Administrator on activation. Do not gate on `manage_options` — agencies need to delegate this to an editor without handing over the whole site.
 
 ### Admin notices
 
@@ -363,7 +363,7 @@ At most one, dismissible, stored per user. No upgrade nags on unrelated screens.
 - Sanitise on input with the narrowest function that fits. `sanitize_key` for identifiers, not `sanitize_text_field`.
 - Nonces on every state-changing request, capability checks on every handler. Both, not either.
 - **IP storage is personal data under GDPR.** Provide a setting to store a truncated IP (`/24`, `/48`) or a salted hash instead of the full address, and document the default in `readme.txt`. Register export and erase handlers via `wp_privacy_personal_data_exporters` even though crawler IPs are not user data — it demonstrates the plugin was built by someone who has read the requirements.
-- Drop-in log files live in `uploads/ai-parseable/` with an `index.php`, a `.htaccess` deny rule, and randomised filenames. Verify on activation that the directory is not web-readable and warn if it is.
+- Drop-in log files live in `uploads/crawlledger/` with an `index.php`, a `.htaccess` deny rule, and randomised filenames. Verify on activation that the directory is not web-readable and warn if it is.
 - No phone-home without explicit opt-in. No bundled analytics SDK.
 
 ---
@@ -397,11 +397,11 @@ The non-bot path is the one that matters, because it is 99% of traffic. A UA tha
 
 ## 16. Internationalisation
 
-Text domain `ai-parseable`, matching the slug exactly — wp.org's language pack system requires it. Every user-facing string wrapped, with translator comments on anything containing a placeholder:
+Text domain `crawlledger`, matching the slug exactly — wp.org's language pack system requires it. Every user-facing string wrapped, with translator comments on anything containing a placeholder:
 
 ```php
 /* translators: %s: name of the AI crawler, e.g. GPTBot */
-sprintf( __( '%s has not visited in 14 days.', 'ai-parseable' ), $bot );
+sprintf( __( '%s has not visited in 14 days.', 'crawlledger-ai-crawler-log' ), $bot );
 ```
 
 JavaScript strings through `@wordpress/i18n` with `wp_set_script_translations()`. Never concatenate translated fragments — word order differs by language.

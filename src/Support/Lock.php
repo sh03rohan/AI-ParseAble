@@ -2,10 +2,10 @@
 /**
  * Cross-process lock.
  *
- * @package AiParseAble
+ * @package CrawlLedger
  */
 
-namespace AiParseAble\Support;
+namespace CrawlLedger\Support;
 
 /**
  * The function wp_cache_add() is atomic only with a persistent object cache. Without one it is per-process and
@@ -14,7 +14,12 @@ namespace AiParseAble\Support;
 final class Lock {
 
 	/**
-	 * Try to acquire.
+	 * Object-cache group for locks.
+	 */
+	const GROUP = 'crawlledger';
+
+	/**
+	 * Take a lock.
 	 *
 	 * @param string $name Lock name.
 	 * @param int    $ttl  Seconds before a held lock is considered stale.
@@ -22,10 +27,10 @@ final class Lock {
 	 */
 	public static function acquire( string $name, int $ttl = 300 ): bool {
 		if ( wp_using_ext_object_cache() ) {
-			return wp_cache_add( $name, 1, 'ai-parseable', $ttl );
+			return wp_cache_add( $name, 1, self::GROUP, $ttl );
 		}
 
-		$option = 'ai_parseable_lock_' . sanitize_key( $name );
+		$option = 'crawlledger_lock_' . sanitize_key( $name );
 		$held   = (int) get_option( $option, 0 );
 		if ( $held > 0 && ( time() - $held ) < $ttl ) {
 			return false;
@@ -44,9 +49,9 @@ final class Lock {
 	 */
 	public static function release( string $name ): void {
 		if ( wp_using_ext_object_cache() ) {
-			wp_cache_delete( $name, 'ai-parseable' );
+			wp_cache_delete( $name, self::GROUP );
 			return;
 		}
-		delete_option( 'ai_parseable_lock_' . sanitize_key( $name ) );
+		delete_option( 'crawlledger_lock_' . sanitize_key( $name ) );
 	}
 }

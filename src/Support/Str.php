@@ -2,10 +2,10 @@
 /**
  * String helpers.
  *
- * @package AiParseAble
+ * @package CrawlLedger
  */
 
-namespace AiParseAble\Support;
+namespace CrawlLedger\Support;
 
 /**
  * Small, dependency-free string utilities.

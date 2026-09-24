@@ -19,18 +19,18 @@ export default function PagePicker( { onPick, placeholder } ) {
 	}, [ search ] );
 
 	return (
-		<div className="aip-picker">
+		<div className="clg-picker">
 			<SearchControl value={ search } onChange={ ( v ) => {
 				setSearch( v ); setOpen( true );
-			} } onFocus={ () => setOpen( true ) } placeholder={ placeholder || __( 'Search pages…', 'ai-parseable' ) } __nextHasNoMarginBottom />
+			} } onFocus={ () => setOpen( true ) } placeholder={ placeholder || __( 'Search pages…', 'crawlledger-ai-crawler-log' ) } __nextHasNoMarginBottom />
 			{ open && results.length > 0 && (
-				<ul className="aip-picker-list">
+				<ul className="clg-picker-list">
 					{ results.map( ( p ) => (
 						<li key={ p.id }>
-							<button type="button" className="aip-picker-item" onClick={ () => {
+							<button type="button" className="clg-picker-item" onClick={ () => {
 								onPick( p ); setOpen( false ); setSearch( '' );
 							} }>
-								<span>{ p.title || `#${ p.id }` }</span><span className="aip-muted">{ p.type }</span>
+								<span>{ p.title || `#${ p.id }` }</span><span className="clg-muted">{ p.type }</span>
 							</button>
 						</li>
 					) ) }

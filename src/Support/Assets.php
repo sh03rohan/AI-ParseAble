@@ -2,10 +2,10 @@
 /**
  * Script registration helpers.
  *
- * @package AiParseAble
+ * @package CrawlLedger
  */
 
-namespace AiParseAble\Support;
+namespace CrawlLedger\Support;
 
 /**
  * Bundles built with @wordpress/scripts depend on the "react-jsx-runtime" handle, which WordPress
@@ -22,11 +22,11 @@ final class Assets {
 		if ( wp_script_is( 'react-jsx-runtime', 'registered' ) ) {
 			return;
 		}
-		$asset_file = AI_PARSEABLE_DIR . 'assets/react-jsx-runtime.asset.php';
+		$asset_file = CRAWLLEDGER_DIR . 'assets/react-jsx-runtime.asset.php';
 		if ( ! is_readable( $asset_file ) ) {
 			return;
 		}
 		$asset = require $asset_file;
-		wp_register_script( 'react-jsx-runtime', AI_PARSEABLE_URL . 'assets/react-jsx-runtime.js', $asset['dependencies'], $asset['version'], true );
+		wp_register_script( 'react-jsx-runtime', CRAWLLEDGER_URL . 'assets/react-jsx-runtime.js', $asset['dependencies'], $asset['version'], true );
 	}
 }

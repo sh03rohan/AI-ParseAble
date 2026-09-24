@@ -2,22 +2,22 @@
 /**
  * Scheduling.
  *
- * @package AiParseAble
+ * @package CrawlLedger
  */
 
-namespace AiParseAble\Support;
+namespace CrawlLedger\Support;
 
-use AiParseAble\Module;
+use CrawlLedger\Module;
 
 /**
  * WP-Cron cannot be relied on alone, so prefer Action Scheduler when a plugin (WooCommerce) bundles it.
  */
 final class Cron implements Module {
 
-	const INGEST = 'ai_parseable_ingest';
-	const ROLLUP = 'ai_parseable_rollup';
-	const RANGES = 'ai_parseable_ranges';
-	const GROUP  = 'ai-parseable';
+	const INGEST = 'crawlledger_ingest';
+	const ROLLUP = 'crawlledger_rollup';
+	const RANGES = 'crawlledger_ranges';
+	const GROUP  = 'crawlledger';
 
 	/**
 	 * Hooks.
@@ -36,10 +36,10 @@ final class Cron implements Module {
 	 * @return array<mixed>
 	 */
 	public function schedules( array $schedules ): array {
-		if ( ! isset( $schedules['ai_parseable_5min'] ) ) {
-			$schedules['ai_parseable_5min'] = array(
+		if ( ! isset( $schedules['crawlledger_5min'] ) ) {
+			$schedules['crawlledger_5min'] = array(
 				'interval' => 5 * MINUTE_IN_SECONDS,
-				'display'  => __( 'Every five minutes (AI ParseAble)', 'ai-parseable' ),
+				'display'  => __( 'Every five minutes (CrawlLedger)', 'crawlledger-ai-crawler-log' ),
 			);
 		}
 		return $schedules;
@@ -61,7 +61,7 @@ final class Cron implements Module {
 	 */
 	private function events(): array {
 		return array(
-			self::INGEST => array( 5 * MINUTE_IN_SECONDS, 'ai_parseable_5min' ),
+			self::INGEST => array( 5 * MINUTE_IN_SECONDS, 'crawlledger_5min' ),
 			self::ROLLUP => array( DAY_IN_SECONDS, 'daily' ),
 			self::RANGES => array( WEEK_IN_SECONDS, 'weekly' ),
 		);

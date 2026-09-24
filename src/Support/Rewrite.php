@@ -2,10 +2,10 @@
 /**
  * Rewrite-rule refresh that is safe in every context.
  *
- * @package AiParseAble
+ * @package CrawlLedger
  */
 
-namespace AiParseAble\Support;
+namespace CrawlLedger\Support;
 
 /**
  * Core's flush_rewrite_rules() regenerates from the global $wp_rewrite, which was initialised for the request's

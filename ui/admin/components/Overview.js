@@ -6,17 +6,17 @@ import { AreaChart, Sparkline, Proportion } from './Charts';
 import Coverage from './Coverage';
 
 const TYPE = {
-	answer: { label: __( 'Answer', 'ai-parseable' ), hint: __( 'Fetches pages to build answers for users in real time.', 'ai-parseable' ) },
-	search: { label: __( 'Search', 'ai-parseable' ), hint: __( 'Indexes for a search product that also feeds AI answers.', 'ai-parseable' ) },
-	training: { label: __( 'Training', 'ai-parseable' ), hint: __( 'Collects content for model training.', 'ai-parseable' ) },
+	answer: { label: __( 'Answer', 'crawlledger-ai-crawler-log' ), hint: __( 'Fetches pages to build answers for users in real time.', 'crawlledger-ai-crawler-log' ) },
+	search: { label: __( 'Search', 'crawlledger-ai-crawler-log' ), hint: __( 'Indexes for a search product that also feeds AI answers.', 'crawlledger-ai-crawler-log' ) },
+	training: { label: __( 'Training', 'crawlledger-ai-crawler-log' ), hint: __( 'Collects content for model training.', 'crawlledger-ai-crawler-log' ) },
 };
 
 function Delta( { now, before, invert = false } ) {
 	if ( ! before && ! now ) {
-		return <span className="aip-delta aip-delta--flat">—</span>;
+		return <span className="clg-delta clg-delta--flat">—</span>;
 	}
 	if ( ! before ) {
-		return <span className="aip-delta aip-delta--flat">{ __( 'new', 'ai-parseable' ) }</span>;
+		return <span className="clg-delta clg-delta--flat">{ __( 'new', 'crawlledger-ai-crawler-log' ) }</span>;
 	}
 	const pct = Math.round( ( ( now - before ) / before ) * 100 );
 	const good = invert ? pct <= 0 : pct >= 0;
@@ -27,7 +27,7 @@ function Delta( { now, before, invert = false } ) {
 		arrow = pct > 0 ? '▲' : '▼';
 	}
 	return (
-		<span className={ `aip-delta aip-delta--${ tone }` } title={ __( 'vs. the previous period', 'ai-parseable' ) }>
+		<span className={ `clg-delta clg-delta--${ tone }` } title={ __( 'vs. the previous period', 'crawlledger-ai-crawler-log' ) }>
 			{ arrow } { Math.abs( pct ) }%
 		</span>
 	);
@@ -35,10 +35,10 @@ function Delta( { now, before, invert = false } ) {
 
 function Stat( { label, value, sub, delta } ) {
 	return (
-		<div className="aip-stat">
-			<span className="aip-stat-label">{ label }</span>
-			<span className="aip-stat-row"><span className="aip-stat-value">{ value }</span>{ delta }</span>
-			{ sub && <span className="aip-stat-sub">{ sub }</span> }
+		<div className="clg-stat">
+			<span className="clg-stat-label">{ label }</span>
+			<span className="clg-stat-row"><span className="clg-stat-value">{ value }</span>{ delta }</span>
+			{ sub && <span className="clg-stat-sub">{ sub }</span> }
 		</div>
 	);
 }
@@ -47,18 +47,18 @@ function Status( { code } ) {
 	const thresholds = [ [ 500, 'err' ], [ 400, 'warn' ], [ 300, 'redir' ] ];
 	const match = thresholds.find( ( [ min ] ) => code >= min );
 	const cls = match ? match[ 1 ] : 'ok';
-	return <span className={ `aip-code aip-code--${ cls }` }>{ code }</span>;
+	return <span className={ `clg-code clg-code--${ cls }` }>{ code }</span>;
 }
 
 function EmptyState( { coverage } ) {
 	return (
-		<div className="aip-empty">
-			<h2>{ __( 'No crawler visits recorded yet', 'ai-parseable' ) }</h2>
-			<p>{ __( 'Hits are captured as they happen and written to the database every five minutes. Most sites see their first AI crawler within a day.', 'ai-parseable' ) }</p>
+		<div className="clg-empty">
+			<h2>{ __( 'No crawler visits recorded yet', 'crawlledger-ai-crawler-log' ) }</h2>
+			<p>{ __( 'Hits are captured as they happen and written to the database every five minutes. Most sites see their first AI crawler within a day.', 'crawlledger-ai-crawler-log' ) }</p>
 			{ coverage && coverage.queue.files > 0 && <p>{ sprintf(
 				/* translators: %d: number of files */
-				_n( '%d queue file is waiting for the next ingest.', '%d queue files are waiting for the next ingest.', coverage.queue.files, 'ai-parseable' ), coverage.queue.files ) }</p> }
-			<p className="aip-muted">{ __( 'To test the pipeline, request any page with a crawler user agent, e.g. curl -A "GPTBot" and then use "Ingest queue now" under Details.', 'ai-parseable' ) }</p>
+				_n( '%d queue file is waiting for the next ingest.', '%d queue files are waiting for the next ingest.', coverage.queue.files, 'crawlledger-ai-crawler-log' ), coverage.queue.files ) }</p> }
+			<p className="clg-muted">{ __( 'To test the pipeline, request any page with a crawler user agent, e.g. curl -A "GPTBot" and then use "Ingest queue now" under Details.', 'crawlledger-ai-crawler-log' ) }</p>
 		</div>
 	);
 }
@@ -69,9 +69,9 @@ export default function Overview() {
 	const [ showQuiet, setShowQuiet ] = useState( false );
 	const [ showAll, setShowAll ] = useState( { failing: false, top: false, recent: false } );
 	const limit = ( key, list, n ) => ( showAll[ key ] ? list : list.slice( 0, n ) );
-	const More = ( { k, list, n } ) => list.length > n ? <button type="button" className="aip-link aip-table-toggle" onClick={ () => setShowAll( { ...showAll, [ k ]: ! showAll[ k ] } ) }>{ showAll[ k ] ? __( 'Show fewer', 'ai-parseable' ) : sprintf(
+	const More = ( { k, list, n } ) => list.length > n ? <button type="button" className="clg-link clg-table-toggle" onClick={ () => setShowAll( { ...showAll, [ k ]: ! showAll[ k ] } ) }>{ showAll[ k ] ? __( 'Show fewer', 'crawlledger-ai-crawler-log' ) : sprintf(
 		/* translators: %d: count */
-		__( 'Show all %d', 'ai-parseable' ), list.length ) }</button> : null;
+		__( 'Show all %d', 'crawlledger-ai-crawler-log' ), list.length ) }</button> : null;
 	const [ stats, setStats ] = useState( null );
 	const [ urls, setUrls ] = useState( null );
 	const [ coverage, setCoverage ] = useState( null );
@@ -88,10 +88,10 @@ export default function Overview() {
 	useEffect( load, [ range, verified ] );
 
 	if ( error ) {
-		return <p className="aip-error">{ error }</p>;
+		return <p className="clg-error">{ error }</p>;
 	}
 	if ( ! stats ) {
-		return <div className="aip-loading"><Spinner /></div>;
+		return <div className="clg-loading"><Spinner /></div>;
 	}
 
 	const historyDays = stats.history_days;
@@ -104,148 +104,148 @@ export default function Overview() {
 	const prevErrRate = stats.previous.hits ? Math.round( ( stats.previous.errors / stats.previous.hits ) * 100 ) : 0;
 
 	return (
-		<div className="aip-overview">
+		<div className="clg-overview">
 			<Coverage coverage={ coverage } onChange={ load } />
 
 			{ nothingYet ? <EmptyState coverage={ coverage } /> : (
 				<>
-					<div className="aip-toolbar">
-						<div className="aip-segmented" role="group" aria-label={ __( 'Range', 'ai-parseable' ) }>
+					<div className="clg-toolbar">
+						<div className="clg-segmented" role="group" aria-label={ __( 'Range', 'crawlledger-ai-crawler-log' ) }>
 							{ ranges.map( ( [ key, days ] ) => (
-								<button key={ key } type="button" className={ key === range ? 'is-active' : '' } disabled={ days > historyDays } title={ days > historyDays ? __( 'Longer history is part of the add-on', 'ai-parseable' ) : '' } onClick={ () => setRange( key ) }>
+								<button key={ key } type="button" className={ key === range ? 'is-active' : '' } disabled={ days > historyDays } title={ days > historyDays ? __( 'Longer history is part of the add-on', 'crawlledger-ai-crawler-log' ) : '' } onClick={ () => setRange( key ) }>
 									{ sprintf(
 										/* translators: %d: number of days */
-										__( '%d days', 'ai-parseable' ), days ) }
-									{ days > historyDays && <span className="aip-lock" aria-hidden="true">🔒</span> }
+										__( '%d days', 'crawlledger-ai-crawler-log' ), days ) }
+									{ days > historyDays && <span className="clg-lock" aria-hidden="true">🔒</span> }
 								</button>
 							) ) }
 						</div>
-						<ToggleControl label={ __( 'Verified crawlers only', 'ai-parseable' ) } checked={ verified } onChange={ setVerified } __nextHasNoMarginBottom />
-						<span className="aip-muted aip-toolbar-note">
+						<ToggleControl label={ __( 'Verified crawlers only', 'crawlledger-ai-crawler-log' ) } checked={ verified } onChange={ setVerified } __nextHasNoMarginBottom />
+						<span className="clg-muted clg-toolbar-note">
 							{ sprintf(
 								/* translators: 1: verified count, 2: unverified count */
-								__( '%1$s verified · %2$s unverified', 'ai-parseable' ), formatNumber( stats.totals.verified ), formatNumber( stats.totals.unverified ) ) }
-							<span className="aip-help" title={ __( 'Unverified: the user agent claimed a crawler but the IP is not in the vendor\'s published ranges and reverse DNS did not confirm it — or the vendor publishes neither.', 'ai-parseable' ) }>?</span>
+								__( '%1$s verified · %2$s unverified', 'crawlledger-ai-crawler-log' ), formatNumber( stats.totals.verified ), formatNumber( stats.totals.unverified ) ) }
+							<span className="clg-help" title={ __( 'Unverified: the user agent claimed a crawler but the IP is not in the vendor\'s published ranges and reverse DNS did not confirm it — or the vendor publishes neither.', 'crawlledger-ai-crawler-log' ) }>?</span>
 						</span>
 					</div>
 
-					<div className="aip-stats">
-						<Stat label={ verified ? __( 'Verified crawler visits', 'ai-parseable' ) : __( 'Crawler visits', 'ai-parseable' ) } value={ formatNumber( stats.totals.hits ) } delta={ <Delta now={ stats.totals.hits } before={ stats.previous.hits } /> } sub={ sprintf(
+					<div className="clg-stats">
+						<Stat label={ verified ? __( 'Verified crawler visits', 'crawlledger-ai-crawler-log' ) : __( 'Crawler visits', 'crawlledger-ai-crawler-log' ) } value={ formatNumber( stats.totals.hits ) } delta={ <Delta now={ stats.totals.hits } before={ stats.previous.hits } /> } sub={ sprintf(
 							/* translators: %d: number of days */
-							__( 'last %d days', 'ai-parseable' ), stats.days ) } />
-						<Stat label={ __( 'Distinct crawlers', 'ai-parseable' ) } value={ formatNumber( stats.totals.bots ) } delta={ <Delta now={ stats.totals.bots } before={ stats.previous.bots } /> } sub={ sprintf(
+							__( 'last %d days', 'crawlledger-ai-crawler-log' ), stats.days ) } />
+						<Stat label={ __( 'Distinct crawlers', 'crawlledger-ai-crawler-log' ) } value={ formatNumber( stats.totals.bots ) } delta={ <Delta now={ stats.totals.bots } before={ stats.previous.bots } /> } sub={ sprintf(
 							/* translators: %d: number of crawlers known */
-							__( 'of %d known', 'ai-parseable' ), stats.bots.length ) } />
-						<Stat label={ __( 'Error rate', 'ai-parseable' ) } value={ `${ errRate }%` } delta={ <Delta now={ errRate } before={ prevErrRate } invert /> } sub={ sprintf(
+							__( 'of %d known', 'crawlledger-ai-crawler-log' ), stats.bots.length ) } />
+						<Stat label={ __( 'Error rate', 'crawlledger-ai-crawler-log' ) } value={ `${ errRate }%` } delta={ <Delta now={ errRate } before={ prevErrRate } invert /> } sub={ sprintf(
 							/* translators: %s: count */
-							__( '%s responses were 4xx/5xx', 'ai-parseable' ), formatNumber( stats.totals.errors ) ) } />
-						<Stat label={ __( 'Cost per visitor request', 'ai-parseable' ) } value={ timing.non_bot_avg_us === null ? '—' : `${ ( timing.non_bot_avg_us / 1000 ).toFixed( 3 ) } ms` } sub={ timing.non_bot_avg_us === null ? __( 'no samples yet', 'ai-parseable' ) : sprintf(
+							__( '%s responses were 4xx/5xx', 'crawlledger-ai-crawler-log' ), formatNumber( stats.totals.errors ) ) } />
+						<Stat label={ __( 'Cost per visitor request', 'crawlledger-ai-crawler-log' ) } value={ timing.non_bot_avg_us === null ? '—' : `${ ( timing.non_bot_avg_us / 1000 ).toFixed( 3 ) } ms` } sub={ timing.non_bot_avg_us === null ? __( 'no samples yet', 'crawlledger-ai-crawler-log' ) : sprintf(
 							/* translators: 1: budget in ms, 2: sample count */
-							__( 'budget %1$s ms · 0 queries · %2$d samples', 'ai-parseable' ), ( timing.budget_us / 1000 ).toFixed( 1 ), timing.samples ) } />
+							__( 'budget %1$s ms · 0 queries · %2$d samples', 'crawlledger-ai-crawler-log' ), ( timing.budget_us / 1000 ).toFixed( 1 ), timing.samples ) } />
 					</div>
 
-					<section className="aip-panel">
-						<header className="aip-panel-head">
-							<h2>{ __( 'Visits per day', 'ai-parseable' ) }</h2>
-							<span className="aip-muted">{ sprintf(
+					<section className="clg-panel">
+						<header className="clg-panel-head">
+							<h2>{ __( 'Visits per day', 'crawlledger-ai-crawler-log' ) }</h2>
+							<span className="clg-muted">{ sprintf(
 								/* translators: %s: milliseconds */
-								__( 'from daily aggregates · %s ms', 'ai-parseable' ), stats.query_ms ) }</span>
+								__( 'from daily aggregates · %s ms', 'crawlledger-ai-crawler-log' ), stats.query_ms ) }</span>
 						</header>
 						<AreaChart series={ stats.series } />
 					</section>
 
-					<section className="aip-panel">
-						<header className="aip-panel-head">
-							<h2>{ __( 'Crawlers', 'ai-parseable' ) }</h2>
-							<span className="aip-muted">{ sprintf(
+					<section className="clg-panel">
+						<header className="clg-panel-head">
+							<h2>{ __( 'Crawlers', 'crawlledger-ai-crawler-log' ) }</h2>
+							<span className="clg-muted">{ sprintf(
 								/* translators: 1: active count, 2: quiet count */
-								__( '%1$d active · %2$d not seen', 'ai-parseable' ), active.length, quiet.length ) }</span>
+								__( '%1$d active · %2$d not seen', 'crawlledger-ai-crawler-log' ), active.length, quiet.length ) }</span>
 						</header>
-						<table className="aip-table">
+						<table className="clg-table">
 							<thead>
 								<tr>
-									<th>{ __( 'Crawler', 'ai-parseable' ) }</th>
-									<th>{ __( 'Type', 'ai-parseable' ) }</th>
-									<th className="aip-num">{ __( 'Visits', 'ai-parseable' ) }</th>
-									<th>{ __( 'Verified', 'ai-parseable' ) }</th>
-									<th className="aip-num">{ __( 'Errors', 'ai-parseable' ) }</th>
-									<th>{ __( 'Last seen', 'ai-parseable' ) }</th>
-									<th>{ __( 'Trend', 'ai-parseable' ) }</th>
+									<th>{ __( 'Crawler', 'crawlledger-ai-crawler-log' ) }</th>
+									<th>{ __( 'Type', 'crawlledger-ai-crawler-log' ) }</th>
+									<th className="clg-num">{ __( 'Visits', 'crawlledger-ai-crawler-log' ) }</th>
+									<th>{ __( 'Verified', 'crawlledger-ai-crawler-log' ) }</th>
+									<th className="clg-num">{ __( 'Errors', 'crawlledger-ai-crawler-log' ) }</th>
+									<th>{ __( 'Last seen', 'crawlledger-ai-crawler-log' ) }</th>
+									<th>{ __( 'Trend', 'crawlledger-ai-crawler-log' ) }</th>
 								</tr>
 							</thead>
 							<tbody>
 								{ ( showQuiet ? stats.bots : active ).map( ( b ) => (
-									<tr key={ b.id } className={ b.total === 0 ? 'aip-row-quiet' : '' }>
-										<td><strong>{ b.name }</strong><span className="aip-muted"> { b.vendor }</span></td>
-										<td><span className={ `aip-badge aip-badge--${ b.type }` } title={ TYPE[ b.type ].hint }>{ TYPE[ b.type ].label }</span></td>
-										<td className="aip-num">{ formatNumber( b.total ) }</td>
+									<tr key={ b.id } className={ b.total === 0 ? 'clg-row-quiet' : '' }>
+										<td><strong>{ b.name }</strong><span className="clg-muted"> { b.vendor }</span></td>
+										<td><span className={ `clg-badge clg-badge--${ b.type }` } title={ TYPE[ b.type ].hint }>{ TYPE[ b.type ].label }</span></td>
+										<td className="clg-num">{ formatNumber( b.total ) }</td>
 										<td>
 											{ b.verify === 'none'
-												? <span className="aip-muted" title={ __( 'This vendor publishes no IP ranges or reverse-DNS pattern, so its hits cannot be verified.', 'ai-parseable' ) }>{ __( 'not verifiable', 'ai-parseable' ) }</span>
+												? <span className="clg-muted" title={ __( 'This vendor publishes no IP ranges or reverse-DNS pattern, so its hits cannot be verified.', 'crawlledger-ai-crawler-log' ) }>{ __( 'not verifiable', 'crawlledger-ai-crawler-log' ) }</span>
 												: <Proportion value={ b.verified } total={ b.total } title={ sprintf(
 													/* translators: 1: verified, 2: unverified */
-													__( '%1$s verified, %2$s unverified', 'ai-parseable' ), formatNumber( b.verified ), formatNumber( b.unverified ) ) } /> }
+													__( '%1$s verified, %2$s unverified', 'crawlledger-ai-crawler-log' ), formatNumber( b.verified ), formatNumber( b.unverified ) ) } /> }
 										</td>
-										<td className="aip-num">{ b.errors > 0 ? <span className="aip-err">{ formatNumber( b.errors ) }</span> : '0' }</td>
-										<td>{ b.last_seen ? timeAgo( b.last_seen ) : <span className="aip-muted">{ __( 'never', 'ai-parseable' ) }</span> }</td>
+										<td className="clg-num">{ b.errors > 0 ? <span className="clg-err">{ formatNumber( b.errors ) }</span> : '0' }</td>
+										<td>{ b.last_seen ? timeAgo( b.last_seen ) : <span className="clg-muted">{ __( 'never', 'crawlledger-ai-crawler-log' ) }</span> }</td>
 										<td><Sparkline values={ b.spark } /></td>
 									</tr>
 								) ) }
 							</tbody>
 						</table>
 						{ quiet.length > 0 && (
-							<button type="button" className="aip-link aip-table-toggle" onClick={ () => setShowQuiet( ! showQuiet ) }>
-								{ showQuiet ? __( 'Hide crawlers with no visits', 'ai-parseable' ) : sprintf(
+							<button type="button" className="clg-link clg-table-toggle" onClick={ () => setShowQuiet( ! showQuiet ) }>
+								{ showQuiet ? __( 'Hide crawlers with no visits', 'crawlledger-ai-crawler-log' ) : sprintf(
 									/* translators: %d: count */
-									_n( 'Show %d crawler with no visits', 'Show %d crawlers with no visits', quiet.length, 'ai-parseable' ), quiet.length ) }
+									_n( 'Show %d crawler with no visits', 'Show %d crawlers with no visits', quiet.length, 'crawlledger-ai-crawler-log' ), quiet.length ) }
 							</button>
 						) }
 					</section>
 
-					<div className="aip-grid-2">
-						<section className="aip-panel">
-							<header className="aip-panel-head"><h2>{ __( 'Failing for crawlers', 'ai-parseable' ) }</h2><span className="aip-muted">{ __( '7 days', 'ai-parseable' ) }</span></header>
-							{ urls && urls.failing.length === 0 && <p className="aip-quiet-msg">{ __( 'No 4xx or 5xx responses to crawlers. Good.', 'ai-parseable' ) }</p> }
+					<div className="clg-grid-2">
+						<section className="clg-panel">
+							<header className="clg-panel-head"><h2>{ __( 'Failing for crawlers', 'crawlledger-ai-crawler-log' ) }</h2><span className="clg-muted">{ __( '7 days', 'crawlledger-ai-crawler-log' ) }</span></header>
+							{ urls && urls.failing.length === 0 && <p className="clg-quiet-msg">{ __( 'No 4xx or 5xx responses to crawlers. Good.', 'crawlledger-ai-crawler-log' ) }</p> }
 							{ urls && urls.failing.length > 0 && (
-								<table className="aip-table aip-table--compact">
-									<thead><tr><th>{ __( 'URL', 'ai-parseable' ) }</th><th>{ __( 'Status', 'ai-parseable' ) }</th><th className="aip-num">{ __( 'Hits', 'ai-parseable' ) }</th><th className="aip-num">{ __( 'Crawlers', 'ai-parseable' ) }</th></tr></thead>
-									<tbody>{ limit( 'failing', urls.failing, 10 ).map( ( u ) => <tr key={ u.url }><td className="aip-url">{ u.url }</td><td><Status code={ u.status } /></td><td className="aip-num">{ u.hits }</td><td className="aip-num">{ u.bots }</td></tr> ) }</tbody>
+								<table className="clg-table clg-table--compact">
+									<thead><tr><th>{ __( 'URL', 'crawlledger-ai-crawler-log' ) }</th><th>{ __( 'Status', 'crawlledger-ai-crawler-log' ) }</th><th className="clg-num">{ __( 'Hits', 'crawlledger-ai-crawler-log' ) }</th><th className="clg-num">{ __( 'Crawlers', 'crawlledger-ai-crawler-log' ) }</th></tr></thead>
+									<tbody>{ limit( 'failing', urls.failing, 10 ).map( ( u ) => <tr key={ u.url }><td className="clg-url">{ u.url }</td><td><Status code={ u.status } /></td><td className="clg-num">{ u.hits }</td><td className="clg-num">{ u.bots }</td></tr> ) }</tbody>
 								</table>
 							) }
 							{ urls && <More k="failing" list={ urls.failing } n={ 10 } /> }
 							{ coverage && coverage.page_cache && coverage.page_cache.server_level && (
-								<p className="aip-muted">{ __( 'Failures from an allowed crawler may come from a CDN or server-level bot control above WordPress (e.g. Cloudflare\'s AI-scraper toggle), which this plugin cannot override.', 'ai-parseable' ) }</p>
+								<p className="clg-muted">{ __( 'Failures from an allowed crawler may come from a CDN or server-level bot control above WordPress (e.g. Cloudflare\'s AI-scraper toggle), which this plugin cannot override.', 'crawlledger-ai-crawler-log' ) }</p>
 							) }
 						</section>
-						<section className="aip-panel">
-							<header className="aip-panel-head"><h2>{ __( 'Most crawled', 'ai-parseable' ) }</h2><span className="aip-muted">{ __( '7 days', 'ai-parseable' ) }</span></header>
-							{ urls && urls.top.length === 0 && <p className="aip-quiet-msg">{ __( 'Nothing recorded in the last 7 days.', 'ai-parseable' ) }</p> }
+						<section className="clg-panel">
+							<header className="clg-panel-head"><h2>{ __( 'Most crawled', 'crawlledger-ai-crawler-log' ) }</h2><span className="clg-muted">{ __( '7 days', 'crawlledger-ai-crawler-log' ) }</span></header>
+							{ urls && urls.top.length === 0 && <p className="clg-quiet-msg">{ __( 'Nothing recorded in the last 7 days.', 'crawlledger-ai-crawler-log' ) }</p> }
 							{ urls && urls.top.length > 0 && (
-								<table className="aip-table aip-table--compact">
-									<thead><tr><th>{ __( 'URL', 'ai-parseable' ) }</th><th className="aip-num">{ __( 'Hits', 'ai-parseable' ) }</th><th className="aip-num">{ __( 'Crawlers', 'ai-parseable' ) }</th></tr></thead>
-									<tbody>{ limit( 'top', urls.top, 10 ).map( ( u ) => <tr key={ u.url }><td className="aip-url">{ u.url }</td><td className="aip-num">{ u.hits }</td><td className="aip-num">{ u.bots }</td></tr> ) }</tbody>
+								<table className="clg-table clg-table--compact">
+									<thead><tr><th>{ __( 'URL', 'crawlledger-ai-crawler-log' ) }</th><th className="clg-num">{ __( 'Hits', 'crawlledger-ai-crawler-log' ) }</th><th className="clg-num">{ __( 'Crawlers', 'crawlledger-ai-crawler-log' ) }</th></tr></thead>
+									<tbody>{ limit( 'top', urls.top, 10 ).map( ( u ) => <tr key={ u.url }><td className="clg-url">{ u.url }</td><td className="clg-num">{ u.hits }</td><td className="clg-num">{ u.bots }</td></tr> ) }</tbody>
 								</table>
 							) }
 							{ urls && <More k="top" list={ urls.top } n={ 10 } /> }
 						</section>
 					</div>
 
-					<section className="aip-panel">
-						<header className="aip-panel-head"><h2>{ __( 'Latest visits', 'ai-parseable' ) }</h2><span className="aip-muted">{ __( 'most recent 50 · all crawlers', 'ai-parseable' ) }</span></header>
-						{ urls && urls.recent.length === 0 && <p className="aip-quiet-msg">{ __( 'Nothing in the raw log yet.', 'ai-parseable' ) }</p> }
+					<section className="clg-panel">
+						<header className="clg-panel-head"><h2>{ __( 'Latest visits', 'crawlledger-ai-crawler-log' ) }</h2><span className="clg-muted">{ __( 'most recent 50 · all crawlers', 'crawlledger-ai-crawler-log' ) }</span></header>
+						{ urls && urls.recent.length === 0 && <p className="clg-quiet-msg">{ __( 'Nothing in the raw log yet.', 'crawlledger-ai-crawler-log' ) }</p> }
 						{ urls && urls.recent.length > 0 && (
-							<table className="aip-table aip-table--compact aip-feed">
-								<thead><tr><th>{ __( 'When', 'ai-parseable' ) }</th><th>{ __( 'Crawler', 'ai-parseable' ) }</th><th>{ __( 'URL', 'ai-parseable' ) }</th><th>{ __( 'Status', 'ai-parseable' ) }</th><th>{ __( 'Verified', 'ai-parseable' ) }</th></tr></thead>
+							<table className="clg-table clg-table--compact clg-feed">
+								<thead><tr><th>{ __( 'When', 'crawlledger-ai-crawler-log' ) }</th><th>{ __( 'Crawler', 'crawlledger-ai-crawler-log' ) }</th><th>{ __( 'URL', 'crawlledger-ai-crawler-log' ) }</th><th>{ __( 'Status', 'crawlledger-ai-crawler-log' ) }</th><th>{ __( 'Verified', 'crawlledger-ai-crawler-log' ) }</th></tr></thead>
 								<tbody>
 									{ limit( 'recent', urls.recent, 20 ).map( ( r, i ) => {
 										const bot = stats.bots.find( ( b ) => b.id === r.bot_id );
 										return (
 											<tr key={ i }>
-												<td className="aip-nowrap" title={ `${ r.hit_at } UTC` }>{ timeAgo( r.hit_at ) }</td>
+												<td className="clg-nowrap" title={ `${ r.hit_at } UTC` }>{ timeAgo( r.hit_at ) }</td>
 												<td>{ bot ? bot.name : `#${ r.bot_id }` }</td>
-												<td className="aip-url">{ r.url }</td>
-												<td><Status code={ r.status } />{ r.is_cached && <span className="aip-muted" title={ __( 'Served from a page cache', 'ai-parseable' ) }> ⚡</span> }</td>
-												<td>{ r.verified ? <span className="aip-ok">✓</span> : <span className="aip-muted">—</span> }</td>
+												<td className="clg-url">{ r.url }</td>
+												<td><Status code={ r.status } />{ r.is_cached && <span className="clg-muted" title={ __( 'Served from a page cache', 'crawlledger-ai-crawler-log' ) }> ⚡</span> }</td>
+												<td>{ r.verified ? <span className="clg-ok">✓</span> : <span className="clg-muted">—</span> }</td>
 											</tr>
 										);
 									} ) }
@@ -255,9 +255,9 @@ export default function Overview() {
 						{ urls && <More k="recent" list={ urls.recent } n={ 20 } /> }
 					</section>
 
-					<p className="aip-footnote">{ sprintf(
+					<p className="clg-footnote">{ sprintf(
 						/* translators: 1: row count, 2: size, 3: aggregate row count */
-						__( 'Storage: %1$s raw rows (%2$s), %3$s daily aggregate rows kept indefinitely.', 'ai-parseable' ), formatNumber( stats.sizes.hits.rows ), formatBytes( stats.sizes.hits.bytes ), formatNumber( stats.sizes.daily.rows ) ) }</p>
+						__( 'Storage: %1$s raw rows (%2$s), %3$s daily aggregate rows kept indefinitely.', 'crawlledger-ai-crawler-log' ), formatNumber( stats.sizes.hits.rows ), formatBytes( stats.sizes.hits.bytes ), formatNumber( stats.sizes.daily.rows ) ) }</p>
 				</>
 			) }
 		</div>

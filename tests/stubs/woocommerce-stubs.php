@@ -2,7 +2,7 @@
 /**
  * WooCommerce symbols referenced behind function_exists() guards, for static analysis only.
  *
- * @package AiParseAble
+ * @package CrawlLedger
  */
 
 /**

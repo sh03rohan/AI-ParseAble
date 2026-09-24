@@ -28,7 +28,7 @@ $mono: "JetBrains Mono", Menlo, Consolas, monospace;
 // ---------------------------------------------------------------------------
 // Canvas: only on our screen. WP's admin bar and sidebar are untouched.
 // ---------------------------------------------------------------------------
-body.ai-parseable-screen {
+body.crawlledger-screen {
 	background: $canvas;
 	#wpcontent { padding-left: 0; background: $canvas; }
 	#wpbody-content { padding-bottom: 0; }
@@ -36,20 +36,20 @@ body.ai-parseable-screen {
 	#wpfooter { display: none; }
 	.notice, .update-nag { margin: 16px 32px 0; }
 	.wp-header-end { display: none; }
-	.aip-boot { padding: 32px; color: #8a93a8; }
+	.clg-boot { padding: 32px; color: #8a93a8; }
 }
 
-.aip-app { max-width: none; color: $text; font-family: $font; font-size: 13px; line-height: 1.5; position: relative; min-height: calc(100vh - 32px); -webkit-font-smoothing: antialiased; }
-.aip-main { padding: 24px 32px 48px; }
-.aip-app h1, .aip-app h2, .aip-app h3, .aip-app h4 { color: $text; } // WP's .wrap heading colours are more specific than inheritance.
+.clg-app { max-width: none; color: $text; font-family: $font; font-size: 13px; line-height: 1.5; position: relative; min-height: calc(100vh - 32px); -webkit-font-smoothing: antialiased; }
+.clg-main { padding: 24px 32px 48px; }
+.clg-app h1, .clg-app h2, .clg-app h3, .clg-app h4 { color: $text; } // WP's .wrap heading colours are more specific than inheritance.
 
 // Header bar: brand left, tabs after. The brand is absolutely placed inside the TabPanel's header row.
-.aip-brand { position: absolute; top: 0; left: 32px; height: 60px; display: flex; align-items: center; gap: 10px; pointer-events: none; z-index: 7; }
-.aip-brand-mark { width: 28px; height: 28px; border-radius: 7px; display: block; flex: none; }
-.aip-brand-name { font-weight: 650; font-size: 15px; letter-spacing: -.01em; }
-.aip-version { font-size: 11px; color: $muted; font-family: $mono; padding: 2px 6px; border: 1px solid $border; border-radius: 6px; }
-.aip-tabs .components-tab-panel__tabs { display: flex; align-items: center; gap: 4px; height: 60px; padding: 0 32px 0 264px; border-bottom: 1px solid $border; background: rgba($surface, .85); backdrop-filter: blur(8px); position: sticky; top: 32px; z-index: 6; }
-.aip-tabs .components-tab-panel__tabs-item { height: 34px; padding: 0 14px; border-radius: $radius-s; color: $text-2; font-weight: 500; font-size: 13px; background: none; border: 0; box-shadow: none !important;
+.clg-brand { position: absolute; top: 0; left: 32px; height: 60px; display: flex; align-items: center; gap: 10px; pointer-events: none; z-index: 7; }
+.clg-brand-mark { width: 28px; height: 28px; border-radius: 7px; display: block; flex: none; }
+.clg-brand-name { font-weight: 650; font-size: 15px; letter-spacing: -.01em; }
+.clg-version { font-size: 11px; color: $muted; font-family: $mono; padding: 2px 6px; border: 1px solid $border; border-radius: 6px; }
+.clg-tabs .components-tab-panel__tabs { display: flex; align-items: center; gap: 4px; height: 60px; padding: 0 32px 0 264px; border-bottom: 1px solid $border; background: rgba($surface, .85); backdrop-filter: blur(8px); position: sticky; top: 32px; z-index: 6; }
+.clg-tabs .components-tab-panel__tabs-item { height: 34px; padding: 0 14px; border-radius: $radius-s; color: $text-2; font-weight: 500; font-size: 13px; background: none; border: 0; box-shadow: none !important;
 	&::after { display: none; }
 	&:hover { color: $text; background: $hover; }
 	&.is-active { color: $text; background: $elevated; box-shadow: inset 0 0 0 1px $border-strong !important; } }
@@ -57,163 +57,163 @@ body.ai-parseable-screen {
 // ---------------------------------------------------------------------------
 // Primitives
 // ---------------------------------------------------------------------------
-.aip-muted { color: $muted; font-size: 12px; }
-.aip-error { color: $err; }
-.aip-ok { color: $ok; } .aip-err { color: $err; font-weight: 600; }
-.aip-nowrap { white-space: nowrap; }
-.aip-link { background: none; border: 0; padding: 0; color: $accent; cursor: pointer; text-decoration: none; font: inherit; &:hover { text-decoration: underline; } }
-.aip-app a { color: $accent; text-decoration: none; &:hover { text-decoration: underline; } }
-.aip-loading { padding: 64px; text-align: center; }
-.aip-help { display: inline-block; width: 15px; height: 15px; line-height: 15px; margin-left: 6px; border-radius: 50%; background: $elevated; border: 1px solid $border; color: $text-2; font-size: 10px; text-align: center; cursor: help; }
-.aip-blurb { margin: 0 0 14px; color: $text-2; max-width: 76ch; }
-.aip-h3 { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: $muted; margin: 20px 0 6px; }
-.aip-token { font-family: $mono; font-size: 12px; background: $canvas; padding: 2px 7px; border-radius: 6px; border: 1px solid $border; color: $text-2; }
-.aip-pre { background: $canvas; border: 1px solid $border; border-radius: $radius-s; padding: 14px 16px; overflow: auto; max-height: 420px; font-size: 12px; line-height: 1.6; white-space: pre-wrap; margin: 0; font-family: $mono; color: $text-2; }
+.clg-muted { color: $muted; font-size: 12px; }
+.clg-error { color: $err; }
+.clg-ok { color: $ok; } .clg-err { color: $err; font-weight: 600; }
+.clg-nowrap { white-space: nowrap; }
+.clg-link { background: none; border: 0; padding: 0; color: $accent; cursor: pointer; text-decoration: none; font: inherit; &:hover { text-decoration: underline; } }
+.clg-app a { color: $accent; text-decoration: none; &:hover { text-decoration: underline; } }
+.clg-loading { padding: 64px; text-align: center; }
+.clg-help { display: inline-block; width: 15px; height: 15px; line-height: 15px; margin-left: 6px; border-radius: 50%; background: $elevated; border: 1px solid $border; color: $text-2; font-size: 10px; text-align: center; cursor: help; }
+.clg-blurb { margin: 0 0 14px; color: $text-2; max-width: 76ch; }
+.clg-h3 { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: $muted; margin: 20px 0 6px; }
+.clg-token { font-family: $mono; font-size: 12px; background: $canvas; padding: 2px 7px; border-radius: 6px; border: 1px solid $border; color: $text-2; }
+.clg-pre { background: $canvas; border: 1px solid $border; border-radius: $radius-s; padding: 14px 16px; overflow: auto; max-height: 420px; font-size: 12px; line-height: 1.6; white-space: pre-wrap; margin: 0; font-family: $mono; color: $text-2; }
 
-.aip-panel { background: $surface; border: 1px solid $border; border-radius: $radius; padding: 18px 20px 20px; margin: 0 0 16px; }
-.aip-panel h2 { margin: 0; font-size: 14px; font-weight: 600; letter-spacing: -.005em; color: $text; }
-.aip-panel-head { display: flex; justify-content: space-between; align-items: center; min-height: 24px; margin-bottom: 14px; gap: 12px; }
-.aip-panel--warn { border-color: rgba($warn, .5); }
-.aip-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-.aip-grid-2--wide { grid-template-columns: 1.1fr .9fr; }
-@media (max-width: 1100px) { .aip-grid-2, .aip-grid-2--wide { grid-template-columns: 1fr; } }
-.aip-quiet-msg { color: $muted; margin: 4px 0; }
-.aip-footnote { color: $muted; font-size: 12px; margin: 4px 0 0; }
+.clg-panel { background: $surface; border: 1px solid $border; border-radius: $radius; padding: 18px 20px 20px; margin: 0 0 16px; }
+.clg-panel h2 { margin: 0; font-size: 14px; font-weight: 600; letter-spacing: -.005em; color: $text; }
+.clg-panel-head { display: flex; justify-content: space-between; align-items: center; min-height: 24px; margin-bottom: 14px; gap: 12px; }
+.clg-panel--warn { border-color: rgba($warn, .5); }
+.clg-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.clg-grid-2--wide { grid-template-columns: 1.1fr .9fr; }
+@media (max-width: 1100px) { .clg-grid-2, .clg-grid-2--wide { grid-template-columns: 1fr; } }
+.clg-quiet-msg { color: $muted; margin: 4px 0; }
+.clg-footnote { color: $muted; font-size: 12px; margin: 4px 0 0; }
 
-.aip-callout { border: 1px solid $border; border-radius: $radius; padding: 12px 16px 12px 18px; margin: 0 0 16px; background: $surface; font-size: 13px; line-height: 1.55; color: $text-2; position: relative; strong { color: $text; }
+.clg-callout { border: 1px solid $border; border-radius: $radius; padding: 12px 16px 12px 18px; margin: 0 0 16px; background: $surface; font-size: 13px; line-height: 1.55; color: $text-2; position: relative; strong { color: $text; }
 	&::before { content: ''; position: absolute; left: 0; top: 10px; bottom: 10px; width: 3px; border-radius: 3px; background: $accent; }
 	&--warn::before { background: $warn; } &--error::before { background: $err; } &--ok::before { background: $ok; } }
 
 // Status strip
-.aip-status { border: 1px solid $border; background: $surface; border-radius: $radius; padding: 12px 18px; margin: 0 0 20px; }
-.aip-status-line { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; min-height: 24px; }
-.aip-status-dot { width: 9px; height: 9px; border-radius: 50%; flex: none; box-shadow: 0 0 0 4px rgba(#fff, .04); }
-.aip-status--ok .aip-status-dot { background: $ok; box-shadow: 0 0 0 4px rgba($ok, .15); }
-.aip-status--warn .aip-status-dot { background: $warn; box-shadow: 0 0 0 4px rgba($warn, .15); }
-.aip-status--error .aip-status-dot { background: $err; box-shadow: 0 0 0 4px rgba($err, .15); }
-.aip-status-line strong { font-weight: 600; }
-.aip-status-facts { color: $muted; font-size: 12px; flex: 1; }
-.aip-status-toggle { font-size: 12px; }
-.aip-status-problem { margin: 10px 0 0 21px; color: $err; }
-.aip-status-body { margin: 12px 0 0 21px; font-size: 13px; color: $text-2; ul { margin: 4px 0 8px 18px; list-style: disc; } }
-.aip-status-label { font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: $muted; }
-.aip-actions { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; align-items: center; }
+.clg-status { border: 1px solid $border; background: $surface; border-radius: $radius; padding: 12px 18px; margin: 0 0 20px; }
+.clg-status-line { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; min-height: 24px; }
+.clg-status-dot { width: 9px; height: 9px; border-radius: 50%; flex: none; box-shadow: 0 0 0 4px rgba(#fff, .04); }
+.clg-status--ok .clg-status-dot { background: $ok; box-shadow: 0 0 0 4px rgba($ok, .15); }
+.clg-status--warn .clg-status-dot { background: $warn; box-shadow: 0 0 0 4px rgba($warn, .15); }
+.clg-status--error .clg-status-dot { background: $err; box-shadow: 0 0 0 4px rgba($err, .15); }
+.clg-status-line strong { font-weight: 600; }
+.clg-status-facts { color: $muted; font-size: 12px; flex: 1; }
+.clg-status-toggle { font-size: 12px; }
+.clg-status-problem { margin: 10px 0 0 21px; color: $err; }
+.clg-status-body { margin: 12px 0 0 21px; font-size: 13px; color: $text-2; ul { margin: 4px 0 8px 18px; list-style: disc; } }
+.clg-status-label { font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: $muted; }
+.clg-actions { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; align-items: center; }
 
 // Toolbar & segmented
-.aip-toolbar { display: flex; align-items: center; gap: 20px; margin: 0 0 16px; flex-wrap: wrap; min-height: 36px; }
-.aip-toolbar-note { margin-left: auto; }
-.aip-segmented { display: inline-flex; border: 1px solid $border; border-radius: $radius-s; background: $canvas; padding: 3px; gap: 2px;
+.clg-toolbar { display: flex; align-items: center; gap: 20px; margin: 0 0 16px; flex-wrap: wrap; min-height: 36px; }
+.clg-toolbar-note { margin-left: auto; }
+.clg-segmented { display: inline-flex; border: 1px solid $border; border-radius: $radius-s; background: $canvas; padding: 3px; gap: 2px;
 	button { border: 0; background: none; padding: 0 12px; height: 28px; font-size: 13px; cursor: pointer; color: $text-2; border-radius: 6px; display: inline-flex; gap: 6px; align-items: center; font-family: $font; transition: background .12s, color .12s;
 		&:hover { color: $text; background: $hover; }
 		&.is-active { background: $accent-fill; color: #fff; }
 		&.is-active.is-ok { background: $ok; color: #06281a; } &.is-active.is-err { background: $err; color: #2b0a0a; }
 		&.is-active.is-neutral { background: $elevated; color: $text-2; box-shadow: inset 0 0 0 1px $border-strong; }
 		&:disabled { color: $muted; cursor: not-allowed; opacity: .6; } } }
-.aip-segmented--small button { height: 24px; padding: 0 10px; font-size: 12px; }
-.aip-lock { font-size: 10px; opacity: .8; }
+.clg-segmented--small button { height: 24px; padding: 0 10px; font-size: 12px; }
+.clg-lock { font-size: 10px; opacity: .8; }
 
 // Stat cards
-.aip-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 16px; }
-@media (max-width: 1100px) { .aip-stats { grid-template-columns: repeat(2, 1fr); } }
-.aip-stat { background: $surface; border: 1px solid $border; border-radius: $radius; padding: 16px 20px; display: grid; grid-template-rows: 18px 34px auto; gap: 6px; }
-.aip-stat-label { font-size: 12px; color: $muted; }
-.aip-stat-row { display: flex; align-items: baseline; gap: 10px; }
-.aip-stat-value { font-size: 28px; font-weight: 650; letter-spacing: -.02em; line-height: 34px; font-variant-numeric: tabular-nums; }
-.aip-stat-sub { font-size: 12px; color: $muted; line-height: 18px; }
-.aip-delta { font-size: 11px; font-weight: 600; padding: 2px 7px; border-radius: 99px; background: $elevated; color: $muted; font-variant-numeric: tabular-nums; }
-.aip-delta--up { background: rgba($ok, .15); color: $ok; }
-.aip-delta--down { background: rgba($err, .15); color: $err; }
+.clg-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 16px; }
+@media (max-width: 1100px) { .clg-stats { grid-template-columns: repeat(2, 1fr); } }
+.clg-stat { background: $surface; border: 1px solid $border; border-radius: $radius; padding: 16px 20px; display: grid; grid-template-rows: 18px 34px auto; gap: 6px; }
+.clg-stat-label { font-size: 12px; color: $muted; }
+.clg-stat-row { display: flex; align-items: baseline; gap: 10px; }
+.clg-stat-value { font-size: 28px; font-weight: 650; letter-spacing: -.02em; line-height: 34px; font-variant-numeric: tabular-nums; }
+.clg-stat-sub { font-size: 12px; color: $muted; line-height: 18px; }
+.clg-delta { font-size: 11px; font-weight: 600; padding: 2px 7px; border-radius: 99px; background: $elevated; color: $muted; font-variant-numeric: tabular-nums; }
+.clg-delta--up { background: rgba($ok, .15); color: $ok; }
+.clg-delta--down { background: rgba($err, .15); color: $err; }
 
 // Chart
-.aip-chart-wrap { position: relative; }
-.aip-chart { display: block; cursor: crosshair; max-width: 100%; }
-.aip-grid { stroke: $border; stroke-width: 1; }
-.aip-tick { font-size: 11px; fill: $muted; font-family: $font; }
-.aip-g-hits-a { stop-color: $accent; stop-opacity: .35; } .aip-g-hits-b { stop-color: $accent; stop-opacity: 0; }
-.aip-g-err-a { stop-color: $err; stop-opacity: .35; } .aip-g-err-b { stop-color: $err; stop-opacity: 0; }
-.aip-area { fill: url(#aip-g-hits); }
-.aip-area-errors { fill: url(#aip-g-err); }
-.aip-line { fill: none; stroke: $accent; stroke-width: 2; stroke-linejoin: round; }
-.aip-line-errors { fill: none; stroke: $err; stroke-width: 1.5; stroke-linejoin: round; }
-.aip-crosshair { stroke: $border-strong; stroke-width: 1; stroke-dasharray: 3 3; }
-.aip-dot { fill: $surface; stroke: $accent; stroke-width: 2; }
-.aip-dot-errors { fill: $surface; stroke: $err; stroke-width: 2; }
-.aip-tooltip { position: absolute; top: 8px; transform: translateX(-50%); background: $elevated; border: 1px solid $border-strong; color: $text; font-size: 12px; padding: 8px 12px; border-radius: $radius-s; pointer-events: none; display: flex; flex-direction: column; gap: 3px; white-space: nowrap; z-index: 2; box-shadow: 0 8px 24px rgba(0,0,0,.4);
+.clg-chart-wrap { position: relative; }
+.clg-chart { display: block; cursor: crosshair; max-width: 100%; }
+.clg-grid { stroke: $border; stroke-width: 1; }
+.clg-tick { font-size: 11px; fill: $muted; font-family: $font; }
+.clg-g-hits-a { stop-color: $accent; stop-opacity: .35; } .clg-g-hits-b { stop-color: $accent; stop-opacity: 0; }
+.clg-g-err-a { stop-color: $err; stop-opacity: .35; } .clg-g-err-b { stop-color: $err; stop-opacity: 0; }
+.clg-area { fill: url(#clg-g-hits); }
+.clg-area-errors { fill: url(#clg-g-err); }
+.clg-line { fill: none; stroke: $accent; stroke-width: 2; stroke-linejoin: round; }
+.clg-line-errors { fill: none; stroke: $err; stroke-width: 1.5; stroke-linejoin: round; }
+.clg-crosshair { stroke: $border-strong; stroke-width: 1; stroke-dasharray: 3 3; }
+.clg-dot { fill: $surface; stroke: $accent; stroke-width: 2; }
+.clg-dot-errors { fill: $surface; stroke: $err; stroke-width: 2; }
+.clg-tooltip { position: absolute; top: 8px; transform: translateX(-50%); background: $elevated; border: 1px solid $border-strong; color: $text; font-size: 12px; padding: 8px 12px; border-radius: $radius-s; pointer-events: none; display: flex; flex-direction: column; gap: 3px; white-space: nowrap; z-index: 2; box-shadow: 0 8px 24px rgba(0,0,0,.4);
 	strong { font-weight: 600; margin-bottom: 2px; } }
-.aip-legend { display: flex; gap: 16px; font-size: 12px; color: $muted; margin-top: 6px; }
-.aip-swatch { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
-.aip-swatch-hits { background: $accent; } .aip-swatch-errors { background: $err; }
-.aip-spark { display: block; }
-.aip-spark-line { fill: none; stroke: $accent; stroke-width: 1.5; }
-.aip-spark-area { fill: rgba($accent, .15); }
+.clg-legend { display: flex; gap: 16px; font-size: 12px; color: $muted; margin-top: 6px; }
+.clg-swatch { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+.clg-swatch-hits { background: $accent; } .clg-swatch-errors { background: $err; }
+.clg-spark { display: block; }
+.clg-spark-line { fill: none; stroke: $accent; stroke-width: 1.5; }
+.clg-spark-area { fill: rgba($accent, .15); }
 
 // Tables
-.aip-table { width: 100%; border-collapse: collapse; font-size: 13px;
+.clg-table { width: 100%; border-collapse: collapse; font-size: 13px;
 	th { text-align: left; font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: $muted; padding: 0 12px 10px; border-bottom: 1px solid $border; height: 30px; white-space: nowrap; }
 	td { padding: 0 12px; height: 46px; border-bottom: 1px solid rgba($border, .6); vertical-align: middle; color: $text-2; }
 	td strong { color: $text; font-weight: 600; }
 	tr:last-child td { border-bottom: 0; }
 	tbody tr:hover td { background: rgba(#fff, .015); }
-	th.aip-num, td.aip-num { text-align: right; font-variant-numeric: tabular-nums; }
+	th.clg-num, td.clg-num { text-align: right; font-variant-numeric: tabular-nums; }
 	th:first-child, td:first-child { padding-left: 4px; } th:last-child, td:last-child { padding-right: 4px; } }
-.aip-table--compact td { height: 38px; }
-.aip-rules td { height: 44px; }
-.aip-row-quiet td { color: $muted; }
-.aip-table-toggle { display: inline-block; margin-top: 12px; font-size: 12px; }
-.aip-url { font-family: $mono; font-size: 12px; word-break: break-all; }
-.aip-code { display: inline-block; min-width: 36px; text-align: center; font-size: 11px; font-weight: 600; padding: 2px 7px; border-radius: 6px; font-variant-numeric: tabular-nums; font-family: $mono; }
-.aip-code--ok { background: rgba($ok, .14); color: $ok; } .aip-code--redir { background: rgba($accent, .14); color: $accent; }
-.aip-code--warn { background: rgba($warn, .14); color: $warn; } .aip-code--err { background: rgba($err, .14); color: $err; }
-.aip-badge { display: inline-block; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 99px; cursor: help; letter-spacing: .01em; }
-.aip-badge--answer { background: rgba($c-answer, .14); color: $c-answer; }
-.aip-badge--search { background: rgba($c-search, .14); color: $c-search; }
-.aip-badge--training { background: rgba($c-training, .14); color: $c-training; }
-.aip-proportion { display: inline-flex; align-items: center; gap: 10px; }
-.aip-proportion-track { width: 72px; height: 6px; background: $canvas; border-radius: 3px; overflow: hidden; border: 1px solid $border; }
-.aip-proportion-fill { display: block; height: 100%; background: $ok; }
-.aip-proportion-label { font-size: 12px; color: $muted; font-variant-numeric: tabular-nums; min-width: 32px; }
-.aip-feed td { white-space: nowrap; } .aip-feed td.aip-url { white-space: normal; }
-.aip-group-actions { font-size: 12px; color: $muted; }
+.clg-table--compact td { height: 38px; }
+.clg-rules td { height: 44px; }
+.clg-row-quiet td { color: $muted; }
+.clg-table-toggle { display: inline-block; margin-top: 12px; font-size: 12px; }
+.clg-url { font-family: $mono; font-size: 12px; word-break: break-all; }
+.clg-code { display: inline-block; min-width: 36px; text-align: center; font-size: 11px; font-weight: 600; padding: 2px 7px; border-radius: 6px; font-variant-numeric: tabular-nums; font-family: $mono; }
+.clg-code--ok { background: rgba($ok, .14); color: $ok; } .clg-code--redir { background: rgba($accent, .14); color: $accent; }
+.clg-code--warn { background: rgba($warn, .14); color: $warn; } .clg-code--err { background: rgba($err, .14); color: $err; }
+.clg-badge { display: inline-block; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 99px; cursor: help; letter-spacing: .01em; }
+.clg-badge--answer { background: rgba($c-answer, .14); color: $c-answer; }
+.clg-badge--search { background: rgba($c-search, .14); color: $c-search; }
+.clg-badge--training { background: rgba($c-training, .14); color: $c-training; }
+.clg-proportion { display: inline-flex; align-items: center; gap: 10px; }
+.clg-proportion-track { width: 72px; height: 6px; background: $canvas; border-radius: 3px; overflow: hidden; border: 1px solid $border; }
+.clg-proportion-fill { display: block; height: 100%; background: $ok; }
+.clg-proportion-label { font-size: 12px; color: $muted; font-variant-numeric: tabular-nums; min-width: 32px; }
+.clg-feed td { white-space: nowrap; } .clg-feed td.clg-url { white-space: normal; }
+.clg-group-actions { font-size: 12px; color: $muted; }
 
 // Empty state
-.aip-empty { background: $surface; border: 1px dashed $border-strong; border-radius: $radius; padding: 48px 24px; text-align: center; max-width: 600px; margin: 40px auto;
+.clg-empty { background: $surface; border: 1px dashed $border-strong; border-radius: $radius; padding: 48px 24px; text-align: center; max-width: 600px; margin: 40px auto;
 	h2 { margin: 0 0 8px; font-size: 16px; } p { margin: 6px 0; color: $text-2; } }
 
 // Save bar
-.aip-savebar { position: sticky; bottom: 16px; z-index: 5; display: flex; align-items: center; justify-content: space-between; gap: 16px; background: $elevated; border: 1px solid $border-strong; border-radius: $radius; padding: 12px 18px; margin: 8px 0 16px; box-shadow: 0 12px 32px rgba(0,0,0,.45); color: $ok;
+.clg-savebar { position: sticky; bottom: 16px; z-index: 5; display: flex; align-items: center; justify-content: space-between; gap: 16px; background: $elevated; border: 1px solid $border-strong; border-radius: $radius; padding: 12px 18px; margin: 8px 0 16px; box-shadow: 0 12px 32px rgba(0,0,0,.45); color: $ok;
 	&.is-dirty { border-color: rgba($accent, .6); color: $text; } }
-.aip-savebar-actions { display: flex; gap: 8px; }
+.clg-savebar-actions { display: flex; gap: 8px; }
 
 // Forms
-.aip-split { display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: start; }
-.aip-split-side { padding-top: 2px; }
-.aip-facts { display: grid; grid-template-columns: max-content 1fr; gap: 6px 16px; margin: 12px 0 0; font-size: 13px; dt { color: $muted; } dd { margin: 0; color: $text-2; } }
-.aip-field { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; margin: 18px 0 0; }
-.aip-field .aip-choices { align-self: stretch; }
-.aip-field--inline .components-base-control { width: 380px; max-width: 100%; .components-base-control__field, .components-input-control__container, input { width: 100%; } }
-.aip-label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: $text-2; }
-.aip-count { align-self: flex-end; }
-.aip-choices { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-@media (max-width: 1100px) { .aip-choices { grid-template-columns: 1fr; } }
-.aip-choice { display: grid; grid-template-columns: auto 1fr; gap: 3px 12px; align-items: start; border: 1px solid $border; border-radius: $radius-s; padding: 12px 14px; cursor: pointer; background: $canvas; font-size: 13px; color: $text; transition: border-color .12s;
-	input { margin: 3px 0 0; grid-row: 1 / span 2; accent-color: $accent; } > .aip-muted { grid-column: 2; }
+.clg-split { display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: start; }
+.clg-split-side { padding-top: 2px; }
+.clg-facts { display: grid; grid-template-columns: max-content 1fr; gap: 6px 16px; margin: 12px 0 0; font-size: 13px; dt { color: $muted; } dd { margin: 0; color: $text-2; } }
+.clg-field { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; margin: 18px 0 0; }
+.clg-field .clg-choices { align-self: stretch; }
+.clg-field--inline .components-base-control { width: 380px; max-width: 100%; .components-base-control__field, .components-input-control__container, input { width: 100%; } }
+.clg-label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: $text-2; }
+.clg-count { align-self: flex-end; }
+.clg-choices { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+@media (max-width: 1100px) { .clg-choices { grid-template-columns: 1fr; } }
+.clg-choice { display: grid; grid-template-columns: auto 1fr; gap: 3px 12px; align-items: start; border: 1px solid $border; border-radius: $radius-s; padding: 12px 14px; cursor: pointer; background: $canvas; font-size: 13px; color: $text; transition: border-color .12s;
+	input { margin: 3px 0 0; grid-row: 1 / span 2; accent-color: $accent; } > .clg-muted { grid-column: 2; }
 	&:hover { border-color: $border-strong; } &.is-selected { border-color: $accent; box-shadow: 0 0 0 1px $accent; } }
-.aip-diff-url { margin: 12px 0 10px; }
-.aip-diff-summary { display: flex; gap: 24px; flex-wrap: wrap; margin-bottom: 14px; font-size: 13px; color: $muted; strong { color: $text; font-size: 16px; margin-right: 4px; font-variant-numeric: tabular-nums; } }
-.aip-diff-table { margin-bottom: 12px; }
-.aip-details { margin-top: 12px; summary { cursor: pointer; color: $accent; font-size: 13px; } }
-.aip-picker { position: relative; margin: 8px 0; }
-.aip-picker-list { position: absolute; left: 0; right: 0; z-index: 4; margin: 4px 0 0; max-height: 260px; overflow: auto; background: $elevated; border: 1px solid $border-strong; border-radius: $radius-s; box-shadow: 0 12px 32px rgba(0,0,0,.45); list-style: none; padding: 4px; }
-.aip-picker-item { display: flex; justify-content: space-between; width: 100%; background: none; border: 0; padding: 8px 10px; text-align: left; cursor: pointer; border-radius: 6px; font: inherit; color: $text; &:hover { background: $hover; } }
-.aip-chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; list-style: none; padding: 0; }
-.aip-chips li { background: $elevated; border: 1px solid $border; border-radius: 99px; padding: 3px 8px 3px 12px; font-size: 13px; display: inline-flex; align-items: center; gap: 4px; }
-.aip-chip-x { background: none; border: 0; cursor: pointer; color: $muted; font-size: 14px; line-height: 1; padding: 0 4px; &:hover { color: $err; } }
-.aip-chip-empty { color: $muted; border-style: dashed; }
+.clg-diff-url { margin: 12px 0 10px; }
+.clg-diff-summary { display: flex; gap: 24px; flex-wrap: wrap; margin-bottom: 14px; font-size: 13px; color: $muted; strong { color: $text; font-size: 16px; margin-right: 4px; font-variant-numeric: tabular-nums; } }
+.clg-diff-table { margin-bottom: 12px; }
+.clg-details { margin-top: 12px; summary { cursor: pointer; color: $accent; font-size: 13px; } }
+.clg-picker { position: relative; margin: 8px 0; }
+.clg-picker-list { position: absolute; left: 0; right: 0; z-index: 4; margin: 4px 0 0; max-height: 260px; overflow: auto; background: $elevated; border: 1px solid $border-strong; border-radius: $radius-s; box-shadow: 0 12px 32px rgba(0,0,0,.45); list-style: none; padding: 4px; }
+.clg-picker-item { display: flex; justify-content: space-between; width: 100%; background: none; border: 0; padding: 8px 10px; text-align: left; cursor: pointer; border-radius: 6px; font: inherit; color: $text; &:hover { background: $hover; } }
+.clg-chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; list-style: none; padding: 0; }
+.clg-chips li { background: $elevated; border: 1px solid $border; border-radius: 99px; padding: 3px 8px 3px 12px; font-size: 13px; display: inline-flex; align-items: center; gap: 4px; }
+.clg-chip-x { background: none; border: 0; cursor: pointer; color: $muted; font-size: 14px; line-height: 1; padding: 0 4px; &:hover { color: $err; } }
+.clg-chip-empty { color: $muted; border-style: dashed; }
 
 // ---------------------------------------------------------------------------
 // @wordpress/components in the dark
 // ---------------------------------------------------------------------------
-.aip-app {
+.clg-app {
 	.components-base-control__label, .components-toggle-control__label, .components-input-control__label { color: $text-2 !important; font-size: 12px !important; text-transform: uppercase; letter-spacing: .06em; font-weight: 600 !important; }
 	.components-base-control__help { color: $muted !important; font-size: 12px; margin-top: 6px; }
 	.components-text-control__input, .components-textarea-control__input, .components-search-control input.components-search-control__input, .components-input-control__container { background: $canvas !important; color: $text !important; border-color: $border !important; border-radius: $radius-s !important; box-shadow: none !important; font-family: $font;
@@ -237,26 +237,26 @@ body.ai-parseable-screen {
 // Compact layouts. WP's admin bar is 46px tall and its sidebar collapses at 782px.
 // ---------------------------------------------------------------------------
 @media (max-width: 782px) {
-	.aip-tabs .components-tab-panel__tabs { top: 46px; height: 52px; padding: 0 12px 0 52px; overflow-x: auto; scrollbar-width: none; &::-webkit-scrollbar { display: none; } }
-	.aip-tabs .components-tab-panel__tabs-item { flex: none; padding: 0 12px; height: 32px; }
-	.aip-brand { left: 14px; height: 52px; gap: 0; .aip-brand-name, .aip-version { display: none; } }
-	.aip-main { padding: 16px 12px 40px; }
-	.aip-panel { padding: 14px 14px 16px; }
-	.aip-status { padding: 12px 14px; }
-	.aip-status-facts { flex-basis: 100%; order: 3; }
-	.aip-toolbar { gap: 12px; }
-	.aip-toolbar-note { margin-left: 0; flex-basis: 100%; }
-	.aip-table { display: block; overflow-x: auto; width: 100%; -webkit-overflow-scrolling: touch; }
-	.aip-savebar { bottom: 8px; padding: 10px 12px; }
-	.aip-split { grid-template-columns: 1fr; }
+	.clg-tabs .components-tab-panel__tabs { top: 46px; height: 52px; padding: 0 12px 0 52px; overflow-x: auto; scrollbar-width: none; &::-webkit-scrollbar { display: none; } }
+	.clg-tabs .components-tab-panel__tabs-item { flex: none; padding: 0 12px; height: 32px; }
+	.clg-brand { left: 14px; height: 52px; gap: 0; .clg-brand-name, .clg-version { display: none; } }
+	.clg-main { padding: 16px 12px 40px; }
+	.clg-panel { padding: 14px 14px 16px; }
+	.clg-status { padding: 12px 14px; }
+	.clg-status-facts { flex-basis: 100%; order: 3; }
+	.clg-toolbar { gap: 12px; }
+	.clg-toolbar-note { margin-left: 0; flex-basis: 100%; }
+	.clg-table { display: block; overflow-x: auto; width: 100%; -webkit-overflow-scrolling: touch; }
+	.clg-savebar { bottom: 8px; padding: 10px 12px; }
+	.clg-split { grid-template-columns: 1fr; }
 }
 @media (max-width: 600px) {
-	.aip-stats { grid-template-columns: 1fr; gap: 12px; }
-	.aip-field--inline .components-base-control { width: 100%; }
+	.clg-stats { grid-template-columns: 1fr; gap: 12px; }
+	.clg-field--inline .components-base-control { width: 100%; }
 }
 
 // Static (PHP-rendered) pages that share the shell: the network overview.
-.aip-static-head { display: flex; align-items: center; gap: 10px; height: 60px; padding: 0 32px; border-bottom: 1px solid $border; background: $surface;
-	h1 { margin: 0; font-size: 15px; font-weight: 650; color: $text; padding: 0; line-height: 1; } .aip-muted { margin-left: 8px; } }
-.aip-stats--3 { grid-template-columns: repeat(3, 1fr); }
-@media (max-width: 782px) { .aip-static-head { padding: 0 14px; height: 52px; } }
+.clg-static-head { display: flex; align-items: center; gap: 10px; height: 60px; padding: 0 32px; border-bottom: 1px solid $border; background: $surface;
+	h1 { margin: 0; font-size: 15px; font-weight: 650; color: $text; padding: 0; line-height: 1; } .clg-muted { margin-left: 8px; } }
+.clg-stats--3 { grid-template-columns: repeat(3, 1fr); }
+@media (max-width: 782px) { .clg-static-head { padding: 0 14px; height: 52px; } }

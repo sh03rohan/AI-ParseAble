@@ -2,10 +2,10 @@
 /**
  * Crawler registry and user-agent matching.
  *
- * @package AiParseAble
+ * @package CrawlLedger
  */
 
-namespace AiParseAble\Logger;
+namespace CrawlLedger\Logger;
 
 /**
  * The registry is a PHP array, not a table: crawler names change, a join does not earn its keep.
@@ -352,7 +352,7 @@ final class Signatures {
 		 *
 		 * @param array<mixed> $bots Registry keyed by stable integer id.
 		 */
-		$registry = (array) apply_filters( 'ai_parseable_signatures', $bots );
+		$registry = (array) apply_filters( 'crawlledger_signatures', $bots );
 		return $registry;
 	}
 

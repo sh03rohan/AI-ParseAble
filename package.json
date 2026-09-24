@@ -1,5 +1,5 @@
 {
-  "name": "ai-parseable",
+  "name": "crawlledger",
   "version": "0.1.0",
   "description": "First-party log of AI crawler visits for WordPress.",
   "private": true,

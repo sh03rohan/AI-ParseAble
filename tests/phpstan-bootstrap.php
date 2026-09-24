@@ -2,12 +2,12 @@
 /**
  * Constants the plugin defines at runtime, for static analysis.
  *
- * @package AiParseAble
+ * @package CrawlLedger
  */
 
-define( 'AI_PARSEABLE_VERSION', '0.1.0' );
-define( 'AI_PARSEABLE_FILE', __DIR__ . '/../ai-parseable.php' );
-define( 'AI_PARSEABLE_DIR', __DIR__ . '/../' );
-define( 'AI_PARSEABLE_URL', 'https://example.test/wp-content/plugins/ai-parseable/' );
+define( 'CRAWLLEDGER_VERSION', '0.1.0' );
+define( 'CRAWLLEDGER_FILE', __DIR__ . '/../crawlledger.php' );
+define( 'CRAWLLEDGER_DIR', __DIR__ . '/../' );
+define( 'CRAWLLEDGER_URL', 'https://example.test/wp-content/plugins/crawlledger/' );
 define( 'DB_NAME', 'wordpress' );
 define( 'WPINC', 'wp-includes' );

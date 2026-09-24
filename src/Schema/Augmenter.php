@@ -2,10 +2,10 @@
 /**
  * Graph augmentation.
  *
- * @package AiParseAble
+ * @package CrawlLedger
  */
 
-namespace AiParseAble\Schema;
+namespace CrawlLedger\Schema;
 
 /**
  * Pure: takes a graph (list of nodes) and a context of facts, fills only what is genuinely absent.

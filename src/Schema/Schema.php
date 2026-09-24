@@ -2,13 +2,13 @@
 /**
  * Schema augmentation module.
  *
- * @package AiParseAble
+ * @package CrawlLedger
  */
 
-namespace AiParseAble\Schema;
+namespace CrawlLedger\Schema;
 
-use AiParseAble\Module;
-use AiParseAble\Support\Options;
+use CrawlLedger\Module;
+use CrawlLedger\Support\Options;
 
 /**
  * Detects the active provider and hooks its graph filter. Emits its own graph only when nobody else does.
@@ -49,7 +49,7 @@ final class Schema implements Module {
 	 * @return bool
 	 */
 	private function disabled_for_preview(): bool {
-		return isset( $_GET['aiparseable_schema'] ) && 'off' === $_GET['aiparseable_schema']; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only preview flag.
+		return isset( $_GET['crawlledger_schema'] ) && 'off' === $_GET['crawlledger_schema']; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only preview flag.
 	}
 
 	/**
@@ -129,7 +129,7 @@ final class Schema implements Module {
 		$result = Augmenter::augment( array_values( $data ), Context::for_queried_object() );
 		$out    = array();
 		foreach ( $result['graph'] as $i => $node ) {
-			$out[ isset( $keys[ $i ] ) ? $keys[ $i ] : 'aiparseable_' . $i ] = $node;
+			$out[ isset( $keys[ $i ] ) ? $keys[ $i ] : 'crawlledger_' . $i ] = $node;
 		}
 		return $out;
 	}
@@ -192,7 +192,7 @@ final class Schema implements Module {
 			'@graph'   => $result['graph'],
 		);
 		// JSON_HEX_TAG turns < and > into \u003C and \u003E, so a value containing "</script>" cannot close the block.
-		echo "\n<script type=\"application/ld+json\" class=\"ai-parseable-schema\">" . wp_json_encode( $json, JSON_HEX_TAG | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) . "</script>\n";
+		echo "\n<script type=\"application/ld+json\" class=\"crawlledger-schema\">" . wp_json_encode( $json, JSON_HEX_TAG | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) . "</script>\n";
 	}
 
 	/**
@@ -204,18 +204,18 @@ final class Schema implements Module {
 	public function preview( int $post_id ) {
 		$url = get_permalink( $post_id );
 		if ( ! $url ) {
-			return new \WP_Error( 'no_post', __( 'That post does not exist.', 'ai-parseable' ), array( 'status' => 404 ) );
+			return new \WP_Error( 'no_post', __( 'That post does not exist.', 'crawlledger-ai-crawler-log' ), array( 'status' => 404 ) );
 		}
 		$before = $this->fetch_ld(
 			add_query_arg(
 				array(
-					'aiparseable_schema'  => 'off',
-					'aiparseable_nocache' => time(),
+					'crawlledger_schema'  => 'off',
+					'crawlledger_nocache' => time(),
 				),
 				$url
 			)
 		);
-		$after  = $this->fetch_ld( add_query_arg( array( 'aiparseable_nocache' => time() + 1 ), $url ) );
+		$after  = $this->fetch_ld( add_query_arg( array( 'crawlledger_nocache' => time() + 1 ), $url ) );
 		if ( is_wp_error( $before ) ) {
 			return $before;
 		}

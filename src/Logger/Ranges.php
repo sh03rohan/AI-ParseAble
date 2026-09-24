@@ -2,13 +2,13 @@
 /**
  * Published crawler IP ranges.
  *
- * @package AiParseAble
+ * @package CrawlLedger
  */
 
-namespace AiParseAble\Logger;
+namespace CrawlLedger\Logger;
 
-use AiParseAble\Module;
-use AiParseAble\Support\Cron;
+use CrawlLedger\Module;
+use CrawlLedger\Support\Cron;
 
 /**
  * Fetches each provider's range JSON weekly, validates it, and keeps the last good copy on failure.
@@ -16,7 +16,7 @@ use AiParseAble\Support\Cron;
  */
 final class Ranges implements Module {
 
-	const OPTION = 'ai_parseable_ip_ranges';
+	const OPTION = 'crawlledger_ip_ranges';
 
 	/**
 	 * Hooks.
@@ -107,7 +107,7 @@ final class Ranges implements Module {
 			$url,
 			array(
 				'timeout'    => 10,
-				'user-agent' => 'AI ParseAble/' . AI_PARSEABLE_VERSION . '; ' . home_url( '/' ),
+				'user-agent' => 'CrawlLedger/' . CRAWLLEDGER_VERSION . '; ' . home_url( '/' ),
 			)
 		);
 		if ( is_wp_error( $response ) ) {

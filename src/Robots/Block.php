@@ -2,12 +2,12 @@
 /**
  * Managed robots.txt block.
  *
- * @package AiParseAble
+ * @package CrawlLedger
  */
 
-namespace AiParseAble\Robots;
+namespace CrawlLedger\Robots;
 
-use AiParseAble\Logger\Signatures;
+use CrawlLedger\Logger\Signatures;
 
 /**
  * Pure functions: build the managed block and splice it into an existing file between markers.
@@ -15,8 +15,8 @@ use AiParseAble\Logger\Signatures;
  */
 final class Block {
 
-	const BEGIN = '# BEGIN AI ParseAble';
-	const END   = '# END AI ParseAble';
+	const BEGIN = '# BEGIN CrawlLedger';
+	const END   = '# END CrawlLedger';
 
 	/**
 	 * Build rule lines from the per-bot settings. Bots with no explicit rule emit nothing.

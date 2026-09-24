@@ -75,45 +75,45 @@ export function AreaChart( { series, height = 220 } ) {
 	const h = hover === null ? null : series[ hover ];
 
 	return (
-		<div className="aip-chart-wrap" ref={ wrapRef }>
-			<svg viewBox={ `0 0 ${ width } ${ height }` } width={ width } height={ height } className="aip-chart" role="img" aria-label="Crawler hits per day" onMouseMove={ onMove } onMouseLeave={ () => setHover( null ) }>
+		<div className="clg-chart-wrap" ref={ wrapRef }>
+			<svg viewBox={ `0 0 ${ width } ${ height }` } width={ width } height={ height } className="clg-chart" role="img" aria-label="Crawler hits per day" onMouseMove={ onMove } onMouseLeave={ () => setHover( null ) }>
 				<defs>
-					<linearGradient id="aip-g-hits" x1="0" x2="0" y1="0" y2="1"><stop offset="0" className="aip-g-hits-a" /><stop offset="1" className="aip-g-hits-b" /></linearGradient>
-					<linearGradient id="aip-g-err" x1="0" x2="0" y1="0" y2="1"><stop offset="0" className="aip-g-err-a" /><stop offset="1" className="aip-g-err-b" /></linearGradient>
+					<linearGradient id="clg-g-hits" x1="0" x2="0" y1="0" y2="1"><stop offset="0" className="clg-g-hits-a" /><stop offset="1" className="clg-g-hits-b" /></linearGradient>
+					<linearGradient id="clg-g-err" x1="0" x2="0" y1="0" y2="1"><stop offset="0" className="clg-g-err-a" /><stop offset="1" className="clg-g-err-b" /></linearGradient>
 				</defs>
 				{ ticks.map( ( t ) => (
 					<g key={ t }>
-						<line x1={ pad.left } x2={ width - pad.right } y1={ y( t ) } y2={ y( t ) } className="aip-grid" />
-						<text x={ pad.left - 8 } y={ y( t ) + 4 } textAnchor="end" className="aip-tick">{ formatNumber( t ) }</text>
+						<line x1={ pad.left } x2={ width - pad.right } y1={ y( t ) } y2={ y( t ) } className="clg-grid" />
+						<text x={ pad.left - 8 } y={ y( t ) + 4 } textAnchor="end" className="clg-tick">{ formatNumber( t ) }</text>
 					</g>
 				) ) }
-				<path d={ area( 'hits' ) } className="aip-area" />
-				<path d={ area( 'errors' ) } className="aip-area-errors" />
-				<path d={ line( 'hits' ) } className="aip-line" />
-				<path d={ line( 'errors' ) } className="aip-line-errors" />
+				<path d={ area( 'hits' ) } className="clg-area" />
+				<path d={ area( 'errors' ) } className="clg-area-errors" />
+				<path d={ line( 'hits' ) } className="clg-line" />
+				<path d={ line( 'errors' ) } className="clg-line-errors" />
 				{ series.map( ( p, i ) =>
 					i % labelEvery === 0 || i === series.length - 1 ? (
-						<text key={ p.day } x={ x( i ) } y={ height - 8 } textAnchor={ anchorFor( i, series.length ) } className="aip-tick">{ shortDay( p.day ) }</text>
+						<text key={ p.day } x={ x( i ) } y={ height - 8 } textAnchor={ anchorFor( i, series.length ) } className="clg-tick">{ shortDay( p.day ) }</text>
 					) : null
 				) }
 				{ h && (
 					<g>
-						<line x1={ x( hover ) } x2={ x( hover ) } y1={ pad.top } y2={ pad.top + innerH } className="aip-crosshair" />
-						<circle cx={ x( hover ) } cy={ y( h.hits ) } r="4.5" className="aip-dot" />
-						{ h.errors > 0 && <circle cx={ x( hover ) } cy={ y( h.errors ) } r="4.5" className="aip-dot-errors" /> }
+						<line x1={ x( hover ) } x2={ x( hover ) } y1={ pad.top } y2={ pad.top + innerH } className="clg-crosshair" />
+						<circle cx={ x( hover ) } cy={ y( h.hits ) } r="4.5" className="clg-dot" />
+						{ h.errors > 0 && <circle cx={ x( hover ) } cy={ y( h.errors ) } r="4.5" className="clg-dot-errors" /> }
 					</g>
 				) }
 			</svg>
 			{ h && (
-				<div className="aip-tooltip" style={ { left: `${ ( x( hover ) / width ) * 100 }%` } }>
+				<div className="clg-tooltip" style={ { left: `${ ( x( hover ) / width ) * 100 }%` } }>
 					<strong>{ shortDay( h.day ) }</strong>
-					<span><i className="aip-swatch aip-swatch-hits" />{ formatNumber( h.hits ) } hits</span>
-					<span><i className="aip-swatch aip-swatch-errors" />{ formatNumber( h.errors ) } errors</span>
+					<span><i className="clg-swatch clg-swatch-hits" />{ formatNumber( h.hits ) } hits</span>
+					<span><i className="clg-swatch clg-swatch-errors" />{ formatNumber( h.errors ) } errors</span>
 				</div>
 			) }
-			<div className="aip-legend">
-				<span><i className="aip-swatch aip-swatch-hits" />Hits</span>
-				<span><i className="aip-swatch aip-swatch-errors" />4xx / 5xx</span>
+			<div className="clg-legend">
+				<span><i className="clg-swatch clg-swatch-hits" />Hits</span>
+				<span><i className="clg-swatch clg-swatch-errors" />4xx / 5xx</span>
 			</div>
 		</div>
 	);
@@ -128,9 +128,9 @@ export function Sparkline( { values, width = 110, height = 26 } ) {
 	const pts = values.map( ( v, i ) => `${ i * step },${ 2 + ( height - 4 ) - ( ( v / max ) * ( height - 4 ) ) }` );
 	const d = pts.map( ( p, i ) => `${ i === 0 ? 'M' : 'L' }${ p }` ).join( ' ' );
 	return (
-		<svg viewBox={ `0 0 ${ width } ${ height }` } width={ width } height={ height } className="aip-spark" aria-hidden="true">
-			<path d={ `${ d } L${ width },${ height } L0,${ height } Z` } className="aip-spark-area" />
-			<path d={ d } className="aip-spark-line" />
+		<svg viewBox={ `0 0 ${ width } ${ height }` } width={ width } height={ height } className="clg-spark" aria-hidden="true">
+			<path d={ `${ d } L${ width },${ height } L0,${ height } Z` } className="clg-spark-area" />
+			<path d={ d } className="clg-spark-line" />
 		</svg>
 	);
 }
@@ -138,9 +138,9 @@ export function Sparkline( { values, width = 110, height = 26 } ) {
 export function Proportion( { value, total, title } ) {
 	const pct = total > 0 ? Math.round( ( value / total ) * 100 ) : 0;
 	return (
-		<span className="aip-proportion" title={ title }>
-			<span className="aip-proportion-track"><span className="aip-proportion-fill" style={ { width: `${ pct }%` } } /></span>
-			<span className="aip-proportion-label">{ pct }%</span>
+		<span className="clg-proportion" title={ title }>
+			<span className="clg-proportion-track"><span className="clg-proportion-fill" style={ { width: `${ pct }%` } } /></span>
+			<span className="clg-proportion-label">{ pct }%</span>
 		</span>
 	);
 }

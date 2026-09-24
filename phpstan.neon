@@ -3,7 +3,7 @@ includes:
 parameters:
     level: 6
     paths:
-        - ai-parseable.php
+        - crawlledger-ai-crawler-log.php
         - uninstall.php
         - src
     bootstrapFiles:

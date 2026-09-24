@@ -2,10 +2,10 @@
 /**
  * Facts for the current page, read live from the source of truth.
  *
- * @package AiParseAble
+ * @package CrawlLedger
  */
 
-namespace AiParseAble\Schema;
+namespace CrawlLedger\Schema;
 
 /**
  * Never caches a price into an option: values come from wc_get_product() and the post at render time.
@@ -69,7 +69,7 @@ final class Context {
 			return $context;
 		}
 
-		if ( 'post' === $post->post_type || in_array( $post->post_type, (array) apply_filters( 'ai_parseable_article_post_types', array( 'post' ) ), true ) ) {
+		if ( 'post' === $post->post_type || in_array( $post->post_type, (array) apply_filters( 'crawlledger_article_post_types', array( 'post' ) ), true ) ) {
 			$author             = get_userdata( (int) $post->post_author );
 			$context['article'] = array(
 				'headline'      => get_the_title( $post ),

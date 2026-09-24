@@ -2,12 +2,12 @@
 /**
  * Schema augmentation with Rank Math / WooCommerce style graphs.
  *
- * @package AiParseAble
+ * @package CrawlLedger
  */
 
-namespace AiParseAble\Tests\Integration;
+namespace CrawlLedger\Tests\Integration;
 
-use AiParseAble\Schema\Augmenter;
+use CrawlLedger\Schema\Augmenter;
 use WP_UnitTestCase;
 
 /**

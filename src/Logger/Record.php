@@ -2,10 +2,10 @@
 /**
  * Queue record format.
  *
- * @package AiParseAble
+ * @package CrawlLedger
  */
 
-namespace AiParseAble\Logger;
+namespace CrawlLedger\Logger;
 
 /**
  * Shared by the collector and the ingest so the format lives in one place.

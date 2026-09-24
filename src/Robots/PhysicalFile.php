@@ -2,10 +2,10 @@
 /**
  * Physical robots.txt handling.
  *
- * @package AiParseAble
+ * @package CrawlLedger
  */
 
-namespace AiParseAble\Robots;
+namespace CrawlLedger\Robots;
 
 /**
  * WordPress only serves a virtual robots.txt when no physical file exists. When one does, the
@@ -57,14 +57,14 @@ final class PhysicalFile {
 	 */
 	public static function write_block( string $rules ) {
 		if ( ! self::exists() ) {
-			return new \WP_Error( 'no_file', __( 'There is no physical robots.txt to update.', 'ai-parseable' ), array( 'status' => 400 ) );
+			return new \WP_Error( 'no_file', __( 'There is no physical robots.txt to update.', 'crawlledger-ai-crawler-log' ), array( 'status' => 400 ) );
 		}
 		if ( ! self::writable() ) {
-			return new \WP_Error( 'not_writable', __( 'robots.txt is not writable by the web server.', 'ai-parseable' ), array( 'status' => 400 ) );
+			return new \WP_Error( 'not_writable', __( 'robots.txt is not writable by the web server.', 'crawlledger-ai-crawler-log' ), array( 'status' => 400 ) );
 		}
 		$updated = Block::splice( self::read(), $rules );
 		$ok      = self::filesystem() && $GLOBALS['wp_filesystem']->put_contents( self::path(), $updated, FS_CHMOD_FILE );
-		return $ok ? true : new \WP_Error( 'write_failed', __( 'Writing robots.txt failed.', 'ai-parseable' ), array( 'status' => 500 ) );
+		return $ok ? true : new \WP_Error( 'write_failed', __( 'Writing robots.txt failed.', 'crawlledger-ai-crawler-log' ), array( 'status' => 500 ) );
 	}
 
 	/**

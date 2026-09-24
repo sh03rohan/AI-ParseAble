@@ -2,26 +2,26 @@
 /**
  * Queue ingest.
  *
- * @package AiParseAble
+ * @package CrawlLedger
  */
 
-namespace AiParseAble\Logger;
+namespace CrawlLedger\Logger;
 
-use AiParseAble\Module;
-use AiParseAble\Support\Cron;
-use AiParseAble\Support\Ip;
-use AiParseAble\Support\Lock;
-use AiParseAble\Support\Options;
-use AiParseAble\Support\Str;
+use CrawlLedger\Module;
+use CrawlLedger\Support\Cron;
+use CrawlLedger\Support\Ip;
+use CrawlLedger\Support\Lock;
+use CrawlLedger\Support\Options;
+use CrawlLedger\Support\Str;
 
 /**
  * Every five minutes: claim queue files, verify IPs, apply the per-minute ceiling, batch insert.
  */
 final class Ingest implements Module {
 
-	const LOCK              = 'ai_parseable_ingest_lock';
-	const OPTION_LAST       = 'ai_parseable_last_ingest';
-	const OPTION_TIMING     = 'ai_parseable_timing';
+	const LOCK              = 'crawlledger_ingest_lock';
+	const OPTION_LAST       = 'crawlledger_last_ingest';
+	const OPTION_TIMING     = 'crawlledger_timing';
 	const MAX_LINES_PER_RUN = 50000;
 
 	/**

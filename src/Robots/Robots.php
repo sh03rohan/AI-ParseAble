@@ -2,13 +2,13 @@
 /**
  * Crawler access control.
  *
- * @package AiParseAble
+ * @package CrawlLedger
  */
 
-namespace AiParseAble\Robots;
+namespace CrawlLedger\Robots;
 
-use AiParseAble\Module;
-use AiParseAble\Support\Options;
+use CrawlLedger\Module;
+use CrawlLedger\Support\Options;
 
 /**
  * Writes rules through the robots_txt filter at priority 20 and detects everything that can silently
@@ -138,11 +138,11 @@ final class Robots implements Module {
 			} elseif ( $callback instanceof \Closure ) {
 				$ref = new \ReflectionFunction( $callback );
 			} else {
-				return __( 'Unknown callback', 'ai-parseable' );
+				return __( 'Unknown callback', 'crawlledger-ai-crawler-log' );
 			}
 			$file = (string) $ref->getFileName();
 		} catch ( \ReflectionException $e ) {
-			return __( 'Unknown callback', 'ai-parseable' );
+			return __( 'Unknown callback', 'crawlledger-ai-crawler-log' );
 		}
 
 		$plugins_dir = wp_normalize_path( WP_PLUGIN_DIR );
@@ -160,10 +160,10 @@ final class Robots implements Module {
 			return $slug;
 		}
 		if ( 0 === strpos( $file, wp_normalize_path( get_theme_root() ) ) ) {
-			return __( 'Active theme', 'ai-parseable' );
+			return __( 'Active theme', 'crawlledger-ai-crawler-log' );
 		}
 		if ( 0 === strpos( $file, wp_normalize_path( ABSPATH . WPINC ) ) ) {
-			return __( 'WordPress core', 'ai-parseable' );
+			return __( 'WordPress core', 'crawlledger-ai-crawler-log' );
 		}
 		return basename( $file );
 	}

@@ -2,15 +2,15 @@
 /**
  * Admin-side health checks.
  *
- * @package AiParseAble
+ * @package CrawlLedger
  */
 
-namespace AiParseAble\Admin;
+namespace CrawlLedger\Admin;
 
-use AiParseAble\Activation;
-use AiParseAble\Logger\Ingest;
-use AiParseAble\Module;
-use AiParseAble\Support\Options;
+use CrawlLedger\Activation;
+use CrawlLedger\Logger\Ingest;
+use CrawlLedger\Module;
+use CrawlLedger\Support\Options;
 
 /**
  * Runs the drop-in check on every admin load (transient-cached for an hour) and self-heals.
@@ -61,7 +61,7 @@ final class Health implements Module {
 			return;
 		}
 		printf(
-			'<div class="notice notice-%1$s is-dismissible" data-ai-parseable-notice="%2$s"><p>%3$s</p></div>',
+			'<div class="notice notice-%1$s is-dismissible" data-crawlledger-notice="%2$s"><p>%3$s</p></div>',
 			esc_attr( $notice['level'] ),
 			esc_attr( $notice['id'] ),
 			wp_kses(
@@ -90,7 +90,7 @@ final class Health implements Module {
 				'level' => 'warning',
 				'text'  => sprintf(
 					/* translators: %s: human-readable time difference, e.g. "3 hours" */
-					__( 'The last crawler-log ingest ran %s ago. WP-Cron may not be firing on this site; consider a real cron job or Action Scheduler.', 'ai-parseable' ),
+					__( 'The last crawler-log ingest ran %s ago. WP-Cron may not be firing on this site; consider a real cron job or Action Scheduler.', 'crawlledger-ai-crawler-log' ),
 					human_time_diff( $last )
 				),
 			);
@@ -100,12 +100,12 @@ final class Health implements Module {
 			$list[] = array(
 				'id'    => 'robots-physical',
 				'level' => 'info',
-				'text'  => __( 'A physical robots.txt exists at the web root, so WordPress does not serve the virtual one this plugin writes to. Open the Crawlers tab to manage a block inside the physical file.', 'ai-parseable' ),
+				'text'  => __( 'A physical robots.txt exists at the web root, so WordPress does not serve the virtual one this plugin writes to. Open the Crawlers tab to manage a block inside the physical file.', 'crawlledger-ai-crawler-log' ),
 			);
 		}
 
 		foreach ( $list as $n ) {
-			if ( ! get_user_meta( $user, 'ai_parseable_dismissed_' . $n['id'], true ) ) {
+			if ( ! get_user_meta( $user, 'crawlledger_dismissed_' . $n['id'], true ) ) {
 				return $n;
 			}
 		}

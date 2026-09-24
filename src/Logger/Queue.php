@@ -2,16 +2,16 @@
 /**
  * Queue file helper.
  *
- * @package AiParseAble
+ * @package CrawlLedger
  */
 
-namespace AiParseAble\Logger;
+namespace CrawlLedger\Logger;
 
-use AiParseAble\Support\Options;
-use AiParseAble\Support\Str;
+use CrawlLedger\Support\Options;
+use CrawlLedger\Support\Str;
 
 /**
- * Hits are appended to daily files under uploads/ai-parseable/queue/ and ingested by cron.
+ * Hits are appended to daily files under uploads/crawlledger/queue/ and ingested by cron.
  *
  * File names carry a random token so they cannot be guessed; the directory carries an index.php and a
  * .htaccess deny rule. Records are tab-separated, one per line.
@@ -37,7 +37,7 @@ final class Queue {
 	}
 
 	/**
-	 * Base directory (uploads/ai-parseable).
+	 * Base directory (uploads/crawlledger).
 	 *
 	 * On multisite the queue is network-wide, so it lives under the main site's uploads.
 	 *
@@ -54,7 +54,7 @@ final class Queue {
 		} else {
 			$uploads = wp_upload_dir( null, false );
 		}
-		return trailingslashit( $uploads['basedir'] ) . 'ai-parseable';
+		return trailingslashit( $uploads['basedir'] ) . 'crawlledger';
 	}
 
 	/**
@@ -113,7 +113,7 @@ final class Queue {
 		}
 		$protect = array(
 			$base . '/index.php' => "<?php\n// Silence is golden.\n",
-			$base . '/.htaccess' => "# AI ParseAble: crawler logs are private.\n<IfModule mod_authz_core.c>\n\tRequire all denied\n</IfModule>\n<IfModule !mod_authz_core.c>\n\tOrder deny,allow\n\tDeny from all\n</IfModule>\n",
+			$base . '/.htaccess' => "# CrawlLedger: crawler logs are private.\n<IfModule mod_authz_core.c>\n\tRequire all denied\n</IfModule>\n<IfModule !mod_authz_core.c>\n\tOrder deny,allow\n\tDeny from all\n</IfModule>\n",
 			$dir . '/index.php'  => "<?php\n// Silence is golden.\n",
 		);
 		foreach ( $protect as $path => $body ) {
@@ -208,12 +208,12 @@ final class Queue {
 	 * @return bool|null True when readable, false when denied, null when the check could not run.
 	 */
 	public function is_web_readable(): ?bool {
-		$cached = get_transient( 'ai_parseable_queue_readable' );
+		$cached = get_transient( 'crawlledger_queue_readable' );
 		if ( false !== $cached ) {
 			return 'null' === $cached ? null : (bool) (int) $cached;
 		}
 		$result = $this->probe_web_readable();
-		set_transient( 'ai_parseable_queue_readable', null === $result ? 'null' : ( $result ? '1' : '0' ), HOUR_IN_SECONDS );
+		set_transient( 'crawlledger_queue_readable', null === $result ? 'null' : ( $result ? '1' : '0' ), HOUR_IN_SECONDS );
 		return $result;
 	}
 
@@ -224,7 +224,7 @@ final class Queue {
 	 */
 	private function probe_web_readable(): ?bool {
 		$uploads = wp_upload_dir( null, false );
-		$url     = trailingslashit( $uploads['baseurl'] ) . 'ai-parseable/.htaccess';
+		$url     = trailingslashit( $uploads['baseurl'] ) . 'crawlledger/.htaccess';
 		$res     = wp_remote_head(
 			$url,
 			array(

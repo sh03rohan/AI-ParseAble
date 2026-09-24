@@ -28,7 +28,7 @@ jobs:
       - uses: shivammathur/setup-php@v2
         with: { php-version: '${{ matrix.php }}', coverage: none, tools: composer }
       - run: composer install --no-interaction --prefer-dist
-      - run: AI_PARSEABLE_SUITE=unit composer test:unit
+      - run: CRAWLLEDGER_SUITE=unit composer test:unit
 
   js:
     name: JS build + tests
@@ -59,13 +59,13 @@ jobs:
           - { php: '8.4', wp: '6.4' }
     defaults:
       run:
-        working-directory: ai-parseable
+        working-directory: crawlledger-ai-crawler-log
     steps:
       # Fixed folder name: wp-env mounts the plugin under the checkout directory's name.
       - uses: actions/checkout@v4
-        with: { path: ai-parseable }
+        with: { path: crawlledger-ai-crawler-log }
       - uses: actions/setup-node@v4
-        with: { node-version: '22', cache: npm, cache-dependency-path: ai-parseable/package-lock.json }
+        with: { node-version: '22', cache: npm, cache-dependency-path: crawlledger-ai-crawler-log/package-lock.json }
       - uses: shivammathur/setup-php@v2
         with: { php-version: '8.1', coverage: none, tools: composer }
       - run: composer install --no-interaction --prefer-dist
@@ -86,7 +86,7 @@ jobs:
       - name: Integration tests
         run: |
           set -o pipefail
-          npx wp-env run tests-cli --env-cwd=wp-content/plugins/ai-parseable vendor/bin/phpunit --testsuite integration 2>&1 | tee phpunit.log || { echo "::error title=phpunit integration::$(grep -v '^$' phpunit.log | tail -c 3000 | tr '\n' ' ')"; exit 1; }
+          npx wp-env run tests-cli --env-cwd=wp-content/plugins/crawlledger-ai-crawler-log vendor/bin/phpunit --testsuite integration 2>&1 | tee phpunit.log || { echo "::error title=phpunit integration::$(grep -v '^$' phpunit.log | tail -c 3000 | tr '\n' ' ')"; exit 1; }
       - name: E2E tests
         run: |
           set -o pipefail
