@@ -126,13 +126,14 @@ IP addresses of AI crawler visits are truncated by default (you can choose hashe
 
 == Screenshots ==
 
-1. AI crawler analytics dashboard: coverage status, verified-only KPIs with period deltas, AI bot visits per day, and every crawler with its verified share.
-2. Failing URLs that AI crawlers could not fetch, most-crawled pages and the latest AI bot visits feed, with cache-served and verified markers.
-3. AI crawler access control: answer and search crawlers (ChatGPT-User, PerplexityBot) are one decision, training crawlers (GPTBot, ClaudeBot) another, with visit counts beside each robots.txt rule.
-4. Blocking AI training crawlers in robots.txt in one click; the resulting robots.txt block is shown below the tables.
-5. Schema markup gap filling: a before/after of a real WooCommerce product page with the added structured-data properties listed.
-6. llms.txt editor for AI assistants with a live preview of the served file.
-7. Settings: log retention, IP storage mode for privacy, per-crawler rate ceiling and uninstall behaviour.
+1. AI crawler analytics dashboard: coverage status, verified-only KPIs with period deltas, AI bot visits per day, and the cost of logging per visitor request.
+2. Every AI crawler with its visit count, verified share, error count and seven-day trend — active ones first, quiet ones behind a toggle.
+3. URLs that AI crawlers could not fetch, the pages they crawl most, and a live feed of the latest AI bot visits.
+4. AI crawler access control: answer and search crawlers (ChatGPT-User, PerplexityBot) are one decision, training crawlers (GPTBot, ClaudeBot) another, with visit counts beside each robots.txt rule.
+5. Blocking AI training crawlers in robots.txt in one click; the resulting robots.txt block is shown below the tables.
+6. Schema markup gap filling: a before/after of a real WooCommerce product page with the added structured-data properties listed.
+7. llms.txt editor for AI assistants with a live preview of the served file.
+8. Settings: log retention, IP storage mode for privacy, per-crawler rate ceiling and uninstall behaviour.
 
 == Changelog ==
 
